@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -x
-export NAMESPACE='esp-edge-compute-a'
-export KEY_PASS='dmedge'
+export NAMESPACE='edge-compute'
 ./bootstrap-ns.sh
-./gen-secrets.sh
 ./deploy-author.sh
 
