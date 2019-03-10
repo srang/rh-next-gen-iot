@@ -1,6 +1,4 @@
-*.csr
-*.crt
-*.keystore
-*.jks
 .idea
 .project
+target
+*.jar

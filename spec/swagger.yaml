@@ -2,6 +2,11 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "Pump Monitor"
+host: "redhat.com"
+basePath: "/v2"
+schemes:
+  - "https"
+paths: {}
 definitions:
   SensorData:
     type: "object"

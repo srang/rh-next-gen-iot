@@ -21,8 +21,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.swagger.codegen>2.3.1</version.swagger.codegen>
-        <yaml.file></yaml.file>
+        <version.swagger.codegen>2.4.1</version.swagger.codegen>
         <generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
         <generated-sources-java-path>main/java</generated-sources-java-path>
     </properties>
@@ -30,8 +29,19 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -47,65 +57,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>${version.swagger.codegen}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/../spec/swagger.yaml</inputSpec>
-                            <language>java</language>
-                            <configOptions>
-                                <sourceFolder>src/gen/java/main</sourceFolder>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-                <!--<configuration>-->
-                    <!--<inputSpec>${yaml.file}</inputSpec>-->
-                    <!--<configOptions>-->
-                        <!--<sourceFolder>${generated-sources-java-path}</sourceFolder>-->
-                    <!--</configOptions>-->
-                    <!--<output>${generated-sources-path}</output>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>generate-swagger-spring</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>generate</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<language>spring</language>-->
-                            <!--<modelPackage>${project.groupId}.swagger.model</modelPackage>-->
-                            <!--<apiPackage>${project.groupId}.swagger.api</apiPackage>-->
-                            <!--<invokerPackage>${project.groupId}.swagger.invoker</invokerPackage>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>build-helper-maven-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>add-generated-source</id>-->
-                        <!--<phase>initialize</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>add-source</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<sources>-->
-                                <!--<source>${generated-sources-path}/${generated-sources-java-path}</source>-->
-                            <!--</sources>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -125,34 +76,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <!--<pluginManagement>-->
-            <!--<plugins>-->
-                <!--<plugin>-->
-                    <!--<groupId>org.eclipse.m2e</groupId>-->
-                    <!--<artifactId>lifecycle-mapping</artifactId>-->
-                    <!--<version>1.0.0</version>-->
-                    <!--<configuration>-->
-                        <!--<lifecycleMappingMetadata>-->
-                            <!--<pluginExecutions>-->
-                                <!--<pluginExecution>-->
-                                    <!--<pluginExecutionFilter>-->
-                                        <!--<groupId>io.swagger</groupId>-->
-                                        <!--<artifactId>swagger-codegen-maven-plugin</artifactId>-->
-                                        <!--<versionRange>[${version.swagger.codegen},)</versionRange>-->
-                                        <!--<goals>-->
-                                            <!--<goal>generate</goal>-->
-                                        <!--</goals>-->
-                                    <!--</pluginExecutionFilter>-->
-                                    <!--<action>-->
-                                        <!--<execute />-->
-                                    <!--</action>-->
-                                <!--</pluginExecution>-->
-                            <!--</pluginExecutions>-->
-                        <!--</lifecycleMappingMetadata>-->
-                    <!--</configuration>-->
-                <!--</plugin>-->
-            <!--</plugins>-->
-        <!--</pluginManagement>-->
     </build>
 
 </project>
