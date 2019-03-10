@@ -1,0 +1,11 @@
+#Intro
+
+In this lab, we will be working with cutting edge technology to build an IOT edge computing solution that will monitor
+health of ESP sensors to identify system stress and optimize hardware longevity. The technologies involved are:
+
+* AMQ Streams - Red Hat distribution of Kafka built around our best-in-class messaging ecosystem
+* Decision Manager - End to end business rules management platform, including authoring workbench and execution engine
+* Fuse - Integration solution building off industry standard enterprise integration patterns
+
+We will be generating Electrical Submersible Pump (ESP) data based on real world situations and building intelligence
+into the data processing layer to identify ways to improve pump longevity.
