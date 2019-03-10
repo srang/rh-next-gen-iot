@@ -1,5 +1,5 @@
 {
-  "modelPackage" : "com.redhat.iot.model",
+  "modelPackage" : "com.redhat.iot.api",
   "basePackage" : "com.redhat.iot",
   "serializableModel" : true,
   "sourceFolder" : "src/main/java",

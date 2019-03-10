@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 
-package com.redhat.iot.model;
+package com.redhat.iot.api;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,10 +21,10 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 /**
- * SensorData
+ * ControlData
  */
 
-public class SensorData implements Serializable {
+public class ControlData implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
@@ -50,7 +50,11 @@ public class SensorData implements Serializable {
   @JsonProperty("units")
 
   private String units = null;
-  public SensorData id(Long id) {
+
+  @JsonProperty("source")
+
+  private String source = null;
+  public ControlData id(Long id) {
     this.id = id;
     return this;
   }
@@ -68,7 +72,7 @@ public class SensorData implements Serializable {
   public void setId(Long id) {
     this.id = id;
   }
-  public SensorData pumpId(Long pumpId) {
+  public ControlData pumpId(Long pumpId) {
     this.pumpId = pumpId;
     return this;
   }
@@ -86,7 +90,7 @@ public class SensorData implements Serializable {
   public void setPumpId(Long pumpId) {
     this.pumpId = pumpId;
   }
-  public SensorData timestamp(Long timestamp) {
+  public ControlData timestamp(Long timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -104,7 +108,7 @@ public class SensorData implements Serializable {
   public void setTimestamp(Long timestamp) {
     this.timestamp = timestamp;
   }
-  public SensorData type(String type) {
+  public ControlData type(String type) {
     this.type = type;
     return this;
   }
@@ -112,17 +116,17 @@ public class SensorData implements Serializable {
   
 
   /**
-  * Type of measurement
+  * Type of input
   * @return type
   **/
-  @ApiModelProperty(value = "Type of measurement")
+  @ApiModelProperty(value = "Type of input")
   public String getType() {
     return type;
   }
   public void setType(String type) {
     this.type = type;
   }
-  public SensorData value(Long value) {
+  public ControlData value(Long value) {
     this.value = value;
     return this;
   }
@@ -140,7 +144,7 @@ public class SensorData implements Serializable {
   public void setValue(Long value) {
     this.value = value;
   }
-  public SensorData units(String units) {
+  public ControlData units(String units) {
     this.units = units;
     return this;
   }
@@ -158,6 +162,24 @@ public class SensorData implements Serializable {
   public void setUnits(String units) {
     this.units = units;
   }
+  public ControlData source(String source) {
+    this.source = source;
+    return this;
+  }
+
+  
+
+  /**
+  * source of control
+  * @return source
+  **/
+  @ApiModelProperty(value = "source of control")
+  public String getSource() {
+    return source;
+  }
+  public void setSource(String source) {
+    this.source = source;
+  }
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -166,24 +188,25 @@ public class SensorData implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SensorData sensorData = (SensorData) o;
-    return Objects.equals(this.id, sensorData.id) &&
-        Objects.equals(this.pumpId, sensorData.pumpId) &&
-        Objects.equals(this.timestamp, sensorData.timestamp) &&
-        Objects.equals(this.type, sensorData.type) &&
-        Objects.equals(this.value, sensorData.value) &&
-        Objects.equals(this.units, sensorData.units);
+    ControlData controlData = (ControlData) o;
+    return Objects.equals(this.id, controlData.id) &&
+        Objects.equals(this.pumpId, controlData.pumpId) &&
+        Objects.equals(this.timestamp, controlData.timestamp) &&
+        Objects.equals(this.type, controlData.type) &&
+        Objects.equals(this.value, controlData.value) &&
+        Objects.equals(this.units, controlData.units) &&
+        Objects.equals(this.source, controlData.source);
   }
 
   @Override
   public int hashCode() {
-    return java.util.Objects.hash(id, pumpId, timestamp, type, value, units);
+    return java.util.Objects.hash(id, pumpId, timestamp, type, value, units, source);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SensorData {\n");
+    sb.append("class ControlData {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    pumpId: ").append(toIndentedString(pumpId)).append("\n");
@@ -191,6 +214,7 @@ public class SensorData implements Serializable {
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    units: ").append(toIndentedString(units)).append("\n");
+    sb.append("    source: ").append(toIndentedString(source)).append("\n");
     sb.append("}");
     return sb.toString();
   }

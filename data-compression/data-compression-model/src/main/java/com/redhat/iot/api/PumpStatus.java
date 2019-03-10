@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 
-package com.redhat.iot.model;
+package com.redhat.iot.api;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
