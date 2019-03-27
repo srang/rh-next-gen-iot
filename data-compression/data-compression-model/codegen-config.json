@@ -1,0 +1,11 @@
+{
+  "modelPackage" : "com.redhat.iot.api",
+  "basePackage" : "com.redhat.iot",
+  "serializableModel" : true,
+  "sourceFolder" : "src/main/java",
+  "dateLibrary" : "java8",
+  "java8" : true,
+  "useOas2": true,
+  "library" : "resteasy",
+  "hideGenerationTimestamp": true
+}
