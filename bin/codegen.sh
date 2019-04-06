@@ -10,11 +10,11 @@ mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.0:copy \
 java -Dmodels -DmodelTests=false -jar ${PROJ_DIR}/bin/swagger-codegen-cli-${SWAGGER_CODEGEN_VER}.jar \
     generate -l spring \
              -c ${PROJ_DIR}/data-pump/codegen-config.json \
-             -i ${PROJ_DIR}/spec/swagger.yaml \
+             -i ${PROJ_DIR}/spec/swagger.yml \
              -o ${PROJ_DIR}/data-pump
 
 java -Dmodels -DmodelTests=false -jar ${PROJ_DIR}/bin/swagger-codegen-cli-${SWAGGER_CODEGEN_VER}.jar \
     generate -l java \
-             -c ${PROJ_DIR}/data-compression/data-compression-model/codegen-config.json \
-             -i ${PROJ_DIR}/spec/swagger.yaml \
-             -o ${PROJ_DIR}/data-compression/data-compression-model
+             -c ${PROJ_DIR}/data-compression/codegen-config.json \
+             -i ${PROJ_DIR}/spec/swagger.yml \
+             -o ${PROJ_DIR}/data-compression

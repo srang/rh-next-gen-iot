@@ -1,0 +1,18 @@
+package com.redhat.iot.filter
+
+import com.redhat.iot.api.SensorData
+import com.redhat.iot.api.PumpStatus
+import com.redhat.iot.model.SensorDataType
+import com.redhat.iot.model.PumpStatusType
+import com.redhat.iot.model.UnhealthyPumpEvent
+
+rule "When unhealthy pump events for same pump in a sliding window then this is a real problem"
+when
+    $e1: UnhealthyPumpEvent($pumpId: sensorData.getPumpId())
+    $number: Number(intValue >= 2) from accumulate(
+        $e2: UnhealthyPumpEvent(sensorData.getPumpId() == $pumpId, this meets[10s] $e1), count($e2)
+    )
+then
+    System.out.println(String.format("%d unhealthy events found for pump %d at %s", $number.intValue(), $pumpId, $e1.getEventTimestamp().toString()));
+    insert(new PumpStatus().timestamp(System.currentTimeMillis()).pumpId($pumpId).status(PumpStatusType.RED.value()));
+end

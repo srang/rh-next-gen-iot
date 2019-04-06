@@ -1,0 +1,29 @@
+package com.redhat.iot.aggregate
+
+import java.util.Date
+
+import com.redhat.iot.api.SensorData
+import com.redhat.iot.api.Pump
+import com.redhat.iot.model.AggregatePumpData
+import com.redhat.iot.model.SensorDataType
+import com.redhat.iot.model.EventSensorData
+
+rule "Init event sensor data"
+when
+    $s: SensorData()
+then
+    System.out.println(String.format("Creating new EventSensorData for time indexing"));
+    insert(new EventSensorData($s));
+end
+
+rule "Init sensor data aggregate if not already created"
+when
+    EventSensorData($pumpId: sensorData.getPumpId())
+    not(AggregatePumpData(pump.getId() == $pumpId))
+    accumulate(EventSensorData(sensorData.getPumpId() == $pumpId, $timestamp: eventTimestamp); $date: min($timestamp))
+    $pump: Pump(id == $pumpId)
+then
+    System.out.println(String.format("Creating new AggregatePumpData for pump %d", $pumpId));
+    insert(new AggregatePumpData($pump, (Date) $date));
+end
+

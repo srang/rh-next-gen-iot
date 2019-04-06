@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://www.drools.org/xsd/kmodule">
+    <kbase name="filterKB" packages="com.redhat.iot.filter" eventProcessingMode="stream">
+        <ksession name="filterKS">
+            <consoleLogger/>
+        </ksession>
+    </kbase>
+    <kbase name="aggregateKB" packages="com.redhat.iot.aggregate" eventProcessingMode="stream">
+        <ksession name="aggregateKS">
+            <consoleLogger/>
+        </ksession>
+    </kbase>
+    <kbase name="defaultKB" default="true" packages="com.redhat.iot" eventProcessingMode="stream">
+        <ksession name="defaultKS" default="true">
+            <consoleLogger/>
+        </ksession>
+    </kbase>
+</kmodule>

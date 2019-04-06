@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: data-compression-pipeline
+metadata:
+  name: data-compression-pipeline
+objects:
+- kind: "BuildConfig"
+  apiVersion: "v1"
+  metadata:
+    labels:
+      application: "${APPLICATION_NAME}"
+      group: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}-pipeline"
+    namespace: "${APPLICATION_NAMESPACE}"
+  spec:
+    source:
+      type: Git
+      git:
+        uri: "${APPLICATION_SOURCE_REPOSITORY_URL}"
+        ref: "${SOURCE_REF}"
+      contextDir: "${APPLICATION_CONTEXT_DIR}"
+      sourceSecret:
+        name: "${SOURCE_SECRET}"
+    strategy:
+      type: "JenkinsPipeline"
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: "${PIPELINE_SCRIPT}"
+        env:
+        - name: "APPLICATION_SOURCE_REPOSITORY_URL"
+          value: "${APPLICATION_SOURCE_REPOSITORY_URL}"
+        - name: "APPLICATION_CONTEXT_DIR"
+          value: "${APPLICATION_CONTEXT_DIR}"
+        - name: "SOURCE_REF"
+          value: "${SOURCE_REF}"
+        - name: "SOURCE_SECRET"
+          value: "${SOURCE_SECRET}"
+        - name: "APPLICATION_RELEASE"
+          value: "${APPLICATION_RELEASE}"
+        - name: "KIE_CONTAINER"
+          value: "${KIE_CONTAINER}"
+parameters:
+- name: APPLICATION_NAME
+  value: data-compression
+- name: APPLICATION_NAMESPACE
+  value: edge-compute
+- name: APPLICATION_SOURCE_REPOSITORY_URL
+  value: https://gitlab.consulting.redhat.com/ablock/iot-summit-2019.git
+- name: SOURCE_REF
+  value: feature/rules-implementation
+- name: SOURCE_SECRET
+  value: gitlab-source-secret
+- name: APPLICATION_CONTEXT_DIR
+  value: data-compression
+- name: PIPELINE_SCRIPT
+  value: Jenkinsfile
+- name: APPLICATION_RELEASE
+  value: 0.0.1
+- name: KIE_CONTAINER
+  value: "com.redhat.iot:data-compression:0.0.1-SNAPSHOT"
