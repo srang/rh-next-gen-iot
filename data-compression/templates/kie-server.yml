@@ -510,7 +510,6 @@ objects:
       to:
         kind: ImageStreamTag
         name: "${APPLICATION_NAME}-kieserver:latest"
-    triggers: {}
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
@@ -556,24 +555,24 @@ objects:
           - name: kieserver-keystore-volume
             mountPath: "/etc/kieserver-secret-volume"
             readOnly: true
-#          livenessProbe:
-#            httpGet:
-#              path: /services/rest/server/healthcheck
-#              port: 8080
-#              scheme: HTTP
-#            initialDelaySeconds: 180
-#            timeoutSeconds: 2
-#            periodSeconds: 15
-#            failureThreshold: 3
-#          readinessProbe:
-#            httpGet:
-#              path: /services/rest/server/readycheck
-#              port: 8080
-#              scheme: HTTP
-#            initialDelaySeconds: 60
-#            timeoutSeconds: 2
-#            periodSeconds: 30
-#            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /services/rest/server/healthcheck
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            timeoutSeconds: 2
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /services/rest/server/readycheck
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 2
+            periodSeconds: 30
+            failureThreshold: 6
           ports:
           - name: jolokia
             containerPort: 8778

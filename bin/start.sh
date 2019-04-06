@@ -14,5 +14,4 @@ fi
 
 ${CMD_DIR}/bootstrap-ns.sh
 ${CMD_DIR}/deploy-rules.sh
-#${CMD_DIR}/deploy-rules-pipeline.sh
 #${CMD_DIR}/deploy-author.sh
