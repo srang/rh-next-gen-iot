@@ -1,0 +1,26 @@
+package com.redhat.iot.filter
+
+import java.util.Date
+import com.redhat.iot.api.SensorData
+import com.redhat.iot.api.PumpStatus
+import com.redhat.iot.model.SensorDataType
+import com.redhat.iot.model.PumpStatusType
+import com.redhat.iot.model.UnhealthyPumpEvent
+
+rule "When motor temp greater than 550F there is a potential problem"
+when
+    $data: SensorData(type == SensorDataType.MOTOR_TEMP.value(), $val: value >= 550)
+then
+    System.out.println(String.format("%s (%d) out of range (550), at %d for pump %d",
+        $data.getType(), $data.getValue(), $data.getTimestamp(), $data.getPumpId()));
+    insert(new UnhealthyPumpEvent($data));
+end
+
+rule "When intake pressure greater than 500psi there is a potential problem"
+when
+    $data: SensorData(type == SensorDataType.INTAKE_PRESSURE.value(), $val: value >= 500)
+then
+    System.out.println(String.format("%s (%d) out of range (500), at %d for pump %d",
+        $data.getType(), $data.getValue(), $data.getTimestamp(), $data.getPumpId()));
+    insert(new UnhealthyPumpEvent($data));
+end
