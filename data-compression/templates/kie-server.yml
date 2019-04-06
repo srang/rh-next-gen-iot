@@ -31,8 +31,6 @@ parameters:
   name: SECRET_NAME
   value: data-compression-https-secret
   required: true
-- name: SOURCE_SECRET
-  value: 'gitlab-source-secret'
 - name: APPLICATION_RELEASE
   required: true
 - displayName: Application Name
@@ -163,33 +161,6 @@ parameters:
   description: 'KIE Server Container deployment configuration in format: containerId=groupId:artifactId:version|c2=g2:a2:v2'
   name: KIE_SERVER_CONTAINER_DEPLOYMENT
   example: rhdm-kieserver-hellorules=org.openshift.quickstarts:rhdm-kieserver-hellorules:1.4.0-SNAPSHOT
-  required: true
-- displayName: Git Repository URL
-  description: Git source URI for application
-  name: SOURCE_REPOSITORY_URL
-  example: https://github.com/jboss-container-images/rhdm-7-openshift-image.git
-  required: true
-- displayName: Git Reference
-  description: Git branch/tag reference
-  name: SOURCE_REPOSITORY_REF
-  example: master
-  required: false
-- displayName: Context Directory
-  description: Path within Git project to build; empty for root project directory.
-  name: CONTEXT_DIR
-  example: quickstarts/hello-rules/hellorules
-  required: false
-- displayName: Github Webhook Secret
-  description: GitHub trigger secret
-  name: GITHUB_WEBHOOK_SECRET
-  from: "[a-zA-Z0-9]{8}"
-  generate: expression
-  required: true
-- displayName: Generic Webhook Secret
-  description: Generic build trigger secret
-  name: GENERIC_WEBHOOK_SECRET
-  from: "[a-zA-Z0-9]{8}"
-  generate: expression
   required: true
 - displayName: Maven mirror URL
   description: Maven mirror to use for S2I builds
@@ -517,13 +488,7 @@ objects:
     successfulBuildsHistoryLimit: 2
     failedBuildsHistoryLimit: 2
     source:
-      type: Git
-      git:
-        uri: "${SOURCE_REPOSITORY_URL}"
-        ref: "${SOURCE_REPOSITORY_REF}"
-      contextDir: "${CONTEXT_DIR}"
-      sourceSecret:
-        name: "${SOURCE_SECRET}"
+      type: Binary
     strategy:
       type: Source
       sourceStrategy:
@@ -545,16 +510,7 @@ objects:
       to:
         kind: ImageStreamTag
         name: "${APPLICATION_NAME}-kieserver:latest"
-    triggers:
-    - type: GitHub
-      github:
-        secret: "${GITHUB_WEBHOOK_SECRET}"
-    - type: Generic
-      generic:
-        secret: "${GENERIC_WEBHOOK_SECRET}"
-    - type: ImageChange
-      imageChange: {}
-    - type: ConfigChange
+    triggers: {}
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:

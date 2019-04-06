@@ -27,9 +27,6 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/kie-server.yml \
     -p APPLICATION_NAME=${APPLICATION_NAME} \
     -p APPLICATION_RELEASE="${APPLICATION_RELEASE}" \
     -p KIE_SERVER_CONTAINER_DEPLOYMENT="datacompression=com.redhat.iot:data-compression:${APPLICATION_RELEASE}-SNAPSHOT" \
-    -p SOURCE_REPOSITORY_URL="${SOURCE_REPOSITORY_URL}" \
-    -p SOURCE_REPOSITORY_REF="${SOURCE_REPOSITORY_REF}" \
-    -p CONTEXT_DIR="${APPLICATION_CONTEXT_DIR}" \
     -p KIE_SERVER_HTTPS_SECRET="${APPLICATION_NAME}-https-secret" \
     -p KIE_SERVER_IMAGE_STREAM_NAME="rhdm${RHDM_VER}-kieserver-openshift" \
     -p IMAGE_STREAM_TAG="${RHDM_REL}" \
@@ -38,8 +35,9 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/kie-server.yml \
 # let's be thorough
 oc rollout pause dc/${APPLICATION_NAME}-kieserver || echo "already paused"
 
+${CMD_DIR}/build-rules.sh
 
-build=$(oc start-build bc/${APPLICATION_NAME}-kieserver | awk '{print $1}')
+build=$(oc start-build bc/${APPLICATION_NAME}-kieserver --from-dir=${PROJ_DIR}/${APPLICATION_CONTEXT_DIR} | awk '{print $1}')
 while [[ $(oc get ${build} -o=jsonpath='{ .status.phase }') =~ ^(Running|Pending|New)$ ]] ; do
     # handles broken pipes (happens frequently unfortunately)
     oc logs -f ${build}
@@ -52,4 +50,3 @@ fi
 oc tag ${NAMESPACE}/${APPLICATION_NAME}-kieserver:latest ${NAMESPACE}/${APPLICATION_NAME}-kieserver:${APPLICATION_RELEASE}
 oc scale --replicas=1 dc/${APPLICATION_NAME}-kieserver
 oc rollout resume dc/${APPLICATION_NAME}-kieserver
-oc rollout latest dc/${APPLICATION_NAME}-kieserver
