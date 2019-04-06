@@ -1,0 +1,32 @@
+package com.redhat.iot.aggregate
+
+import com.redhat.iot.api.SensorData
+import com.redhat.iot.api.Pump
+import com.redhat.iot.model.AggregatePumpData
+import com.redhat.iot.model.EventSensorData
+import com.redhat.iot.model.SensorDataType
+
+rule "Aggregate sensor data in 5 second window"
+when
+    $ag: AggregatePumpData($pumpId: pump.getId())
+    accumulate(
+        $e: EventSensorData(
+            sensorData.pumpId == $pumpId,
+            sensorData.type == SensorDataType.MOTOR_TEMP.value(),
+            $value: sensorData.value,
+            this meets [5s] $ag
+        ),
+        $avgMotorTemp: average($value),
+        $minMotorTemp: min($value),
+        $count: count($e)
+    )
+then
+    System.out.println(String.format("Aggregating more data for pump %d; new total data points: %d", $pumpId, $count));
+    System.out.println(String.format("Pump %d: avg MT: %d, min MT: %d",
+        $pumpId,
+        $avgMotorTemp.intValue(),
+        $minMotorTemp.intValue()
+    ));
+    $ag.getMotorTemperature().setAverage($avgMotorTemp.intValue());
+    $ag.getMotorTemperature().setMinValue($minMotorTemp.intValue());
+end
