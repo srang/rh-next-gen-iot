@@ -27,12 +27,12 @@ objects:
       jenkinsPipelineStrategy:
         jenkinsfilePath: "${PIPELINE_SCRIPT}"
         env:
-        - name: "APPLICATION_SOURCE_REPOSITORY_URL"
-          value: "${APPLICATION_SOURCE_REPOSITORY_URL}"
+        - name: "SOURCE_REPOSITORY_URL"
+          value: "${SOURCE_REPOSITORY_URL}"
         - name: "APPLICATION_CONTEXT_DIR"
           value: "${APPLICATION_CONTEXT_DIR}"
-        - name: "SOURCE_REF"
-          value: "${SOURCE_REF}"
+        - name: "SOURCE_REPOSITORY_REF"
+          value: "${SOURCE_REPOSITORY_REF}"
         - name: "SOURCE_SECRET"
           value: "${SOURCE_SECRET}"
         - name: "APPLICATION_RELEASE"

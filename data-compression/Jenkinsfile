@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-
+// NOTE - Deprecated in favor of ./bin/deploy-rules.sh
 openshift.withCluster() {
     env.NAMESPACE = openshift.project()
     env.APPLICATION_NAME = "data-compression"
@@ -31,14 +31,14 @@ pipeline {
                 dir(env.APPLICATION_CONTEXT_DIR) {
                     sh """
                         oc process -f templates/kie-server.yml \
-                            -p APPLICATION_NAME=${env.APPLICATION_NAME} \
-                            -p APPLICATION_RELEASE=${env.APPLICATION_RELEASE} \
-                            -p KIE_SERVER_CONTAINER_DEPLOYMENT=datacompression=com.redhat.iot:data-compression:${env.APPLICATION_RELEASE} \
-                            -p SOURCE_REPOSITORY_URL=${env.APPLICATION_SOURCE_REPOSITORY_URL} \
-                            -p SOURCE_REPOSITORY_REF=${env.SOURCE_REF} \
-                            -p SOURCE_SECRET=${env.SOURCE_SECRET} \
-                            -p CONTEXT_DIR=${env.APPLICATION_CONTEXT_DIR} \
-                            -p KIE_SERVER_HTTPS_SECRET=${env.APPLICATION_NAME}-https-secret \
+                            -p APPLICATION_NAME=${APPLICATION_NAME} \
+                            -p APPLICATION_RELEASE=${APPLICATION_RELEASE} \
+                            -p KIE_SERVER_CONTAINER_DEPLOYMENT="datacompression=com.redhat.iot:data-compression:${APPLICATION_RELEASE}-SNAPSHOT" \
+                            -p SOURCE_REPOSITORY_URL=${SOURCE_REPOSITORY_URL} \
+                            -p SOURCE_REPOSITORY_REF=${SOURCE_REPOSITORY_REF} \
+                            -p SOURCE_SECRET=${SOURCE_SECRET} \
+                            -p CONTEXT_DIR=${APPLICATION_CONTEXT_DIR} \
+                            -p KIE_SERVER_HTTPS_SECRET=${APPLICATION_NAME}-https-secret \
                             | oc apply -f-
                     """
                     script {
