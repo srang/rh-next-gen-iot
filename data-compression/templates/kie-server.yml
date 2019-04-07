@@ -82,7 +82,7 @@ parameters:
 - displayName: KIE Server Controller Password
   description: KIE server controller password (Sets the org.kie.server.controller.pwd system property)
   name: KIE_SERVER_CONTROLLER_PWD
-  value: 'VGkQhU0!'
+  required: false
 - displayName: KIE Server Controller Token
   description: KIE server controller token for bearer authentication (Sets the org.kie.server.controller.token system property)
   name: KIE_SERVER_CONTROLLER_TOKEN
@@ -90,7 +90,6 @@ parameters:
 - displayName: KIE Server Controller Service
   description: The service name for the optional standalone controller. The application uses this service name to register with the controller. (If set, will be used to discover host and port)
   name: KIE_SERVER_CONTROLLER_SERVICE
-  value: 'data-compression-rhdmcentr'
   required: false
 - displayName: KIE Server Controller host
   description: KIE server controller host (Used to set the org.kie.server.controller system property)
@@ -100,7 +99,7 @@ parameters:
 - displayName: KIE Server Controller port
   description: KIE server controller port (Used to set the org.kie.server.controller system property)
   name: KIE_SERVER_CONTROLLER_PORT
-  value: '8080'
+  example: '8080'
   required: false
 - displayName: KIE MBeans
   description: KIE server mbeans enabled/disabled (Sets the kie.mbeans and kie.scanner.mbeans system properties)
@@ -188,7 +187,6 @@ parameters:
 - displayName: Name of the Maven service hosted by Decision Central
   description: The service name for the optional decision central, where it can be reached, to allow service lookups (for maven repo usage), if required
   name: DECISION_CENTRAL_MAVEN_SERVICE
-  example: "data-compression-rhdmcentr"
   required: false
 - displayName: Username for the Maven service hosted by Decision Central
   description: Username to access the Maven service hosted by Decision Central inside EAP.
@@ -198,7 +196,6 @@ parameters:
 - displayName: Password for the Maven service hosted by Decision Central
   description: Password to access the Maven service hosted by Decision Central inside EAP.
   name: DECISION_CENTRAL_MAVEN_PASSWORD
-  value: "wPwUyE3!"
   required: false
 - displayName: List of directories from which archives will be copied into the deployment folder
   description: List of directories from which archives will be copied into the deployment folder. If unspecified, all archives in /target will be copied.
