@@ -114,10 +114,10 @@ parameters:
   value: openshift
   required: true
 - name: KIE_SERVER_IMAGE_STREAM_NAME
-  value: "rhdm72-kieserver-openshift"
+  value: "rhdm73-kieserver-openshift"
   required: true
 - name: DECISION_CENTRAL_IMAGE_STREAM_NAME
-  value: "rhdm72-decisioncentral-openshift"
+  value: "rhdm73-decisioncentral-openshift"
 - name: DECISION_CENTRAL_IMAGE_STREAM_TAG
   value: "1.1-2"
   required: true
@@ -299,14 +299,14 @@ objects:
       port: 8443
       targetPort: 8443
     selector:
-      deploymentConfig: "${APPLICATION_NAME}-kieserver"
+      deploymentConfig: "${APPLICATION_NAME}-ks"
   metadata:
-    name: "${APPLICATION_NAME}-kieserver"
+    name: "${APPLICATION_NAME}-ks"
     labels:
       application: "${APPLICATION_NAME}"
-      service: "${APPLICATION_NAME}-kieserver"
+      service: "${APPLICATION_NAME}-ks"
     annotations:
-      service.alpha.openshift.io/serving-cert-secret-name: "${APPLICATION_NAME}-kieserver-tls"
+      service.alpha.openshift.io/serving-cert-secret-name: "${APPLICATION_NAME}-ks-tls"
       description: All the KIE server web server's ports.
 - kind: Route
   apiVersion: v1
@@ -346,34 +346,34 @@ objects:
       termination: reencrypt
 - kind: Route
   apiVersion: v1
-  id: "${APPLICATION_NAME}-kieserver-http"
+  id: "${APPLICATION_NAME}-ks-http"
   metadata:
-    name: "${APPLICATION_NAME}-kieserver"
+    name: "${APPLICATION_NAME}-ks"
     labels:
       application: "${APPLICATION_NAME}"
-      service: "${APPLICATION_NAME}-kieserver"
+      service: "${APPLICATION_NAME}-ks"
     annotations:
       description: Route for KIE server's http service.
   spec:
     host: "${KIE_SERVER_HOSTNAME_HTTP}"
     to:
-      name: "${APPLICATION_NAME}-kieserver"
+      name: "${APPLICATION_NAME}-ks"
     port:
       targetPort: http
 - kind: Route
   apiVersion: v1
-  id: "${APPLICATION_NAME}-kieserver-https"
+  id: "${APPLICATION_NAME}-ks-https"
   metadata:
-    name: secure-${APPLICATION_NAME}-kieserver
+    name: secure-${APPLICATION_NAME}-ks
     labels:
       application: "${APPLICATION_NAME}"
-      service: "${APPLICATION_NAME}-kieserver"
+      service: "${APPLICATION_NAME}-ks"
     annotations:
       description: Route for KIE server's https service.
   spec:
     host: "${KIE_SERVER_HOSTNAME_HTTPS}"
     to:
-      name: ${APPLICATION_NAME}-kieserver
+      name: ${APPLICATION_NAME}-ks
     port:
       targetPort: https
     tls:
@@ -383,7 +383,7 @@ objects:
   metadata:
     name: "${APPLICATION_NAME}-rhdmcentr"
     labels:
-      application: "${APPLICATION_NAME}"
+      application: "${APPLICATION_NAME}-rhdmcentr"
       service: "${APPLICATION_NAME}-rhdmcentr"
     annotations:
       template.alpha.openshift.io/wait-for-ready: "true"
@@ -400,7 +400,7 @@ objects:
         name: "${APPLICATION_NAME}-rhdmcentr"
         labels:
           deploymentConfig: "${APPLICATION_NAME}-rhdmcentr"
-          application: "${APPLICATION_NAME}"
+          application: "${APPLICATION_NAME}-rhdmcentr"
           service: "${APPLICATION_NAME}-rhdmcentr"
       spec:
         serviceAccountName: "${APPLICATION_NAME}-rhdmsvc"
@@ -463,20 +463,19 @@ objects:
           - name: "${APPLICATION_NAME}-rhdmcentr-pvol"
             mountPath: "/opt/eap/standalone/data/kie"
           livenessProbe:
-            exec:
-              command:
-              - "/bin/bash"
-              - "-c"
-              - "curl --fail --silent -u '${KIE_ADMIN_USER}:${KIE_ADMIN_PWD}' http://localhost:8080/kie-drools-wb.jsp"
+            httpGet:
+              path: "/kie-wb.jsp"
+              port: 8080
+              scheme: HTTP
             initialDelaySeconds: 180
             timeoutSeconds: 2
             periodSeconds: 15
+            failureThreshold: 3
           readinessProbe:
-            exec:
-              command:
-              - "/bin/bash"
-              - "-c"
-              - "curl --fail --silent -u '${KIE_ADMIN_USER}:${KIE_ADMIN_PWD}' http://localhost:8080/kie-drools-wb.jsp"
+            httpGet:
+              path: "/kie-wb.jsp"
+              port: 8080
+              scheme: HTTP
             initialDelaySeconds: 60
             timeoutSeconds: 2
             periodSeconds: 30
@@ -618,10 +617,10 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}-kieserver"
+    name: "${APPLICATION_NAME}-ks"
     labels:
       application: "${APPLICATION_NAME}"
-      service: "${APPLICATION_NAME}-kieserver"
+      service: "${APPLICATION_NAME}-ks"
     annotations:
       template.alpha.openshift.io/wait-for-ready: "true"
   spec:
@@ -631,14 +630,14 @@ objects:
     - type: ConfigChange
     replicas: 1
     selector:
-      deploymentConfig: "${APPLICATION_NAME}-kieserver"
+      deploymentConfig: "${APPLICATION_NAME}-ks"
     template:
       metadata:
-        name: "${APPLICATION_NAME}-kieserver"
+        name: "${APPLICATION_NAME}-ks"
         labels:
-          deploymentConfig: "${APPLICATION_NAME}-kieserver"
+          deploymentConfig: "${APPLICATION_NAME}-ks"
           application: "${APPLICATION_NAME}"
-          service: "${APPLICATION_NAME}-kieserver"
+          service: "${APPLICATION_NAME}-ks"
       spec:
         serviceAccountName: "${APPLICATION_NAME}-rhdmsvc"
         terminationGracePeriodSeconds: 60
@@ -668,7 +667,7 @@ objects:
               - name: service-certs
                 mountPath: /var/run/secrets/openshift.io/services_serving_certs
         containers:
-        - name: "${APPLICATION_NAME}-kieserver"
+        - name: "${APPLICATION_NAME}-ks"
           image: "${IMAGE_REGISTRY_LOCAL}/${IMAGE_STREAM_NAMESPACE}/${KIE_SERVER_IMAGE_STREAM_NAME}:${KIE_SERVER_IMAGE_STREAM_TAG}"
           imagePullPolicy: Always
           resources:
@@ -730,9 +729,9 @@ objects:
           - name: KIE_SERVER_CONTROLLER_PROTOCOL
             value: "ws"
           - name: KIE_SERVER_ID
-            value: "${APPLICATION_NAME}-kieserver"
+            value: "${APPLICATION_NAME}-ks"
           - name: KIE_SERVER_ROUTE_NAME
-            value: "${APPLICATION_NAME}-kieserver"
+            value: "${APPLICATION_NAME}-ks"
           - name: KIE_SERVER_USE_SECURE_ROUTE_NAME
             value: "${KIE_SERVER_USE_SECURE_ROUTE_NAME}"
           - name: KIE_SERVER_USER
@@ -838,7 +837,7 @@ objects:
           emptyDir: {}
         - name: service-certs
           secret:
-            secretName: "${APPLICATION_NAME}-kieserver-tls"
+            secretName: "${APPLICATION_NAME}-ks-tls"
 #        - name: kieserver-keystore-volume
 #          secret:
 #            secretName: "${KIE_SERVER_HTTPS_SECRET}"

@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-NAMESPACE=${NAMESPACE:-edge-compute}
+set -E
+set -o pipefail
+set -e
 CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJ_DIR="${CMD_DIR}/.."
+
+NAMESPACE=${NAMESPACE:-edge-compute}
 RHDM_VER="${RHDM_VER:-73}"
 RHDM_REL="${RHDM_REL:-1.0-3}"
 
