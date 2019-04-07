@@ -5,6 +5,8 @@
   "sourceFolder" : "src/main/java",
   "dateLibrary" : "java8",
   "java8" : true,
-  "library" : "spring-boot",
+  "useOas2": true,
+  "library": "resttemplate",
+  "withXml": true,
   "hideGenerationTimestamp": true
 }

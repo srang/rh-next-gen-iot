@@ -18,4 +18,4 @@ ${CMD_DIR}/bootstrap-ns.sh
 ${CMD_DIR}/bootstrap-kamel.sh
 ${CMD_DIR}/deploy-rules.sh
 ${CMD_DIR}/deploy-routes.sh
-#${CMD_DIR}/deploy-author.sh
+${CMD_DIR}/deploy-author.sh

@@ -38,7 +38,7 @@ ${CMD_DIR}/build-rules.sh
 
 build=$(oc start-build bc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} --from-dir=${PROJ_DIR}/${APPLICATION_CONTEXT_DIR} | awk '{print $1}')
 while [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) =~ ^(Running|Pending|New)$ ]] ; do
-    # handles broken pipes (happens frequently unfortunately)
+    # handles broken pipes
     oc logs -f ${build} -n ${NAMESPACE}
 done
 if [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) != 'Complete' ]]; then
@@ -49,3 +49,5 @@ fi
 oc tag ${NAMESPACE}/${APPLICATION_NAME}-kieserver:latest ${NAMESPACE}/${APPLICATION_NAME}-kieserver:${APPLICATION_RELEASE}
 oc scale --replicas=1 dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE}
 oc rollout resume dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE}
+
+# TODO watch for rollout pod and tail logs

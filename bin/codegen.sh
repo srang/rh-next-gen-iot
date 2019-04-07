@@ -20,7 +20,7 @@ java -Dmodels -DmodelTests=false -jar ${PROJ_DIR}/bin/swagger-codegen-cli-${SWAG
              -o ${PROJ_DIR}/${GEN_NAME}
 
 java -Dmodels -DmodelTests=false -jar ${PROJ_DIR}/bin/swagger-codegen-cli-${SWAGGER_CODEGEN_VER}.jar \
-    generate -l spring \
+    generate -l java \
              -c ${PROJ_DIR}/${RULES_NAME}/codegen-config.json \
              -i ${PROJ_DIR}/spec/swagger.yml \
              -o ${PROJ_DIR}/${RULES_NAME}
