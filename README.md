@@ -4,6 +4,10 @@
 Using cutting edge technologies, we will be building an IOT edge computing solution that will monitor health of ESP sensors
 to identify system stress and optimize hardware longevity.
 
+## Initial Seeding
+
+Resources (both cluster and local) can be seeded using the script `./bin/system-int.sh`
+
 To get started with the lab, let's deploy the prepared resources to our cluster:
 
 ```

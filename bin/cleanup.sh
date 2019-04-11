@@ -11,6 +11,7 @@ RULES_APP="data-compression"
 RHDM_VER="${RHDM_VER:-73}"
 RHDM_REL="${RHDM_REL:-1.0-3}"
 
+# cleanup routing app
 APPLICATION_NAME=${ROUTING_APP}
 if (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
     context=$(oc get integration/${APPLICATION_NAME} -o=jsonpath='{.status.context}' -n ${NAMESPACE})
@@ -21,6 +22,7 @@ if (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
     oc delete integration/${APPLICATION_NAME} -n ${NAMESPACE}
 fi
 
+# cleanup camel-k operator
 if (oc get deployment/camel-k-operator -n ${NAMESPACE} &>/dev/null); then
     oc delete deployment/camel-k-operator -n ${NAMESPACE}
 fi
@@ -41,7 +43,7 @@ if (oc get bc/camel-k-spring-boot -n ${NAMESPACE} &>/dev/null); then
     oc delete is/camel-k-spring-boot -n ${NAMESPACE}
 fi
 
-
+# cleanup data-compression app
 APPLICATION_NAME=${RULES_APP}
 if (oc get dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} &>/dev/null); then
     APPLICATION_RELEASE='0.0.1'
@@ -61,7 +63,7 @@ if (oc get dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} &>/dev/null); then
         | oc delete -n ${NAMESPACE} -f-
 fi
 
-
+# cleanup decision central
 if (oc get dc/${APPLICATION_NAME}-rhdmcentr -n ${NAMESPACE} &>/dev/null); then
     oc process -f ${PROJ_DIR}/data-compression/templates/decision-central.yml \
         -p KIE_ADMIN_USER='jboss' \

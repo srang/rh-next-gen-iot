@@ -9,6 +9,11 @@ export RHDM_VER='73'
 export RHDM_REL="1.0-3"
 export KAMEL_VER="0.3.2"
 
-${CMD_DIR}/deploy-rules.sh
-${CMD_DIR}/deploy-routes.sh
-${CMD_DIR}/deploy-author.sh
+# init cluster resources
+${CMD_DIR}/bootstrap-ns.sh
+${CMD_DIR}/bootstrap-kamel.sh
+
+# seed dependencies on developer machines
+${CMD_DIR}/bootstrap-codegen.sh
+${CMD_DIR}/build-generator.sh
+${CMD_DIR}/build-rules.sh
