@@ -47,8 +47,6 @@ public class SchedulerManager implements ApplicationContextAware {
 
         executorService = Executors.newScheduledThreadPool(iotTypes.length);
 
-        // TODO remove comment
-        // For each type of iot, get a (new?) sensor bean from the application context
         for (String iotType : iotTypes) {
             for (Long deviceId : devices) {
 
@@ -58,7 +56,7 @@ public class SchedulerManager implements ApplicationContextAware {
 
                     mqttProducer.connect(sensor.getPump());
 
-                    log.info("Starting Sensor: " + sensor.getSensorType());
+                    log.info(String.format("Starting Sensor: %s, Pump: %s", sensor.getSensorType(), deviceId.toString()));
                     executorService.scheduleAtFixedRate(new SensorRunner(sensor, config, mqttProducer), 0, frequency, TimeUnit.SECONDS);
 
                 } catch (NoSuchBeanDefinitionException nsbde) {

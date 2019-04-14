@@ -30,7 +30,7 @@ public class SensorData  implements Serializable {
   private String type = null;
 
   @JsonProperty("value")
-  private Long value = null;
+  private Float value = null;
 
   @JsonProperty("units")
   private String units = null;
@@ -111,7 +111,7 @@ public class SensorData  implements Serializable {
     this.type = type;
   }
 
-  public SensorData value(Long value) {
+  public SensorData value(Float value) {
     this.value = value;
     return this;
   }
@@ -122,11 +122,11 @@ public class SensorData  implements Serializable {
   **/
   @ApiModelProperty(value = "")
 
-  public Long getValue() {
+  public Float getValue() {
     return value;
   }
 
-  public void setValue(Long value) {
+  public void setValue(Float value) {
     this.value = value;
   }
 

@@ -1,13 +1,10 @@
 iot:
   frequency: 5
-  types:
-    - "motor-temperature"
-    - "vibration"
+  types: motor-temperature,vibration
+
 pump:
-  devices:
-    - 1001
-    - 1002
-    - 1003
+  devices: 1,2
+
 mqtt:
   username: iotuser
   password: iotuser
@@ -15,4 +12,5 @@ mqtt:
   port: 1883
 
 app:
-  name: "student_123"
+  # log_manager_<student_number>
+  name: "log_manager_123"
