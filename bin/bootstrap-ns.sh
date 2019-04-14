@@ -8,13 +8,21 @@ PROJ_DIR="${CMD_DIR}/.."
 NAMESPACE="${NAMESPACE:-edge-compute}"
 RHDM_VER="${RHDM_VER:-73}"
 RHDM_REL="${RHDM_REL:-1.0-3}"
+FUSE_REL="${FUSE_REL:-1.2-12}"
 oc project $NAMESPACE || oc new-project $NAMESPACE
 
-if ! (oc get istag/rhdm${RHDM_VER}-kieserver-openshift:${RHDM_REL} -n openshift &>/dev/null); then
+if ! (oc get istag/sso73-openshift:1.0-7 -n openshift &>/dev/null); then
     # sso used for keystore autogeneration
     oc import-image openshift/sso73-openshift:1.0-7 --from=registry.access.redhat.com/redhat-sso-7/sso73-openshift --confirm -n openshift
+fi
+if ! (oc get istag/rhdm${RHDM_VER}-decisioncentral-openshift:${RHDM_REL} -n openshift &>/dev/null); then
     oc import-image openshift/rhdm${RHDM_VER}-decisioncentral-openshift:${RHDM_REL} --from=registry.access.redhat.com/rhdm-7/rhdm${RHDM_VER}-decisioncentral-openshift --confirm -n openshift
+fi
+if ! (oc get istag/rhdm${RHDM_VER}-kieserver-openshift:${RHDM_REL} -n openshift &>/dev/null); then
     oc import-image openshift/rhdm${RHDM_VER}-kieserver-openshift:${RHDM_REL} --from=registry.access.redhat.com/rhdm-7/rhdm${RHDM_VER}-kieserver-openshift --confirm -n openshift
+fi
+if ! (oc get istag/fuse7-java-openshift:${FUSE_REL} -n openshift &>/dev/null); then
+    oc import-image openshift/fuse7-java-openshift:${FUSE_REL} --from=registry.access.redhat.com/fuse7/fuse-java-openshift --confirm -n openshift
 fi
 
 
