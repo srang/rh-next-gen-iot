@@ -15,5 +15,5 @@ ${CMD_DIR}/bootstrap-kamel.sh
 
 # seed dependencies on developer machines
 ${CMD_DIR}/bootstrap-codegen.sh
-${CMD_DIR}/build-generator.sh
+${CMD_DIR}/build-manager.sh
 ${CMD_DIR}/build-rules.sh

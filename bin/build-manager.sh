@@ -5,7 +5,7 @@ set -e
 CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJ_DIR="${CMD_DIR}/.."
 
-APPLICATION_NAME="data-pump"
+APPLICATION_NAME="lab-manager"
 
 java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
     generate -l spring \

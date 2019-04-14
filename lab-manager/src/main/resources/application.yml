@@ -1,0 +1,18 @@
+iot:
+  frequency: 5
+  types:
+    - "motor-temperature"
+    - "vibration"
+pump:
+  devices:
+    - 1001
+    - 1002
+    - 1003
+mqtt:
+  username: iotuser
+  password: iotuser
+  service: localhost
+  port: 1883
+
+app:
+  name: "student_123"
