@@ -22,11 +22,11 @@ when
     )
 then
     System.out.println(String.format("Aggregating more data for pump %d; new total data points: %d", $pumpId, $count));
-    System.out.println(String.format("Pump %d: avg MT: %d, min MT: %d",
+    System.out.println(String.format("Pump %d: avg MT: %f, min MT: %f",
         $pumpId,
-        $avgMotorTemp.intValue(),
-        $minMotorTemp.intValue()
+        $avgMotorTemp.floatValue(),
+        $minMotorTemp.floatValue()
     ));
-    $ag.getMotorTemperature().setAverage($avgMotorTemp.intValue());
-    $ag.getMotorTemperature().setMinValue($minMotorTemp.intValue());
+    $ag.getMotorTemperature().setAverage($avgMotorTemp.floatValue());
+    $ag.getMotorTemperature().setMinValue($minMotorTemp.floatValue());
 end

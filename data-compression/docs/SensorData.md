@@ -7,5 +7,5 @@ Name | Type | Description | Notes
 **pumpId** | **Long** |  |  [optional]
 **timestamp** | **Long** |  |  [optional]
 **type** | **String** | Type of measurement |  [optional]
-**value** | **Long** |  |  [optional]
+**value** | **Float** |  |  [optional]
 **units** | **String** |  |  [optional]

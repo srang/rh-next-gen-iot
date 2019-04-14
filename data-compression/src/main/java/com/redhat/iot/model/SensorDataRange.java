@@ -7,10 +7,10 @@ import lombok.Data;
 public class SensorDataRange {
     private String type;
     private String units;
-    private Integer minValue;
-    private Integer maxValue;
+    private Float minValue;
+    private Float maxValue;
     private Long minTimestamp;
     private Long maxTimestamp;
-    private Integer average;
+    private Float average;
 
 }

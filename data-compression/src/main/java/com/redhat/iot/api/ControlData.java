@@ -59,7 +59,7 @@ import javax.xml.bind.annotation.*;
   @JacksonXmlProperty(localName = "value")
   @XmlElement(name="value")
 
-  private Long value = null;
+  private Float value = null;
 
   @JsonProperty("units")
   @JacksonXmlProperty(localName = "units")
@@ -144,7 +144,7 @@ import javax.xml.bind.annotation.*;
   public void setType(String type) {
     this.type = type;
   }
-  public ControlData value(Long value) {
+  public ControlData value(Float value) {
     this.value = value;
     return this;
   }
@@ -156,10 +156,10 @@ import javax.xml.bind.annotation.*;
   * @return value
   **/
   @ApiModelProperty(value = "")
-  public Long getValue() {
+  public Float getValue() {
     return value;
   }
-  public void setValue(Long value) {
+  public void setValue(Float value) {
     this.value = value;
   }
   public ControlData units(String units) {

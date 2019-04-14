@@ -67,37 +67,37 @@ public class TestAggregateData {
                 .pumpId(1l)
                 .timestamp(starterTimestamp)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(600l));
+                .value(600f));
         dataList.add(new SensorData()
                 .pumpId(1l)
                 .timestamp(starterTimestamp + 1000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(600l));
+                .value(600f));
         dataList.add(new SensorData()
                 .pumpId(1l)
                 .timestamp(starterTimestamp + 2000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(602l));
+                .value(602f));
         dataList.add(new SensorData()
                 .pumpId(1l)
                 .timestamp(starterTimestamp + 5000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(559l));
+                .value(559f));
         dataList.add(new SensorData()
                 .pumpId(1l)
                 .timestamp(starterTimestamp + 12000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(500l));
+                .value(500f));
         dataList.add(new SensorData()
                 .pumpId(2l)
                 .timestamp(starterTimestamp + 20000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(502l));
+                .value(502f));
         dataList.add(new SensorData()
                 .pumpId(2l)
                 .timestamp(starterTimestamp + 21000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(502l));
+                .value(502f));
         dataList.forEach(kieSession::insert);
         kieSession.insert(pump1);
         kieSession.insert(pump2);

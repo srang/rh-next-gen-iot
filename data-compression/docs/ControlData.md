@@ -7,6 +7,6 @@ Name | Type | Description | Notes
 **pumpId** | **Long** |  |  [optional]
 **timestamp** | **Long** |  |  [optional]
 **type** | **String** | Type of input |  [optional]
-**value** | **Long** |  |  [optional]
+**value** | **Float** |  |  [optional]
 **units** | **String** |  |  [optional]
 **source** | **String** | source of control |  [optional]
