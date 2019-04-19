@@ -1,16 +1,16 @@
 iot:
   frequency: 5
-  types: motor-temperature,vibration
+  types: temperature,vibration
 
 pump:
   devices: 1,2
 
 mqtt:
-  username: iotuser
-  password: iotuser
-  service: localhost
-  port: 1883
+  username: device
+  password: ''
+  service: mqtt-hep7ux89ck-messaging.apps.cluster-80a2.80a2.openshiftworkshop.com
+  port: 443
 
 app:
-  # log_manager_<student_number>
-  name: "log_manager_123"
+  # log_manager_<user namespace>
+  name: "log_manager_user1"

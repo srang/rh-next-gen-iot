@@ -25,7 +25,7 @@ public class MqttProducer {
     private final String user;
     private final String password;
 
-    private static final int QOS = 2;
+    private static final int QOS = 0;
 
     private static final Logger log = LoggerFactory.getLogger(MqttProducer.class);
 
@@ -39,7 +39,7 @@ public class MqttProducer {
     }
 
     public synchronized void connect(Pump pump) {
-        MqttClient client = (clients.containsKey(pump.getId())) ? clients.get(pump.getId()) : null;
+        MqttClient client = clients.getOrDefault(pump.getId(), null);
         if (client != null && client.isConnected()) {
             return;
         }
@@ -48,7 +48,10 @@ public class MqttProducer {
             client = new MqttClient(brokerURL, pump.getName());
             options = new MqttConnectOptions();
             options.setUserName(user);
-            options.setPassword(password.toCharArray());
+//            options.setPassword(password.toCharArray());
+            options.setAutomaticReconnect(true);
+            options.setCleanSession(true);
+            options.setConnectionTimeout(10);
             client.connect(options);
             clients.put(pump.getId(), client);
         } catch (MqttException e) {

@@ -49,20 +49,10 @@ public class SchedulerManager implements ApplicationContextAware {
 
         for (String iotType : iotTypes) {
             for (Long deviceId : devices) {
-
-                try {
-
-                    Sensor sensor = SensorFactory.create(iotType, deviceId);
-
-                    mqttProducer.connect(sensor.getPump());
-
-                    log.info(String.format("Starting Sensor: %s, Pump: %s", sensor.getSensorType(), deviceId.toString()));
-                    executorService.scheduleAtFixedRate(new SensorRunner(sensor, config, mqttProducer), 0, frequency, TimeUnit.SECONDS);
-
-                } catch (NoSuchBeanDefinitionException nsbde) {
-                    log.warning("Sensor type " + iotType + " not available");
-                }
-
+                Sensor sensor = SensorFactory.create(iotType, deviceId);
+                mqttProducer.connect(sensor.getPump());
+                log.info(String.format("Starting Sensor: %s, Pump: %s", sensor.getSensorType(), deviceId.toString()));
+                executorService.scheduleAtFixedRate(new SensorRunner(sensor, config, mqttProducer), 0, frequency, TimeUnit.SECONDS);
             }
         }
 

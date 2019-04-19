@@ -11,6 +11,7 @@ import lombok.extern.java.Log;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +30,7 @@ public class Sensor {
         // eg data/pump_1/motor-temperature.csv
         String fileName = String.format("data/pump_%d/%s.csv", pump.getId(), sensorType);
         try {
-            File file = new ClassPathResource(fileName).getFile();
+            InputStream file = new ClassPathResource(fileName).getInputStream();
             CsvSchema schema = CsvSchema.builder().addColumn(sensorType, CsvSchema.ColumnType.NUMBER).build();
             CsvMapper mapper = new CsvMapper();
             MappingIterator<Map<String, Float>> readValues = mapper.readerFor(Map.class).with(schema).readValues(file);

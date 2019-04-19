@@ -39,7 +39,7 @@ public class SensorRunner implements Runnable {
         sensor.calculateCurrentMeasure(data);
 
         log.fine(String.format("Current Measure [%s-%s]: %d", sensor.getPump().getName(), data.getType(), data.getValue()));
-        String serializedData = data.getTimestamp() + "," + data.getValue();
+        String serializedData = sensor.getPump().getId() + "," + data.getTimestamp() + "," + data.getValue();
         try {
             mqttProducer.run(topicName, serializedData, sensor.getPump().getId());
         } catch (MqttException e) {
@@ -50,10 +50,6 @@ public class SensorRunner implements Runnable {
 
     private void generateTopicName() {
         StringBuilder sb = new StringBuilder();
-        sb.append(appName);
-        sb.append(SLASH);
-        sb.append(sensor.getPump().getName());
-        sb.append(SLASH);
         sb.append(sensor.getSensorType());
 
         topicName = sb.toString();

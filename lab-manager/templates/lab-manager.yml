@@ -16,6 +16,12 @@ parameters:
   - name: APPLICATION_NAME
     value: lab-manager
     required: true
+  - name: APPLICATION_NAMESPACE
+    required: true
+  - name: MQTT_SERVICE
+    required: true
+  - name: MQTT_PORT
+    required: true
   - name: IMAGE_STREAM_NAMESPACE
     value: openshift
     required: true
@@ -96,10 +102,14 @@ objects:
       labels:
         application: "${APPLICATION_NAME}"
         service: "${APPLICATION_NAME}"
+      annotations:
+#        # https://docs.openshift.com/container-platform/3.11/dev_guide/managing_images.html#image-stream-kubernetes-resources
+#        image.openshift.io/triggers: >-
+#          [{"from":{"kind":"ImageStreamTag","name":"${APPLICATION_NAME}:${APPLICATION_RELEASE}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${APPLICATION_NAME}\")].image"}]
     spec:
       replicas: 0
       strategy:
-        type: Rolling
+        type: RollingUpdate
       selector:
         matchLabels:
           application: "${APPLICATION_NAME}"
@@ -113,11 +123,11 @@ objects:
         spec:
           containers:
             - name: "${APPLICATION_NAME}"
-              image: "${APPLICATION_NAME}"
+              image: "image-registry.openshift-image-registry.svc:5000/${APPLICATION_NAMESPACE}/${APPLICATION_NAME}:${APPLICATION_RELEASE}"
               imagePullPolicy: Always
               livenessProbe:
                 httpGet:
-                  path: /health
+                  path: /actuator/health
                   port: 8080
                   scheme: HTTP
                 initialDelaySeconds: 60
@@ -126,7 +136,7 @@ objects:
                 failureThreshold: 3
               readinessProbe:
                 httpGet:
-                  path: /health
+                  path: /actuator/health
                   port: 8080
                   scheme: HTTP
                 initialDelaySeconds: 60
@@ -140,4 +150,8 @@ objects:
                 - name: http
                   containerPort: 8080
                   protocol: TCP
-              env: {}
+              env:
+                - name: MQTT_SERVICE
+                  value: "${MQTT_SERVICE}"
+                - name: MQTT_PORT
+                  value: "${MQTT_PORT}"
