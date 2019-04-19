@@ -33,6 +33,9 @@ public class SchedulerManager implements ApplicationContextAware {
     @Value("${iot.frequency}")
     private Integer frequency;
 
+    @Value("${app.name}")
+    private String appName;
+
     @Autowired
     private Config config;
 
@@ -50,7 +53,7 @@ public class SchedulerManager implements ApplicationContextAware {
         for (String iotType : iotTypes) {
             for (Long deviceId : devices) {
                 Sensor sensor = SensorFactory.create(iotType, deviceId);
-                mqttProducer.connect(sensor.getPump());
+                mqttProducer.connect(appName);
                 log.info(String.format("Starting Sensor: %s, Pump: %s", sensor.getSensorType(), deviceId.toString()));
                 executorService.scheduleAtFixedRate(new SensorRunner(sensor, config, mqttProducer), 0, frequency, TimeUnit.SECONDS);
             }

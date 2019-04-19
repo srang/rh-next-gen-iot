@@ -49,10 +49,7 @@ public class SensorRunner implements Runnable {
     }
 
     private void generateTopicName() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(sensor.getSensorType());
-
-        topicName = sb.toString();
+        topicName = sensor.getSensorType();
     }
 
 }

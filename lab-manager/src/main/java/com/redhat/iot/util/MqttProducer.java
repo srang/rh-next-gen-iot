@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MqttProducer {
 
     private Map<Long, MqttClient> clients = new ConcurrentHashMap<>();
+    private MqttClient client;
     private MqttConnectOptions options;
     private MemoryPersistence persistence;
 
@@ -38,19 +39,17 @@ public class MqttProducer {
 
     }
 
-    public synchronized void connect(Pump pump) {
-        MqttClient client = clients.getOrDefault(pump.getId(), null);
+    public synchronized void connect(String appName) {
         if (client != null && client.isConnected()) {
             return;
         }
 
         try {
-            client = new MqttClient(brokerURL, pump.getName());
+            client = new MqttClient(brokerURL, appName);
             options = new MqttConnectOptions();
             options.setUserName(user);
             options.setPassword(password.toCharArray());
             client.connect(options);
-            clients.put(pump.getId(), client);
         } catch (MqttException e) {
             log.error(e.getMessage(), e);
         }
@@ -58,27 +57,22 @@ public class MqttProducer {
     }
 
     public void run(String topic, String data, Long pumpId) throws MqttPersistenceException, MqttException {
-
-        MqttClient client = clients.get(pumpId);
         MqttMessage message = new MqttMessage();
         message.setQos(QOS);
 
         message.setPayload(data.getBytes());
         client.publish(topic, message);
-
     }
 
     @PreDestroy
     public void close() throws MqttException {
-        for (MqttClient client : clients.values()) {
-            try {
-                client.disconnect();
-            } catch (Exception e) {
-            }
-            try {
-                client.close();
-            } catch (Exception e) {
-            }
+        try {
+            client.disconnect();
+        } catch (Exception e) {
+        }
+        try {
+            client.close();
+        } catch (Exception e) {
         }
     }
 }

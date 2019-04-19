@@ -5,7 +5,7 @@ set -e
 CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJ_DIR="${CMD_DIR}/.."
 
-NAMESPACE=${NAMESPACE:-user1}
+NAMESPACE="${NAMESPACE:-user1}"
 FUSE_REL="${FUSE_REL:-1.2-12}"
 
 APPLICATION_RELEASE='0.0.1'
@@ -37,6 +37,8 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
 oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
 ${CMD_DIR}/build-manager.sh
+
+#TODO check/cancel
 
 build=$(oc start-build bc/${APPLICATION_NAME} -n ${NAMESPACE} --from-dir=${PROJ_DIR}/${APPLICATION_CONTEXT_DIR} | awk '{print $1}')
 while [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) =~ ^(Running|Pending|New)$ ]] ; do
