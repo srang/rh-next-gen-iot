@@ -16,7 +16,7 @@ SOURCE_REPOSITORY_REF='master'
 SERVICE=${APPLICATION_NAME}
 
 if (oc get deploy/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
-    oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} || echo "already paused"
+    oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 fi
 
 MQTT_SERVICE=$(oc get addressspace/${NAMESPACE} \
@@ -34,7 +34,7 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
     | oc apply -n ${NAMESPACE} -f-
 
 # let's be thorough
-oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} || echo "already paused"
+oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
 ${CMD_DIR}/build-manager.sh
 

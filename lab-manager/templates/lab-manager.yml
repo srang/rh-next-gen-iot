@@ -32,6 +32,21 @@ parameters:
     value: "1.2-12"
     required: true
 objects:
+  - apiVersion: user.enmasse.io/v1beta1
+    kind: MessagingUser
+    metadata:
+      name: user1.device2
+    spec:
+      authentication:
+        type: password
+        password: cGFzc3dvcmQK
+      authorization:
+        - addresses:
+            - '*'
+          operations:
+            - recv
+            - send
+      username: device1
   - kind: Service
     apiVersion: v1
     spec:

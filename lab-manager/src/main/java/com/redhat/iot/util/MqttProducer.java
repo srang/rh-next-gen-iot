@@ -48,10 +48,7 @@ public class MqttProducer {
             client = new MqttClient(brokerURL, pump.getName());
             options = new MqttConnectOptions();
             options.setUserName(user);
-//            options.setPassword(password.toCharArray());
-            options.setAutomaticReconnect(true);
-            options.setCleanSession(true);
-            options.setConnectionTimeout(10);
+            options.setPassword(password.toCharArray());
             client.connect(options);
             clients.put(pump.getId(), client);
         } catch (MqttException e) {

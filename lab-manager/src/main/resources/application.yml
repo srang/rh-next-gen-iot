@@ -1,13 +1,13 @@
 iot:
   frequency: 5
-  types: temperature,vibration
+  types: temperature
 
 pump:
-  devices: 1,2
+  devices: 1
 
 mqtt:
-  username: device
-  password: ''
+  username: device1
+  password: password
   service: mqtt-hep7ux89ck-messaging.apps.cluster-80a2.80a2.openshiftworkshop.com
   port: 443
 
