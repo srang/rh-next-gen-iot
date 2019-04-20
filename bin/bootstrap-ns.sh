@@ -9,6 +9,7 @@ NAMESPACE="${NAMESPACE:-user1}"
 RHDM_VER="${RHDM_VER:-73}"
 RHDM_REL="${RHDM_REL:-1.0-3}"
 FUSE_REL="${FUSE_REL:-1.2-12}"
+AMQ_ONLINE_REL="${AMQ_ONLINE_REL:-1.0-7.1554788698}"
 oc project $NAMESPACE || oc new-project $NAMESPACE
 
 if ! (oc get istag/sso73-openshift:1.0-7 -n openshift &>/dev/null); then
@@ -24,17 +25,10 @@ fi
 if ! (oc get istag/fuse7-java-openshift:${FUSE_REL} -n openshift &>/dev/null); then
     oc import-image openshift/fuse7-java-openshift:${FUSE_REL} --from=registry.access.redhat.com/fuse7/fuse-java-openshift --confirm -n openshift
 fi
-
-
-if [[ -f ${PROJ_DIR}/bin/create-source-secret.secret.sh ]]; then
-    if ! (oc get secret 'gitlab-source-secret' -n ${NAMESPACE} &>/dev/null); then
-        ${PROJ_DIR}/bin/create-source-secret.secret.sh
-    fi
+if ! (oc get istag/amq-online-1-api-server:${AMQ_ONLINE_REL} -n openshift &>/dev/null); then
+    oc import-image openshift/amq-online-1-api-server:${AMQ_ONLINE_REL} --from=registry.access.redhat.com/amq7/amq-online-1-api-server --confirm -n openshift
+    oc tag openshift/amq-online-1-api-server:${AMQ_ONLINE_REL} openshift/amq-online-1-api-server:1.0
 fi
 
-if ! (oc get sa/builder -o=jsonpath='{range .secrets[*]}{ .name }{"\n"}{end}' -n ${NAMESPACE} | grep 'gitlab-source-secret' &>/dev/null); then
-    oc secrets link builder gitlab-source-secret -n ${NAMESPACE}
-fi
-
-${CMD_DIR}/bootstrap-kamel.sh
+#${CMD_DIR}/bootstrap-kamel.sh
 

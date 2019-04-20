@@ -31,22 +31,11 @@ parameters:
   - name: IMAGE_STREAM_TAG
     value: "1.2-12"
     required: true
+  - name: MESSAGING_USERNAME
+    value: "device1"
+  - name: MESSAGING_PASSWORD
+    value: "password"
 objects:
-  - apiVersion: user.enmasse.io/v1beta1
-    kind: MessagingUser
-    metadata:
-      name: user1.device2
-    spec:
-      authentication:
-        type: password
-        password: cGFzc3dvcmQK
-      authorization:
-        - addresses:
-            - '*'
-          operations:
-            - recv
-            - send
-      username: device1
   - kind: Service
     apiVersion: v1
     spec:
@@ -170,3 +159,7 @@ objects:
                   value: "${MQTT_SERVICE}"
                 - name: MQTT_PORT
                   value: "${MQTT_PORT}"
+                - name: MESSAGING_USERNAME
+                  value: "${MESSAGING_USERNAME}"
+                - name: MESSAGING_PASSWORD
+                  value: "${MESSAGING_PASSWORD}"

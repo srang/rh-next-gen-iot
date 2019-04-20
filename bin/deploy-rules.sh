@@ -12,9 +12,6 @@ RHDM_REL="${RHDM_REL:-1.0-3}"
 APPLICATION_RELEASE='0.0.1'
 APPLICATION_NAME='data-compression'
 APPLICATION_CONTEXT_DIR=${APPLICATION_NAME}
-SOURCE_REPOSITORY_URL='https://gitlab.consulting.redhat.com/ablock/iot-summit-2019.git'
-SOURCE_REPOSITORY_REF='master'
-SOURCE_SECRET='gitlab-source-secret'
 SERVICE='data-compression'
 KIE_CONTAINER='com.redhat.iot:data-compression:0.0.1-SNAPSHOT'
 

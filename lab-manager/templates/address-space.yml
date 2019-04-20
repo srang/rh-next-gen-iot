@@ -1,0 +1,67 @@
+kind: Template
+apiVersion: v1
+metadata:
+  annotations:
+    version: "1.0"
+    openshift.io/display-name: lab-manager
+  name: lab-manager
+labels:
+  template: labe-manager
+message: |-
+  AddressSpace provisioned
+parameters:
+  - name: APPLICATION_NAME
+    value: lab-manager
+    required: true
+  - name: APPLICATION_NAMESPACE
+    required: true
+  - name: MESSAGING_USERNAME
+    value: device1
+  - name: MESSAGING_PASSWORD
+    required: true
+objects:
+  - apiVersion: enmasse.io/v1beta1
+    kind: AddressSpace
+    metadata:
+      name: ${APPLICATION_NAMESPACE}
+    spec:
+      type: brokered
+      plan: brokered-single-broker
+#      endpoints:
+#        - name: mqtt
+#          service: mqtt
+#          expose:
+#            type: loadbalancer
+#            loadBalancerPorts:
+#              - mqtt
+#          cert:
+#            provider: openshift
+#  - apiVersion: enmasse.io/v1beta1
+#    kind: Address
+#    metadata:
+#      name: "${APPLICATION_NAMESPACE}.temperature"
+#      labels:
+#        application: "${APPLICATION_NAME}"
+#        service: "${APPLICATION_NAME}"
+#    spec:
+#      address: temperature
+#      type: topic
+#      plan: brokered-topic
+#  - apiVersion: user.enmasse.io/v1beta1
+#    kind: MessagingUser
+#    metadata:
+#      name: "${APPLICATION_NAMESPACE}.device1"
+#      labels:
+#        application: "${APPLICATION_NAME}"
+#        service: "${APPLICATION_NAME}"
+#    spec:
+#      authentication:
+#        type: password
+#        password: ${MESSAGING_PASSWORD}
+#      authorization:
+#        - addresses:
+#            - '*'
+#          operations:
+#            - recv
+#            - send
+#      username: ${MESSAGING_USERNAME}
