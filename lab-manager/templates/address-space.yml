@@ -26,16 +26,16 @@ objects:
       name: ${APPLICATION_NAMESPACE}
     spec:
       type: brokered
-      plan: brokered-single-broker
-#      endpoints:
-#        - name: mqtt
-#          service: mqtt
-#          expose:
-#            type: loadbalancer
-#            loadBalancerPorts:
-#              - mqtt
-#          cert:
-#            provider: openshift
+#      plan: brokered-single-broker
+      endpoints:
+        - name: mqtt
+          service: mqtt
+          expose:
+            type: loadbalancer
+            loadBalancerPorts:
+              - mqtt
+          cert:
+            provider: openshift
 #  - apiVersion: enmasse.io/v1beta1
 #    kind: Address
 #    metadata:

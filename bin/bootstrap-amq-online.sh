@@ -8,4 +8,4 @@ PROJ_DIR="${CMD_DIR}/.."
 MESSAGING_NAMESPACE="${MESSAGING_NAMESPACE:-messaging}"
 CONTEXT_DIR=amq-online
 
-oc apply -f ${PROJ_DIR}/${CONTEXT_DIR}
+oc apply -f ${PROJ_DIR}/${CONTEXT_DIR}/install
