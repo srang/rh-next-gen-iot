@@ -6,7 +6,7 @@ metadata:
     openshift.io/display-name: lab-manager
   name: lab-manager
 labels:
-  template: labe-manager
+  template: lab-manager
 message: |-
   AddressSpace provisioned
 parameters:
@@ -15,24 +15,29 @@ parameters:
     required: true
   - name: APPLICATION_NAMESPACE
     required: true
-  - name: MESSAGING_USERNAME
-    value: device1
-  - name: MESSAGING_PASSWORD
-    required: true
 objects:
+#  - apiVersion: enmasse.io/v1beta1
+#    kind: AddressSpace
+#    metadata:
+#      name: ${APPLICATION_NAMESPACE}
+#    spec:
+#      type: brokered
+#      plan: brokered-single-broker
+#      authenticationService:
+#        type: standard
+#      endpoints:
+#        - name: mqtt
+#          service: mqtt
+#          expose:
+#            type: loadbalancer
+#            loadBalancerPorts:
+#              - mqtt
+#          cert:
+#            provider: openshift
   - apiVersion: enmasse.io/v1beta1
     kind: AddressSpace
     metadata:
       name: ${APPLICATION_NAMESPACE}
     spec:
-      type: brokered
-      plan: brokered-single-broker
-      endpoints:
-        - name: mqtt
-          service: mqtt
-          expose:
-            type: loadbalancer
-            loadBalancerPorts:
-              - mqtt
-          cert:
-            provider: openshift
+      type: standard
+      plan: standard-unlimited
