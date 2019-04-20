@@ -4,3 +4,6 @@ target
 *.jar
 *.tar.gz
 kamel
+lab-manager/app/src/css
+lab-manager/app/src/fonts
+lab-manager/app/src/img
