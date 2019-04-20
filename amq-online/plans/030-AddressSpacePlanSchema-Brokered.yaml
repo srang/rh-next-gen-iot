@@ -1,0 +1,14 @@
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpaceSchema
+metadata:
+  creationTimestamp: 2019-04-20T18:00:57.741Z
+  name: brokered
+spec:
+  addressTypes:
+    - description: A topic supports pub-sub semantics. Messages sent to a topic address
+        is forwarded to all subscribes on that address.
+      name: topic
+      plans: [brokered-single-broker]
+  description: A brokered address space consists of a broker combined with a console
+    for managing addresses.
+  plans: [brokered-single-broker]
