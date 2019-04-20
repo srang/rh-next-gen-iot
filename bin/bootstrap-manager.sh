@@ -11,13 +11,18 @@ APPLICATION_NAME='lab-manager'
 APPLICATION_CONTEXT_DIR=${APPLICATION_NAME}
 SERVICE=${APPLICATION_NAME}
 
-if (oc get addressspace/${NAMESPACE} -n ${NAMESPACE} &>/dev/null); then
-    oc delete addressspace/${NAMESPACE} -n ${NAMESPACE}
+if ! (oc get addressspace/${NAMESPACE} -n ${NAMESPACE} &>/dev/null); then
+    oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address-space.yml \
+        -p APPLICATION_NAME=${APPLICATION_NAME} \
+        -p APPLICATION_NAMESPACE="${NAMESPACE}" \
+        -p MESSAGING_PASSWORD="$( echo 'password' | base64 )" \
+        | oc create -n ${NAMESPACE} -f-
 fi
 
-oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address-space.yml \
-    -p APPLICATION_NAME=${APPLICATION_NAME} \
-    -p APPLICATION_NAMESPACE="${NAMESPACE}" \
-    -p MESSAGING_PASSWORD="$( echo 'password' | base64 )" \
-    | oc create -n ${NAMESPACE} -f-
 
+if ! (oc get address/${NAMESPACE}.temperature -n ${NAMESPACE} &>/dev/null); then
+    oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address.yml \
+        -p APPLICATION_NAME=${APPLICATION_NAME} \
+        -p APPLICATION_NAMESPACE="${NAMESPACE}" \
+        | oc create -n ${NAMESPACE} -f-
+fi

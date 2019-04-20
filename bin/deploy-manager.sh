@@ -18,6 +18,7 @@ if (oc get deploy/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
 fi
 
 MESSAGING_USERNAME=$(oc get messaginguser/${NAMESPACE}.device1 -o=jsonpath='{ .spec.username }' -n ${NAMESPACE})
+MESSAGING_PASSWORD=$(echo 'password' | base64)
 MQTT_SERVICE=$(oc get addressspace/${NAMESPACE} \
     -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ .serviceHost }{ end }' -n ${NAMESPACE})
 MQTT_PORT=$(oc get addressspace/${NAMESPACE} \
@@ -30,6 +31,8 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
     -p IMAGE_STREAM_TAG="${FUSE_REL}" \
     -p MQTT_SERVICE="${MQTT_SERVICE}" \
     -p MQTT_PORT="${MQTT_PORT}" \
+    -p MESSAGING_USERNAME="${MESSAGING_USERNAME}" \
+    -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
     | oc apply -n ${NAMESPACE} -f-
 
 # let's be thorough
