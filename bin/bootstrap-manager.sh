@@ -20,15 +20,15 @@ MESSAGING_PASSWORD=$(echo 'password' | base64)
 #    oc delete addressspace/${NAMESPACE}.temperature -n ${NAMESPACE}
 #fi
 
-#oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address-space.yml \
-#    -p APPLICATION_NAME=${APPLICATION_NAME} \
-#    -p APPLICATION_NAMESPACE="${NAMESPACE}" \
-#    | oc create -n ${NAMESPACE} -f-
-
-oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address.yml \
+oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address-space.yml \
     -p APPLICATION_NAME=${APPLICATION_NAME} \
     -p APPLICATION_NAMESPACE="${NAMESPACE}" \
     | oc create -n ${NAMESPACE} -f-
+
+#oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/address.yml \
+#    -p APPLICATION_NAME=${APPLICATION_NAME} \
+#    -p APPLICATION_NAMESPACE="${NAMESPACE}" \
+#    | oc create -n ${NAMESPACE} -f-
 
 #oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/messaging-user.yml \
 #    -p APPLICATION_NAME=${APPLICATION_NAME} \

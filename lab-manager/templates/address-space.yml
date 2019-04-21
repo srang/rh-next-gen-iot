@@ -16,28 +16,49 @@ parameters:
   - name: APPLICATION_NAMESPACE
     required: true
 objects:
-#  - apiVersion: enmasse.io/v1beta1
-#    kind: AddressSpace
-#    metadata:
-#      name: ${APPLICATION_NAMESPACE}
-#    spec:
-#      type: brokered
-#      plan: brokered-single-broker
-#      authenticationService:
-#        type: standard
-#      endpoints:
-#        - name: mqtt
-#          service: mqtt
-#          expose:
-#            type: loadbalancer
-#            loadBalancerPorts:
-#              - mqtt
-#          cert:
-#            provider: openshift
   - apiVersion: enmasse.io/v1beta1
     kind: AddressSpace
     metadata:
       name: ${APPLICATION_NAMESPACE}
+      namespace: ${APPLICATION_NAMESPACE}
     spec:
-      type: standard
-      plan: standard-unlimited
+      type: brokered
+      plan: brokered-single-broker
+      authenticationService:
+        type: standard
+      endpoints:
+        - name: messaging
+          service: messaging
+          expose:
+            type: route
+            routeHost: messaging.example.com
+            routeTlsTermination: passthrough
+            routeServicePort: mqtts
+          cert:
+            provider: openshift
+        - name: mqtt
+          service: mqtt
+          expose:
+            type: loadbalancer
+            loadBalancerPorts:
+              - mqtt
+              - mqtts
+          cert:
+            provider: openshift
+        - name: console
+          service: console
+          expose:
+            type: route
+            routeTlsTermination: reencrypt
+            routeServicePort: https
+          cert:
+            provider: openshift
+
+#  - apiVersion: enmasse.io/v1beta1
+#    kind: AddressSpace
+#    metadata:
+#      name: ${APPLICATION_NAMESPACE}
+#      namespace: ${APPLICATION_NAMESPACE}
+#    spec:
+#      type: standard
+#      plan: standard-unlimited
