@@ -1,6 +1,6 @@
 iot:
   frequency: 5
-  types: temperature
+  types: temperature,vibration
 
 pump:
   devices: 1,2
@@ -12,5 +12,4 @@ mqtt:
   port: 443
 
 app:
-  # log_manager_<user namespace>
-  name: "log_manager_user1"
+  name: log_manager_user1

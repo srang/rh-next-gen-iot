@@ -37,7 +37,6 @@ public class Sensor {
             MappingIterator<Map<String, String>> readValues = mapper.readerFor(Map.class).with(schema).readValues(file);
             dataSet = readValues.readAll().stream().flatMap(stringFloatMap -> Stream.of(Float.parseFloat(stringFloatMap.get(sensorType)))).collect(Collectors.toCollection(LinkedList::new));
             log.info(String.format("Pump %d data loaded successfully from file %s; %d entries found", pump.getId(), fileName, dataSet.size()));
-            log.info(dataSet.toString());
         } catch (Exception e) {
             log.severe("Error occurred while loading dataset from file " + fileName);
             throw new RuntimeException(e);

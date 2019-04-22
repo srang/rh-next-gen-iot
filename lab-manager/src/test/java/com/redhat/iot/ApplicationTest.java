@@ -22,7 +22,7 @@ public class ApplicationTest {
     @Test
     public void testStartup() throws Exception {
         doNothing().when(mqttProducer).connect(any());
-        doNothing().when(mqttProducer).run(any(), any(), any());
+        doNothing().when(mqttProducer).run(any(), any());
         System.out.println("Success");
     }
 }
