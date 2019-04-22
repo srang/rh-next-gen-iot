@@ -22,8 +22,8 @@ objects:
       name: ${APPLICATION_NAMESPACE}
       namespace: ${APPLICATION_NAMESPACE}
     spec:
-      type: brokered
-      plan: brokered-single-broker
+      type: standard
+      plan: standard-unlimited-with-mqtt
       authenticationService:
         type: standard
       endpoints:

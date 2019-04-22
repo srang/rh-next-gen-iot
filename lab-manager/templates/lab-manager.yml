@@ -36,24 +36,6 @@ parameters:
   - name: MESSAGING_PASSWORD
     required: true
 objects:
-  - apiVersion: user.enmasse.io/v1beta1
-    kind: MessagingUser
-    metadata:
-      name: "${APPLICATION_NAMESPACE}.device1"
-      labels:
-        application: "${APPLICATION_NAME}"
-        service: "${APPLICATION_NAME}"
-    spec:
-      authentication:
-        type: password
-        password: ${MESSAGING_PASSWORD}
-      authorization:
-        - addresses:
-            - '*'
-          operations:
-            - recv
-            - send
-      username: ${MESSAGING_USERNAME}
   - kind: Service
     apiVersion: v1
     spec:

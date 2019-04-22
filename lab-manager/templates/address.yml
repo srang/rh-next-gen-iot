@@ -26,4 +26,4 @@ objects:
     spec:
       address: temperature
       type: topic
-      plan: brokered-topic
+      plan: standard-medium-topic
