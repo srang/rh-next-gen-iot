@@ -1,0 +1,5 @@
+mqtt:
+  username: device1
+  password: password
+  service: localhost
+  port: 1883

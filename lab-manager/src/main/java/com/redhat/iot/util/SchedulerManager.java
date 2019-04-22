@@ -19,56 +19,55 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Log
-@Component
 public class SchedulerManager implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    @Value("${iot.types}")
-    private String[] iotTypes;
-
-    @Value("${pump.devices}")
-    private Long[] devices;
-
-    @Value("${iot.frequency}")
-    private Integer frequency;
-
-    @Value("${app.name}")
-    private String appName;
-
-    @Autowired
-    private Config config;
-
-    @Autowired
-    private MqttProducer mqttProducer;
-
-    private ScheduledExecutorService executorService;
-
-    @PostConstruct
-    public void startup() {
-        log.info("Starting up...");
-
-        executorService = Executors.newScheduledThreadPool(iotTypes.length);
-
-        for (String iotType : iotTypes) {
-            for (Long deviceId : devices) {
-                Sensor sensor = SensorFactory.create(iotType, deviceId);
-                mqttProducer.connect(appName);
-                log.info(String.format("Starting Sensor: %s, Pump: %s", sensor.getSensorType(), deviceId.toString()));
-                executorService.scheduleAtFixedRate(new SensorRunner(sensor, config, mqttProducer), 0, frequency, TimeUnit.SECONDS);
-            }
-        }
-
-    }
-
-    @PreDestroy
-    public void shutdown() {
-        log.info("Shutting Down");
-
-        if (executorService != null) {
-            executorService.shutdownNow();
-        }
-    }
+//    @Value("${iot.types}")
+//    private String[] iotTypes;
+//
+//    @Value("${pump.devices}")
+//    private Long[] devices;
+//
+//    @Value("${iot.frequency}")
+//    private Integer frequency;
+//
+//    @Value("${app.name}")
+//    private String appName;
+//
+//    @Autowired
+//    private Config config;
+//
+//    @Autowired
+//    private MqttProducer mqttProducer;
+//
+//    private ScheduledExecutorService executorService;
+//
+//    @PostConstruct
+//    public void startup() {
+//        log.info(String.format("Starting up %d thread(s)...", iotTypes.length));
+//
+//        executorService = Executors.newScheduledThreadPool(iotTypes.length);
+//
+//        for (String iotType : iotTypes) {
+//            for (Long deviceId : devices) {
+//                Sensor sensor = SensorFactory.create(iotType, deviceId);
+//                mqttProducer.connect(appName);
+//                log.info(String.format("Starting Sensor: %s, Pump: %s", sensor.getSensorType(), deviceId.toString()));
+//                executorService.scheduleAtFixedRate(new SensorRunner(sensor, config, mqttProducer), 0, frequency, TimeUnit.SECONDS);
+//            }
+//        }
+//
+//    }
+//
+//    @PreDestroy
+//    public void shutdown() {
+//        log.info("Shutting Down");
+//
+//        if (executorService != null) {
+//            executorService.shutdownNow();
+//        }
+//    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
