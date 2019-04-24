@@ -476,7 +476,7 @@ objects:
               path: "/kie-wb.jsp"
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 60
+            initialDelaySeconds: 180
             timeoutSeconds: 2
             periodSeconds: 30
             failureThreshold: 6
@@ -693,7 +693,7 @@ objects:
               - "/bin/bash"
               - "-c"
               - "curl --fail --silent -u '${KIE_ADMIN_USER}:${KIE_ADMIN_PWD}' http://localhost:8080/services/rest/server/readycheck"
-            initialDelaySeconds: 60
+            initialDelaySeconds: 180
             timeoutSeconds: 2
             periodSeconds: 30
             failureThreshold: 6

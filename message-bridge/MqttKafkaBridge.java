@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import org.apache.camel.Exchange;
 
-public class StreamsReader extends RouteBuilder {
+public class MqttKafkaBridge extends RouteBuilder {
   @Override
   public void configure() throws Exception {
     //from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091")
