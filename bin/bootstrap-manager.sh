@@ -15,6 +15,7 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/broker-persistent
     -p AMQ_USER="device1" \
     -p AMQ_PASSWORD="password" \
     -p AMQ_PROTOCOL="amqp,mqtt" \
+    -p AMQ_ADDRESSES=${NAMESPACE} \
     | oc apply -n ${NAMESPACE} -f-
 
 

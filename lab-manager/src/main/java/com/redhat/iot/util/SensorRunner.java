@@ -12,7 +12,6 @@ import lombok.extern.java.Log;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -60,17 +59,13 @@ public class SensorRunner {
             sensor.calculateCurrentMeasure(data);
 
             log.info(String.format("Current Measure [%s-%s]: %f", sensor.getPump().getName(), data.getType(), data.getValue()));
-            String serializedData = sensor.getPump().getId() + "," + data.getTimestamp() + "," + data.getValue();
+            String serializedData = sensor.getPump().getId() + "," + data.getType() + "," + data.getTimestamp() + "," + data.getValue();
             try {
-                mqttProducer.run(generateTopicName(sensor), serializedData);
+                mqttProducer.run(this.appName, serializedData);
             } catch (MqttException e) {
                 log.severe(e.getMessage());
             }
         }
-    }
-
-    private String generateTopicName(Sensor sensor) {
-        return sensor.getSensorType();
     }
 
 }

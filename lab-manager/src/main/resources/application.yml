@@ -12,4 +12,4 @@ mqtt:
   port: 443
 
 app:
-  name: log_manager_user1
+  name: user1

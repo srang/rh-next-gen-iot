@@ -26,7 +26,7 @@ public class MqttProducer {
     private final String username;
     private final String password;
 
-    private static final int QOS = 0;
+    private static final int QOS = 2;
 
     public MqttProducer(@Value("${mqtt.service}") final String mqttServiceName,
                         @Value("${mqtt.port}") final String mqttServicePort,
@@ -48,6 +48,9 @@ public class MqttProducer {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(this.username);
             options.setPassword(this.password.toCharArray());
+            options.setCleanSession(true);
+            options.setConnectionTimeout(5000);
+            options.setAutomaticReconnect(true);
             client.connect(options);
         } catch (MqttException e) {
             log.severe(e.getMessage());
@@ -55,12 +58,12 @@ public class MqttProducer {
 
     }
 
-    public void run(String topic, String data) throws MqttException {
-        log.info(String.format("Publishing message (%s) to topic: %s", data, topic));
+    public void run(String address, String data) throws MqttException {
+        log.info(String.format("Publishing message (%s) to address: %s", data, address));
         MqttMessage message = new MqttMessage();
         message.setQos(QOS);
         message.setPayload(data.getBytes());
-        client.publish(topic, message);
+        client.publish(address, message);
     }
 
     @PreDestroy

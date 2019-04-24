@@ -26,7 +26,6 @@ public class StreamsReader extends RouteBuilder {
   private static final String KIE_CONTAINER = "datacompression";
   @Override
   public void configure() throws Exception {
-    HashMap sensorData = new HashMap();
     //from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091")
     from("timer:tick?fixedRate=true&period=5000")
     .setBody(constant(600))
@@ -35,6 +34,7 @@ public class StreamsReader extends RouteBuilder {
         public void process(Exchange exchange) throws Exception {
           String payload = exchange.getIn().getBody(String.class);
           // do something with the payload and/or exchange here
+          HashMap sensorData = new HashMap();
           sensorData.put("type", "motor-temperature");
           sensorData.put("value", payload);
           sensorData.put("units", "F");
