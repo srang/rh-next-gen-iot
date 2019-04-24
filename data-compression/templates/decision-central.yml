@@ -6,16 +6,16 @@ metadata:
     iconClass: icon-jboss
     tags: rhdm,decisionserver,jboss,authoring
     version: "1.1"
-    openshift.io/display-name: Red Hat Decision Manager 7.2 authoring environment (non-HA, persistent, with https)
+    openshift.io/display-name: Red Hat Decision Manager 7.3 authoring environment (non-HA, persistent, with https)
     openshift.io/provider-display-name: Red Hat, Inc.
-    description: Application template for a non-HA persistent authoring environment, for Red Hat Decision Manager 7.2
-    template.openshift.io/long-description: This template defines resources needed to develop and execute Rules on Red Hat Decision Manager 7.2, including application deployment configuration, secure and insecure http communication and a persistent volume to store data that needs to survive to a restart.
+    description: Application template for a non-HA persistent authoring environment, for Red Hat Decision Manager 7.3
+    template.openshift.io/long-description: This template defines resources needed to develop and execute Rules on Red Hat Decision Manager 7.3, including application deployment configuration, secure and insecure http communication and a persistent volume to store data that needs to survive to a restart.
     template.openshift.io/documentation-url: https://access.redhat.com/documentation/en-us/red_hat_decision_manager/7.2/html/deploying_a_red_hat_decision_manager_7.2_authoring_environment_on_red_hat_openshift_container_platform/
     template.openshift.io/support-url: https://access.redhat.com
     template.openshift.io/bindable: "false"
-  name: rhdm72-authoring
+  name: rhdm73-authoring
 labels:
-  template: rhdm72-authoring
+  template: rhdm73-authoring
   rhdm: "1.1"
 message: |-
           A new persistent Decision Manager application has been created in your project.
