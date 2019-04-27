@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
-set -x
 set -e
 set -E
 set -o pipefail
-export NAMESPACE='edge-compute'
-export RHDM_VER='73'
-export RHDM_REL="1.0-3"
 CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-if [[ -f ${CMD_DIR}/login.secret.sh ]]; then
-    ${CMD_DIR}/login.secret.sh
-fi
+export NAMESPACE='user1'
+export RHDM_VER='73'
+export RHDM_REL="1.0-3"
+export KAMEL_VER="0.3.2"
 
-${CMD_DIR}/bootstrap-ns.sh
 ${CMD_DIR}/deploy-rules.sh
-#${CMD_DIR}/deploy-author.sh
+${CMD_DIR}/deploy-routes.sh
+${CMD_DIR}/deploy-author.sh

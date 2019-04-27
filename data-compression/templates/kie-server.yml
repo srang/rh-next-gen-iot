@@ -41,25 +41,21 @@ parameters:
 - displayName: KIE Admin User
   description: KIE administrator username
   name: KIE_ADMIN_USER
-  value: adminUser
+  value: admin
   required: false
 - displayName: KIE Admin Password
   description: KIE administrator password
   name: KIE_ADMIN_PWD
-  from: "[a-zA-Z]{6}[0-9]{1}!"
-  generate: expression
-  required: false
+  value: admin
 - displayName: KIE Server User
   description: KIE server username (Sets the org.kie.server.user system property)
   name: KIE_SERVER_USER
-  value: executionUser
+  value: jboss
   required: false
 - displayName: KIE Server Password
   description: KIE server password, used to connect to KIE servers. Generated value can be a suggestion to use for thew s2i various (Sets the org.kie.server.pwd system property)
   name: KIE_SERVER_PWD
-  from: "[a-zA-Z]{6}[0-9]{1}!"
-  generate: expression
-  required: false
+  value: jboss
 - displayName: ImageStream Namespace
   description: Namespace in which the ImageStreams for Red Hat Middleware images are
     installed. These ImageStreams are normally installed in the openshift namespace.
@@ -191,7 +187,6 @@ parameters:
 - displayName: Name of the Maven service hosted by Decision Central
   description: The service name for the optional decision central, where it can be reached, to allow service lookups (for maven repo usage), if required
   name: DECISION_CENTRAL_MAVEN_SERVICE
-  example: "myapp-rhdmcentr"
   required: false
 - displayName: Username for the Maven service hosted by Decision Central
   description: Username to access the Maven service hosted by Decision Central inside EAP.
@@ -201,7 +196,6 @@ parameters:
 - displayName: Password for the Maven service hosted by Decision Central
   description: Password to access the Maven service hosted by Decision Central inside EAP.
   name: DECISION_CENTRAL_MAVEN_PASSWORD
-  example: "maven1!"
   required: false
 - displayName: List of directories from which archives will be copied into the deployment folder
   description: List of directories from which archives will be copied into the deployment folder. If unspecified, all archives in /target will be copied.
@@ -216,7 +210,7 @@ parameters:
 - displayName: Disable KIE Server Management
   description: "Disable management api and don't allow KIE containers to be deployed/undeployed or started/stopped. Sets the property org.kie.server.mgmt.api.disabled to true and org.kie.server.startup.strategy to LocalContainersStartupStrategy."
   name: KIE_SERVER_MGMT_DISABLED
-  value: "true"
+  value: "false"
   required: true
 - displayName: KIE Server Startup Strategy
   description: "When set to LocalContainersStartupStrategy, allows KIE server to start up and function with local config, even when a controller is configured and unavailable."

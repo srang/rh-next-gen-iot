@@ -19,35 +19,51 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import com.fasterxml.jackson.dataformat.xml.annotation.*;
+import javax.xml.bind.annotation.*;
 
 /**
  * SensorData
  */
 
-public class SensorData implements Serializable {
+@XmlRootElement(name = "SensorData")
+@XmlAccessorType(XmlAccessType.FIELD)
+@JacksonXmlRootElement(localName = "SensorData")public class SensorData implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
+  @JacksonXmlProperty(localName = "id")
+  @XmlElement(name="id")
 
   private Long id = null;
 
   @JsonProperty("pumpId")
+  @JacksonXmlProperty(localName = "pumpId")
+  @XmlElement(name="pumpId")
 
   private Long pumpId = null;
 
   @JsonProperty("timestamp")
+  @JacksonXmlProperty(localName = "timestamp")
+  @XmlElement(name="timestamp")
 
   private Long timestamp = null;
 
   @JsonProperty("type")
+  @JacksonXmlProperty(localName = "type")
+  @XmlElement(name="type")
 
   private String type = null;
 
   @JsonProperty("value")
+  @JacksonXmlProperty(localName = "value")
+  @XmlElement(name="value")
 
-  private Long value = null;
+  private Float value = null;
 
   @JsonProperty("units")
+  @JacksonXmlProperty(localName = "units")
+  @XmlElement(name="units")
 
   private String units = null;
   public SensorData id(Long id) {
@@ -122,7 +138,7 @@ public class SensorData implements Serializable {
   public void setType(String type) {
     this.type = type;
   }
-  public SensorData value(Long value) {
+  public SensorData value(Float value) {
     this.value = value;
     return this;
   }
@@ -134,10 +150,10 @@ public class SensorData implements Serializable {
   * @return value
   **/
   @ApiModelProperty(value = "")
-  public Long getValue() {
+  public Float getValue() {
     return value;
   }
-  public void setValue(Long value) {
+  public void setValue(Float value) {
     this.value = value;
   }
   public SensorData units(String units) {

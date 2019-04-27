@@ -6,6 +6,7 @@
   "dateLibrary" : "java8",
   "java8" : true,
   "useOas2": true,
-  "library" : "resteasy",
+  "library": "resttemplate",
+  "withXml": true,
   "hideGenerationTimestamp": true
 }

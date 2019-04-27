@@ -58,7 +58,7 @@ public class TestUnhealthyPump {
                 .pumpId(1l)
                 .timestamp(starterTimestamp)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(200l);
+                .value(200f);
 
         kieSession.insert(data);
         int firedRules = kieSession.fireAllRules();
@@ -73,7 +73,7 @@ public class TestUnhealthyPump {
                 .pumpId(1l)
                 .timestamp(starterTimestamp)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(600l);
+                .value(600f);
 
         kieSession.insert(data);
         int firedRules = kieSession.fireAllRules();
@@ -88,26 +88,26 @@ public class TestUnhealthyPump {
                 .pumpId(1l)
                 .timestamp(starterTimestamp)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(601l);
+                .value(601f);
         UnhealthyPumpEvent event1 = new UnhealthyPumpEvent(data1);
         SensorData data2 = new SensorData()
                 .pumpId(1l)
-                .timestamp(starterTimestamp+1001l)
+                .timestamp(starterTimestamp + 1001l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(603l);
+                .value(603f);
         UnhealthyPumpEvent event2 = new UnhealthyPumpEvent(data2);
         SensorData data3 = new SensorData()
                 .id(3l)
                 .pumpId(2l)
-                .timestamp(starterTimestamp+2000l)
+                .timestamp(starterTimestamp + 2000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(600l);
+                .value(600f);
         UnhealthyPumpEvent event3 = new UnhealthyPumpEvent(data3);
         SensorData data4 = new SensorData()
                 .pumpId(1l)
-                .timestamp(starterTimestamp+12000l)
+                .timestamp(starterTimestamp + 12000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(599l);
+                .value(599f);
         UnhealthyPumpEvent event4 = new UnhealthyPumpEvent(data4);
 
         kieSession.insert(event1);
@@ -126,13 +126,13 @@ public class TestUnhealthyPump {
                 .pumpId(1l)
                 .timestamp(starterTimestamp)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(600l);
+                .value(600f);
         UnhealthyPumpEvent event1 = new UnhealthyPumpEvent(data1);
         SensorData data2 = new SensorData()
                 .pumpId(1l)
                 .timestamp(starterTimestamp + 20000l)
                 .type(SensorDataType.MOTOR_TEMP.value())
-                .value(600l);
+                .value(600f);
         UnhealthyPumpEvent event2 = new UnhealthyPumpEvent(data2);
 
         kieSession.insert(event1);

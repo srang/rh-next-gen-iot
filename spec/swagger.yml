@@ -24,8 +24,8 @@ definitions:
         type: "string"
         description: "Type of measurement"
       value:
-        type: "integer"
-        format: "int64"
+        type: "number"
+        format: "float"
       units:
         type: "string"
     xml:
@@ -46,8 +46,8 @@ definitions:
         type: "string"
         description: "Type of input"
       value:
-        type: "integer"
-        format: "int64"
+        type: "number"
+        format: "float"
       units:
         type: "string"
       source:

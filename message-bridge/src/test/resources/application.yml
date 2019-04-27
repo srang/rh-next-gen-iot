@@ -1,0 +1,16 @@
+endpoints.enabled: false
+endpoints.health.enabled: true
+
+route.from: timer:tick?fixedRate=true&period=5000
+route.to: log:com.redhat.iot?level=DEBUG
+kafka.brokers: dummy
+
+# keep camel running
+camel.springboot.main-run-controller: true
+amqphub.amqp10jms:
+  remote-url: amqp://localhost:61616?amqp.saslMechanisms=PLAIN
+  username: device1
+  password: password
+  pool:
+    useAnonymousProducers: false
+    enabled: true

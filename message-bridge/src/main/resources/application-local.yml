@@ -1,0 +1,4 @@
+amqphub.amqp10jms:
+  remote-url: amqp://localhost:61616?amqp.saslMechanisms=PLAIN
+  username: device1
+  password: password

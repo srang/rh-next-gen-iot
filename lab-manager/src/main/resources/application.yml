@@ -1,0 +1,15 @@
+iot:
+  frequency: 5
+  types: temperature,vibration
+
+pump:
+  devices: 1,2
+
+mqtt:
+  username: device1
+  password: password
+  service: replaceme.svc
+  port: 443
+
+app:
+  name: user1

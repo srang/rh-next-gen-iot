@@ -19,27 +19,39 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import com.fasterxml.jackson.dataformat.xml.annotation.*;
+import javax.xml.bind.annotation.*;
 
 /**
  * PumpStatus
  */
 
-public class PumpStatus implements Serializable {
+@XmlRootElement(name = "PumpStatus")
+@XmlAccessorType(XmlAccessType.FIELD)
+@JacksonXmlRootElement(localName = "PumpStatus")public class PumpStatus implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
+  @JacksonXmlProperty(localName = "id")
+  @XmlElement(name="id")
 
   private Long id = null;
 
   @JsonProperty("pumpId")
+  @JacksonXmlProperty(localName = "pumpId")
+  @XmlElement(name="pumpId")
 
   private Long pumpId = null;
 
   @JsonProperty("timestamp")
+  @JacksonXmlProperty(localName = "timestamp")
+  @XmlElement(name="timestamp")
 
   private Long timestamp = null;
 
   @JsonProperty("status")
+  @JacksonXmlProperty(localName = "status")
+  @XmlElement(name="status")
 
   private String status = null;
   public PumpStatus id(Long id) {

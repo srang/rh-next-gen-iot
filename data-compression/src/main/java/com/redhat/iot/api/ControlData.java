@@ -19,39 +19,57 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import com.fasterxml.jackson.dataformat.xml.annotation.*;
+import javax.xml.bind.annotation.*;
 
 /**
  * ControlData
  */
 
-public class ControlData implements Serializable {
+@XmlRootElement(name = "ControlData")
+@XmlAccessorType(XmlAccessType.FIELD)
+@JacksonXmlRootElement(localName = "ControlData")public class ControlData implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
+  @JacksonXmlProperty(localName = "id")
+  @XmlElement(name="id")
 
   private Long id = null;
 
   @JsonProperty("pumpId")
+  @JacksonXmlProperty(localName = "pumpId")
+  @XmlElement(name="pumpId")
 
   private Long pumpId = null;
 
   @JsonProperty("timestamp")
+  @JacksonXmlProperty(localName = "timestamp")
+  @XmlElement(name="timestamp")
 
   private Long timestamp = null;
 
   @JsonProperty("type")
+  @JacksonXmlProperty(localName = "type")
+  @XmlElement(name="type")
 
   private String type = null;
 
   @JsonProperty("value")
+  @JacksonXmlProperty(localName = "value")
+  @XmlElement(name="value")
 
-  private Long value = null;
+  private Float value = null;
 
   @JsonProperty("units")
+  @JacksonXmlProperty(localName = "units")
+  @XmlElement(name="units")
 
   private String units = null;
 
   @JsonProperty("source")
+  @JacksonXmlProperty(localName = "source")
+  @XmlElement(name="source")
 
   private String source = null;
   public ControlData id(Long id) {
@@ -126,7 +144,7 @@ public class ControlData implements Serializable {
   public void setType(String type) {
     this.type = type;
   }
-  public ControlData value(Long value) {
+  public ControlData value(Float value) {
     this.value = value;
     return this;
   }
@@ -138,10 +156,10 @@ public class ControlData implements Serializable {
   * @return value
   **/
   @ApiModelProperty(value = "")
-  public Long getValue() {
+  public Float getValue() {
     return value;
   }
-  public void setValue(Long value) {
+  public void setValue(Float value) {
     this.value = value;
   }
   public ControlData units(String units) {
