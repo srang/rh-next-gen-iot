@@ -6,55 +6,48 @@ CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJ_DIR="${CMD_DIR}/.."
 
 NAMESPACE="${NAMESPACE:-user1}"
-APPLICATION_NAME="message-bridge"
+FUSE_REL="${FUSE_REL:-1.2-12}"
 
-## Cleanup previous release before beginning next
-if (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
-    context=$(oc get integration/${APPLICATION_NAME} -o=jsonpath='{.status.context}' -n ${NAMESPACE})
-    oc delete bc/camel-k-${context} -n ${NAMESPACE}
-    oc delete is/camel-k-${context} -n ${NAMESPACE}
-    oc delete deployment/${APPLICATION_NAME} -n ${NAMESPACE}
-    oc delete integrationcontext/${context} -n ${NAMESPACE}
-    oc delete integration/${APPLICATION_NAME} -n ${NAMESPACE}
+APPLICATION_RELEASE='0.0.1'
+APPLICATION_NAME='message-bridge'
+APPLICATION_CONTEXT_DIR=${APPLICATION_NAME}
+SERVICE=${APPLICATION_NAME}
+
+if (oc get deploy/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
+    oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 fi
 
-## Install Routes
-${CMD_DIR}/kamel run ${PROJ_DIR}/${APPLICATION_NAME}/MqttKafkaBridge.java --name=${APPLICATION_NAME} -n ${NAMESPACE} \
-    -d camel-gson -d camel-amqp -d camel-kafka
+MESSAGING_USERNAME="device1"
+MESSAGING_PASSWORD='password'
+MESSAGING_SERVICE="broker-amq-headless"
+MESSAGING_PORT="61616"
 
-# Label CRs
-while ! (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} -o=jsonpath='{.status.context}' &>/dev/null); do
-    sleep 1s
-done
-oc label integration ${APPLICATION_NAME} application=${APPLICATION_NAME} -n ${NAMESPACE}
-context=$(oc get integration/${APPLICATION_NAME} -o=jsonpath='{.status.context}' -n ${NAMESPACE})
-while ! (oc get integrationcontext/${context} -n ${NAMESPACE} &>/dev/null); do
-    sleep 1s
-done
-oc label integrationcontext/${context} application=${APPLICATION_NAME} -n ${NAMESPACE}
+oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAME}.yml \
+    -p APPLICATION_NAME=${APPLICATION_NAME} \
+    -p APPLICATION_NAMESPACE="${NAMESPACE}" \
+    -p APPLICATION_RELEASE="${APPLICATION_RELEASE}" \
+    -p IMAGE_STREAM_TAG="${FUSE_REL}" \
+    -p MESSAGING_SERVICE="${MESSAGING_SERVICE}" \
+    -p MESSAGING_PORT="${MESSAGING_PORT}" \
+    -p MESSAGING_USERNAME="${MESSAGING_USERNAME}" \
+    -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
+    | oc apply -n ${NAMESPACE} -f-
 
-# Label build resources
-while ! (oc get bc/camel-k-${context} -n ${NAMESPACE} &>/dev/null); do
-    sleep 1s
-done
-oc label bc/camel-k-${context} application=${APPLICATION_NAME} -n ${NAMESPACE}
-oc label is/camel-k-${context} application=${APPLICATION_NAME} -n ${NAMESPACE}
+# let's be thorough
+oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
-# Log build
-while ! (oc get build -l=buildconfig=camel-k-${context} -n ${NAMESPACE} &>/dev/null); do
-    sleep 1s
+${CMD_DIR}/build-bridge.sh
+
+build=$(oc start-build bc/${APPLICATION_NAME} -n ${NAMESPACE} --from-dir=${PROJ_DIR}/${APPLICATION_CONTEXT_DIR} | awk '{print $1}')
+while [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) =~ ^(Running|Pending|New)$ ]] ; do
+    # handles broken pipes
+    oc logs -f ${build} -n ${NAMESPACE}
 done
-build=$(oc get build -l=buildconfig=camel-k-${context} -o=jsonpath='{range .items[*]}{.metadata.name}{end}' -n ${NAMESPACE})
-while [[ $(oc get build/${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) =~ ^(Running|Pending|New)$ ]] ; do
-    oc logs -f build/${build} -n ${NAMESPACE}
-done
-if [[ $(oc get build/${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) != 'Complete' ]]; then
+if [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) != 'Complete' ]]; then
     echo "error with build"
     exit 1
 fi
 
-# Label Deployment
-while ! (oc get deployment/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); do
-    sleep 1s
-done
-oc label deployment/${APPLICATION_NAME} application=${APPLICATION_NAME} -n ${NAMESPACE}
+oc tag ${NAMESPACE}/${APPLICATION_NAME}:latest ${NAMESPACE}/${APPLICATION_NAME}:${APPLICATION_RELEASE}
+oc scale --replicas=1 deploy/${APPLICATION_NAME} -n ${NAMESPACE}
+oc rollout resume deploy/${APPLICATION_NAME} -n ${NAMESPACE}
