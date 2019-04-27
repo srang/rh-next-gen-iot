@@ -35,6 +35,8 @@ parameters:
     value: "device1"
   - name: MESSAGING_PASSWORD
     required: true
+  - name: KAFKA_BOOTSTRAP_SERVER
+    required: true
 objects:
   - kind: ImageStream
     apiVersion: v1
@@ -130,3 +132,5 @@ objects:
                   value: "${MESSAGING_USERNAME}"
                 - name: MESSAGING_PASSWORD
                   value: "${MESSAGING_PASSWORD}"
+                - name: KAFKA_BOOTSTRAP_SERVER
+                  value: "${KAFKA_BOOTSTRAP_SERVER}"

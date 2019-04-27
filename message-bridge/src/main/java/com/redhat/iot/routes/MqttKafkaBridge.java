@@ -40,7 +40,7 @@ public class MqttKafkaBridge extends RouteBuilder {
               exchange.getIn().setBody(sensorData);
             })
     .marshal().json(JsonLibrary.Gson, HashMap.class)
-    .log("${body}");
-    //.to("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091");
+    .log("${body}")
+    .to("kafka:user1?brokers=user1-kafka-bootstrap:9092");
   }
 }

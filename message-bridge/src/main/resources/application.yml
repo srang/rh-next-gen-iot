@@ -1,0 +1,14 @@
+endpoints.enabled: false
+endpoints.health.enabled: true
+
+kafka.brokers: ${KAFKA_BOOTSTRAP_SERVER}
+
+  # keep camel running
+camel.springboot.main-run-controller: true
+amqphub.amqp10jms:
+  remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
+  username: ${MESSAGING_USERNAME}
+  password: ${MESSAGING_PASSWORD}
+  pool:
+    useAnonymousProducers: false
+    enabled: true
