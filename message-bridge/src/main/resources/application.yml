@@ -7,6 +7,11 @@ route.from: amqp:topic:user1
 route.to: log:com.redhat.iot?level=DEBUG
 
 
+kie:
+  container: ${KIE_CONTAINER}
+  server: ${KIE_SERVER}
+  username: kieserver
+  password: kieserver1!
   # keep camel running
 camel.springboot.main-run-controller: true
 amqphub.amqp10jms:

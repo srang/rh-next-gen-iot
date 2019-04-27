@@ -37,6 +37,10 @@ parameters:
     required: true
   - name: KAFKA_BOOTSTRAP_SERVER
     required: true
+  - name: KIE_SERVER
+    required: true
+  - name: KIE_CONTAINER
+    required: true
 objects:
   - kind: ImageStream
     apiVersion: v1
@@ -134,3 +138,7 @@ objects:
                   value: "${MESSAGING_PASSWORD}"
                 - name: KAFKA_BOOTSTRAP_SERVER
                   value: "${KAFKA_BOOTSTRAP_SERVER}"
+                - name: KIE_SERVER
+                  value: "${KIE_SERVER}"
+                - name: KIE_CONTAINER
+                  value: "${KIE_CONTAINER}"

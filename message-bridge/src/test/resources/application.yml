@@ -14,3 +14,8 @@ amqphub.amqp10jms:
   pool:
     useAnonymousProducers: false
     enabled: true
+kie:
+  container: esp_rules
+  server: http://localhost:8080/services/rest/server
+  username: kieserver
+  password: kieserver1!
