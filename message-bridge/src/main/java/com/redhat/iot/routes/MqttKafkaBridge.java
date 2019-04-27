@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class MqttKafkaBridge extends RouteBuilder {
   @Override
   public void configure() throws Exception {
-    from("amqp:topic:user1")
+    from("{{route.from}}")
     .process(
         exchange -> {
               String[] payload = exchange.getIn().getBody(String.class).split(",");
@@ -41,6 +41,6 @@ public class MqttKafkaBridge extends RouteBuilder {
             })
     .marshal().json(JsonLibrary.Gson, HashMap.class)
     .log("${body}")
-    .to("kafka:user1?brokers=user1-kafka-bootstrap:9092");
+    .to("{{route.to}}");
   }
 }
