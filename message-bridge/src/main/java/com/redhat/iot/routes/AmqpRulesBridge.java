@@ -13,6 +13,7 @@ import org.kie.api.command.Command;
 import org.kie.api.command.KieCommands;
 import org.kie.api.runtime.ExecutionResults;
 import org.kie.api.KieServices;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -20,10 +21,14 @@ import java.util.*;
 @Log
 @Component
 public class AmqpRulesBridge extends RouteBuilder {
-    private static final String KIE_SERVER = "http://data-compression-ks:8080/services/rest/server";
-    private static final String KIE_USER = "jboss";
-    private static final String KIE_PASS = "jboss";
-    private static final String KIE_CONTAINER = "datacompression";
+    @Value("${kie.container}")
+    private String kieContainer;
+    @Value("${kie.server}")
+    private String kieServer;
+    @Value("${kie.username}")
+    private String kieUser;
+    @Value("${kie.password}")
+    private String kiePass;
 
     @Override
     public void configure() throws Exception {
@@ -51,7 +56,7 @@ public class AmqpRulesBridge extends RouteBuilder {
                             break;
                     }
                     // do something with the payload and/or exchange here
-                    KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(KIE_SERVER, KIE_USER, KIE_PASS);
+                    KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(kieServer, kieUser, kiePass);
                     conf.setMarshallingFormat(MarshallingFormat.XSTREAM);
 
                     RuleServicesClient ruleServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(RuleServicesClient.class);
@@ -62,7 +67,7 @@ public class AmqpRulesBridge extends RouteBuilder {
                     commands.add((Command<?>) commandsFactory.newFireAllRules());
                     BatchExecutionCommand batch = commandsFactory.newBatchExecution(commands);
                     log.info(String.format("Rules command set (%s) staged", batch.toString()));
-                    ServiceResponse<ExecutionResults> executeResponse = ruleServicesClient.executeCommandsWithResults(KIE_CONTAINER, batch);
+                    ServiceResponse<ExecutionResults> executeResponse = ruleServicesClient.executeCommandsWithResults(kieContainer, batch);
                     log.info(String.format("Execution response (%s) received", executeResponse.toString()));
                 });
     }

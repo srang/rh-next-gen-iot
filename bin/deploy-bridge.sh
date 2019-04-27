@@ -22,6 +22,8 @@ MESSAGING_PASSWORD='password'
 MESSAGING_SERVICE="broker-amq-headless"
 KAFKA_BOOTSTRAP_SERVER="user1-kafka-bootstrap:9092"
 MESSAGING_PORT="61616"
+KIE_SERVER="http://rules-manager-kieserver:8080/services/rest/server"
+KIE_CONTAINER="esp_rules"
 
 oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAME}.yml \
     -p APPLICATION_NAME=${APPLICATION_NAME} \
@@ -33,6 +35,8 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
     -p MESSAGING_USERNAME="${MESSAGING_USERNAME}" \
     -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
     -p KAFKA_BOOTSTRAP_SERVER="${KAFKA_BOOTSTRAP_SERVER}" \
+    -p KIE_SERVER="${KIE_SERVER}" \
+    -p KIE_CONTAINER="${KIE_CONTAINER}" \
     | oc apply -n ${NAMESPACE} -f-
 
 # let's be thorough
