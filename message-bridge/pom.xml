@@ -74,6 +74,11 @@
             <artifactId>camel-gson</artifactId>
             <version>${camel.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kie.server</groupId>
+            <artifactId>kie-server-client</artifactId>
+            <version>7.18.0.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

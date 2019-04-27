@@ -11,7 +11,6 @@ APPLICATION_NAME='message-bridge'
 mvn clean install -f ${PROJ_DIR}/${APPLICATION_NAME} -DskipTests
 
 BROKER_POD=$(oc get pods -l=app=broker-amq -o=jsonpath='{ range .items[0] }{.metadata.name}{end}' -n ${NAMESPACE})
-#MQTT_PORT=$(oc get pod/${BROKER_POD} -o=jsonpath='{.spec.containers[?(@.name=="broker-amq")].ports[?(@.name=="mqtt")].containerPort }' -n ${NAMESPACE})
-MQTT_PORT=61616
-oc port-forward ${BROKER_POD} ${MQTT_PORT}:${MQTT_PORT} -n ${NAMESPACE} &
+MESSAGE_PORT=$(oc get pod/${BROKER_POD} -o=jsonpath='{.spec.containers[?(@.name=="broker-amq")].ports[?(@.name=="all")].containerPort }' -n ${NAMESPACE})
+oc port-forward ${BROKER_POD} ${MESSAGE_PORT}:${MESSAGE_PORT} -n ${NAMESPACE} &
 SPRING_PROFILES_ACTIVE=local java -jar ${PROJ_DIR}/${APPLICATION_NAME}/target/${APPLICATION_NAME}*.jar
