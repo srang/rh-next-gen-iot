@@ -11,8 +11,8 @@ import org.apache.camel.Exchange;
 public class MqttKafkaBridge extends RouteBuilder {
   @Override
   public void configure() throws Exception {
-    //from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091")
-    from("mqtt:mqttconsumer?subscribeTopicName=user1&host=tcp://broker-amq-headless:1883")
+//    from("mqtt:mqttconsumer?subscribeTopicName=user1&host=tcp://broker-amq-headless:1883")
+    from("amqp:topic:user1")
     .process(
       new Processor() {
         public void process(Exchange exchange) throws Exception {
@@ -41,5 +41,6 @@ public class MqttKafkaBridge extends RouteBuilder {
     })
     .marshal().json(JsonLibrary.Gson, HashMap.class)
     .log("${body}");
+    //.to("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091");
   }
 }

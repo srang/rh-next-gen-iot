@@ -20,7 +20,7 @@ fi
 
 ## Install Routes
 ${CMD_DIR}/kamel run ${PROJ_DIR}/${APPLICATION_NAME}/MqttKafkaBridge.java --name=${APPLICATION_NAME} -n ${NAMESPACE} \
-    -d camel-gson -d camel-mqtt -d camel-kafka
+    -d camel-gson -d camel-amqp -d camel-kafka
 
 # Label CRs
 while ! (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} -o=jsonpath='{.status.context}' &>/dev/null); do
