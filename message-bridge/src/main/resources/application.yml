@@ -1,0 +1,18 @@
+endpoints.enabled: false
+endpoints.health.enabled: true
+
+route.from: amqp:topic:user1
+#route.to: kafka:user1?brokers=user1-kafka-bootstrap:9092
+#kafka.brokers: ${KAFKA_BOOTSTRAP_SERVER}
+route.to: log:com.redhat.iot?level=DEBUG
+
+
+  # keep camel running
+camel.springboot.main-run-controller: true
+amqphub.amqp10jms:
+  remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
+  username: ${MESSAGING_USERNAME}
+  password: ${MESSAGING_PASSWORD}
+  pool:
+    useAnonymousProducers: false
+    enabled: true

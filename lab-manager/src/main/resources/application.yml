@@ -1,16 +1,15 @@
 iot:
   frequency: 5
-  types: temperature
+  types: temperature,vibration
 
 pump:
-  devices: 1
+  devices: 1,2
 
 mqtt:
   username: device1
   password: password
-  service: mqtt-hep7ux89ck-messaging.apps.cluster-80a2.80a2.openshiftworkshop.com
+  service: replaceme.svc
   port: 443
 
 app:
-  # log_manager_<user namespace>
-  name: "log_manager_user1"
+  name: user1

@@ -11,18 +11,22 @@ FUSE_REL="${FUSE_REL:-1.2-12}"
 APPLICATION_RELEASE='0.0.1'
 APPLICATION_NAME='lab-manager'
 APPLICATION_CONTEXT_DIR=${APPLICATION_NAME}
-SOURCE_REPOSITORY_URL='https://gitlab.consulting.redhat.com/ablock/iot-summit-2019.git'
-SOURCE_REPOSITORY_REF='master'
 SERVICE=${APPLICATION_NAME}
 
 if (oc get deploy/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
     oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 fi
 
-MQTT_SERVICE=$(oc get addressspace/${NAMESPACE} \
-    -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ .serviceHost }{ end }')
-MQTT_PORT=$(oc get addressspace/${NAMESPACE} \
-    -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ range .servicePorts[?(@.name=="mqtt")] }{ .port }{ end }{ end }')
+MESSAGING_USERNAME="device1"
+MESSAGING_PASSWORD='password'
+MQTT_SERVICE="broker-amq-headless"
+MQTT_PORT="1883"
+#MESSAGING_USERNAME=$(oc get messaginguser/${NAMESPACE}.device1 -o=jsonpath='{ .spec.username }' -n ${NAMESPACE})
+#MESSAGING_PASSWORD=$(echo 'password' | base64)
+#MQTT_SERVICE=$(oc get addressspace/${NAMESPACE} \
+#    -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ .serviceHost }{ end }' -n ${NAMESPACE})
+#MQTT_PORT=$(oc get addressspace/${NAMESPACE} \
+#    -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ range .servicePorts[?(@.name=="mqtt")] }{ .port }{ end }{ end }' -n ${NAMESPACE})
 
 oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAME}.yml \
     -p APPLICATION_NAME=${APPLICATION_NAME} \
@@ -31,6 +35,8 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
     -p IMAGE_STREAM_TAG="${FUSE_REL}" \
     -p MQTT_SERVICE="${MQTT_SERVICE}" \
     -p MQTT_PORT="${MQTT_PORT}" \
+    -p MESSAGING_USERNAME="${MESSAGING_USERNAME}" \
+    -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
     | oc apply -n ${NAMESPACE} -f-
 
 # let's be thorough
