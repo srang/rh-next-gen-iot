@@ -65,11 +65,13 @@ public class AmqpRulesBridge extends RouteBuilder {
 
                     DMNServicesClient dmnServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(DMNServicesClient.class);
                     DMNContext context = dmnServicesClient.newContext();
-                    context.set(sensorData.get("type"), sensorData.get("value"));
+                    context.set("type", sensorData.get("type"));
+                    context.set("value", Float.parseFloat(sensorData.get("value")));
                     ServiceResponse<DMNResult> serverResp = dmnServicesClient.evaluateAll(kieContainer, "pump_rules", "pump_rules", context);
                     DMNResult dmnResult = serverResp.getResult();
                     for (DMNDecisionResult dr : dmnResult.getDecisionResults()) {
-                        log.info(String.format("%s: %s, Decision: '%s', Result: %s", sensorData.get("type"), sensorData.get("value"), dr.getDecisionName(), dr.getResult()));
+                        log.info(String.format("%s: %s, Decision: '%s', Evaluation: %s, Result: %s",
+                                sensorData.get("type"), sensorData.get("value"), dr.getDecisionName(), dr.getEvaluationStatus().toString(), dr.getResult()));
                     }
 
 //                    RuleServicesClient ruleServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(RuleServicesClient.class);
