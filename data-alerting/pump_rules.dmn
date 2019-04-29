@@ -1,147 +1,72 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://github.com/kiegroup/drools/kie-dmn/_708E36C8-B4D8-43D3-B801-ABB83AE15514" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_37ECD15E-37DC-4A0D-A64B-0EC8D491EA2E" name="pump_rules" expressionLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://github.com/kiegroup/drools/kie-dmn/_708E36C8-B4D8-43D3-B801-ABB83AE15514">
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://github.com/kiegroup/drools/kie-dmn/_31747488-880C-472E-9ACC-D9F02BDEEDA3" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_932D0407-4D2A-4E34-B9F0-D30B9A19E1F4" name="pump_rules" expressionLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="pump_rules">
   <dmn:extensionElements/>
-  <dmn:inputData id="_D48979CF-81BE-4420-B87B-8B45C8EFF1CE" name="vibration">
-    <dmn:variable id="_C8CFF693-29EB-4D2D-925A-889BE674FCF2" name="vibration" typeRef="number"/>
-  </dmn:inputData>
-  <dmn:decision id="_5C1F75DC-9BF2-4088-9D23-B418E696B928" name="TempVibration">
-    <dmn:variable id="_A193ED2F-37FF-4F07-A02E-24BC6983564F" name="TempVibration" typeRef="number"/>
-    <dmn:informationRequirement id="_807593DA-38F5-44D0-A113-10F8420F8822">
-      <dmn:requiredInput href="#_25A8B463-9AD6-472D-A01A-F8D5D046D27D"/>
+  <dmn:decision id="_58E0472B-4A21-4A67-B1A3-349D937697ED" name="temperature-decision">
+    <dmn:variable id="_D869039E-F932-42EF-90C5-51782C8917B7" name="temperature-decision" typeRef="number"/>
+    <dmn:informationRequirement id="_E90E7326-3203-4DF5-94F4-7A6A9AB8EF60">
+      <dmn:requiredInput href="#_2D11F506-ABBF-464E-913B-02AA7C6C76F0"/>
     </dmn:informationRequirement>
-    <dmn:informationRequirement id="_831FCC39-06B2-4FB9-82F0-28CFAF396F43">
-      <dmn:requiredInput href="#_D48979CF-81BE-4420-B87B-8B45C8EFF1CE"/>
-    </dmn:informationRequirement>
-    <dmn:decisionTable id="_16763506-917B-49CF-AA2A-8B0AF9EC19FE" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
-      <dmn:input id="_20560533-8015-476C-A411-B1ECBB68249F">
-        <dmn:inputExpression id="_2629DADB-6506-4B23-938E-9696E73D6CD1" typeRef="number">
+    <dmn:decisionTable id="_A12C9FEE-B934-44A0-8EE5-E7CCA34AB9DA" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
+      <dmn:input id="_F659E0BF-6F62-4C15-8FD4-1D6992C5A61D">
+        <dmn:inputExpression id="_41DD5F1D-D54A-4A02-A282-D7D9EECA5DCD" typeRef="number">
           <dmn:text>temperature</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:input id="_E537F13E-7407-490D-848E-2DF075940390">
-        <dmn:inputExpression id="_94CF3772-841E-4261-BDA6-55B11D884E39" typeRef="number">
-          <dmn:text>vibration</dmn:text>
-        </dmn:inputExpression>
-      </dmn:input>
-      <dmn:output id="_FFBC5A13-4E3C-4818-92FD-CB45C4FCE74A" typeRef="number"/>
-      <dmn:rule id="_7A28B8D5-FAAC-4F43-90C7-E1FAB559A4D8">
-        <dmn:inputEntry id="_5BB26641-9B9A-48C6-86E7-217832EC770A">
-          <dmn:text>&lt;200</dmn:text>
+      <dmn:output id="_2D4A0111-7614-4815-A120-EC1812DED969" typeRef="number"/>
+      <dmn:rule id="_7A738365-AE80-4206-980F-43E09891A9A8">
+        <dmn:inputEntry id="_954FDC54-C67F-42BC-84AA-627259DEFFD1">
+          <dmn:text>&gt;= 500</dmn:text>
         </dmn:inputEntry>
-        <dmn:inputEntry id="_10307F09-FAC6-4381-B3B5-B55A3A5564BD">
-          <dmn:text>-</dmn:text>
-        </dmn:inputEntry>
-        <dmn:outputEntry id="_33FEBDDC-E739-4336-9C23-DDF49F0911A7">
-          <dmn:text>0</dmn:text>
-        </dmn:outputEntry>
-      </dmn:rule>
-      <dmn:rule id="_6CC4CC9C-23D1-4FAF-9434-319D8BB49044">
-        <dmn:inputEntry id="_64BF4AE7-57CD-4D07-8C63-C0108041EE83">
-          <dmn:text>&gt;200, &lt;300</dmn:text>
-        </dmn:inputEntry>
-        <dmn:inputEntry id="_79CF7640-06F9-4C5F-BB60-4F0E40B6C8D6">
-          <dmn:text>-</dmn:text>
-        </dmn:inputEntry>
-        <dmn:outputEntry id="_3C57AF0B-D9A4-4F84-ACA8-65F39425F052">
+        <dmn:outputEntry id="_1E7A865A-4E10-4031-8F06-414433532ECE">
           <dmn:text>1</dmn:text>
         </dmn:outputEntry>
       </dmn:rule>
-      <dmn:rule id="_16578155-71DE-4EBC-AD81-F699DA1C8D62">
-        <dmn:inputEntry id="_342BCA42-C13D-47A2-9296-BB3A8CB17B9D">
-          <dmn:text>&gt;300</dmn:text>
+      <dmn:rule id="_0E7D0478-94CA-48D0-BFDA-28757E2AEB24">
+        <dmn:inputEntry id="_D17E28DA-4E68-41F8-B8BA-54A4F1A37217">
+          <dmn:text>&lt; 500</dmn:text>
         </dmn:inputEntry>
-        <dmn:inputEntry id="_FE3349FE-62CE-470B-A616-DCDB1D4BCE32">
-          <dmn:text>-</dmn:text>
-        </dmn:inputEntry>
-        <dmn:outputEntry id="_8B997CEC-CCA6-46BF-8743-3FA85FF47E36">
-          <dmn:text>2</dmn:text>
-        </dmn:outputEntry>
-      </dmn:rule>
-      <dmn:rule id="_D52DABFB-5C61-4568-99C5-9911F3AF7FFE">
-        <dmn:inputEntry id="_7EA2FCAC-0078-4339-AE73-835F15CC81A1">
-          <dmn:text>-</dmn:text>
-        </dmn:inputEntry>
-        <dmn:inputEntry id="_6A5D84D8-81E8-4293-B132-FCF006BB878D">
-          <dmn:text>&lt;2</dmn:text>
-        </dmn:inputEntry>
-        <dmn:outputEntry id="_3B795B5E-E64B-4499-940A-EDCC30AB14B1">
+        <dmn:outputEntry id="_1ED8EDB1-90B4-4900-8B2C-0466D2F80AEA">
           <dmn:text>0</dmn:text>
-        </dmn:outputEntry>
-      </dmn:rule>
-      <dmn:rule id="_8F7B5F47-E416-488B-9298-6A6A5A28250F">
-        <dmn:inputEntry id="_676B0F25-7268-4BA4-9F53-C305F0A1105A">
-          <dmn:text>-</dmn:text>
-        </dmn:inputEntry>
-        <dmn:inputEntry id="_0109969A-4307-41EA-A863-DE206B827175">
-          <dmn:text>&gt;2, &lt;4</dmn:text>
-        </dmn:inputEntry>
-        <dmn:outputEntry id="_1A28208F-AED0-40E3-9220-9FECEE52A4C7">
-          <dmn:text>1</dmn:text>
-        </dmn:outputEntry>
-      </dmn:rule>
-      <dmn:rule id="_C4A8B30B-09AB-4EF2-9A55-32980395F319">
-        <dmn:inputEntry id="_FBA88D79-1063-44EF-9A37-D7233347805E">
-          <dmn:text>-</dmn:text>
-        </dmn:inputEntry>
-        <dmn:inputEntry id="_C43900D2-678B-4628-918B-8E654EB77617">
-          <dmn:text>&gt;4</dmn:text>
-        </dmn:inputEntry>
-        <dmn:outputEntry id="_10064E1D-C5D6-40CA-A702-3019BF86506A">
-          <dmn:text>2</dmn:text>
         </dmn:outputEntry>
       </dmn:rule>
     </dmn:decisionTable>
   </dmn:decision>
-  <dmn:inputData id="_25A8B463-9AD6-472D-A01A-F8D5D046D27D" name="temperature">
-    <dmn:variable id="_BC4610E3-108C-4670-ACD2-90F3CC281C09" name="temperature" typeRef="number"/>
+  <dmn:inputData id="_2D11F506-ABBF-464E-913B-02AA7C6C76F0" name="temperature">
+    <dmn:variable id="_6693F69E-A1EE-4D3F-ACB9-0F63D55FE95C" name="temperature"/>
   </dmn:inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
       <di:extension>
         <kie:ComponentsWidthsExtension>
-          <kie:ComponentWidths dmnElementRef="_16763506-917B-49CF-AA2A-8B0AF9EC19FE">
+          <kie:ComponentWidths dmnElementRef="_A12C9FEE-B934-44A0-8EE5-E7CCA34AB9DA">
             <kie:width>50.0</kie:width>
-            <kie:width>100.0</kie:width>
             <kie:width>100.0</kie:width>
             <kie:width>100.0</kie:width>
             <kie:width>100.0</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
-      <dmndi:DMNShape id="dmnshape-_D48979CF-81BE-4420-B87B-8B45C8EFF1CE" dmnElementRef="_D48979CF-81BE-4420-B87B-8B45C8EFF1CE" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-_58E0472B-4A21-4A67-B1A3-349D937697ED" dmnElementRef="_58E0472B-4A21-4A67-B1A3-349D937697ED" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="601" y="332" width="100" height="50"/>
+        <dc:Bounds x="446" y="70" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-_5C1F75DC-9BF2-4088-9D23-B418E696B928" dmnElementRef="_5C1F75DC-9BF2-4088-9D23-B418E696B928" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-_2D11F506-ABBF-464E-913B-02AA7C6C76F0" dmnElementRef="_2D11F506-ABBF-464E-913B-02AA7C6C76F0" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="395" y="167" width="152" height="63"/>
+        <dc:Bounds x="260" y="70" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-_25A8B463-9AD6-472D-A01A-F8D5D046D27D" dmnElementRef="_25A8B463-9AD6-472D-A01A-F8D5D046D27D" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="256" y="327" width="100" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNEdge id="dmnedge-_807593DA-38F5-44D0-A113-10F8420F8822" dmnElementRef="_807593DA-38F5-44D0-A113-10F8420F8822">
-        <di:waypoint x="356" y="352"/>
-        <di:waypoint x="395" y="198.5"/>
-      </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-_831FCC39-06B2-4FB9-82F0-28CFAF396F43" dmnElementRef="_831FCC39-06B2-4FB9-82F0-28CFAF396F43">
-        <di:waypoint x="601" y="357"/>
-        <di:waypoint x="547" y="198.5"/>
+      <dmndi:DMNEdge id="dmnedge-_E90E7326-3203-4DF5-94F4-7A6A9AB8EF60" dmnElementRef="_E90E7326-3203-4DF5-94F4-7A6A9AB8EF60">
+        <di:waypoint x="360" y="95"/>
+        <di:waypoint x="446" y="95"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
