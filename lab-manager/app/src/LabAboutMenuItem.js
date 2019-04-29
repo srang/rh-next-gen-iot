@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import summit from './img/summit.svg';
 import './css/App.css';
-import { Button } from 'patternfly-react';
-import { AboutModal } from 'patternfly-react';
+import { Dropdown, AboutModal, MenuItem } from 'patternfly-react';
 
-export class LabAboutModal extends Component {
+export class LabAboutMenuItem extends Component {
     constructor() {
         super();
         this.state = { showModal: false };
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
+        this.open = this.open.bind(this.props.bindable);
+        this.close = this.close.bind(this.props.bindable);
     }
     open() {
         this.setState({ showModal: true });
@@ -20,10 +19,6 @@ export class LabAboutModal extends Component {
     render() {
         return (
             <div>
-                <Button bsStyle="primary" bsSize="large" onClick={this.open}>
-                    {this.props.buttonTitle}
-                </Button>
-
                 <AboutModal
                     show={this.state.showModal}
                     onHide={this.close}
@@ -40,6 +35,7 @@ export class LabAboutModal extends Component {
                         <AboutModal.VersionItem label="Presenter" versionText="Christina Lin" />
                     </AboutModal.Versions>
                 </AboutModal>
+
             </div>
         );
     }

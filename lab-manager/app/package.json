@@ -14,7 +14,7 @@
   "scripts": {
     "copy-fonts": "cp -r node_modules/patternfly/dist/fonts src/",
     "copy-img": "cp -r node_modules/patternfly/dist/img src/",
-    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules --include-path node_modules/patternfly-react/dist/sass --include-path node_modules/patternfly/dist/sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome-sass/assets/stylesheets src/ -o src/css",
+    "build-css": "node-sass-chokidar --include-path ./src --include-path node_modules/patternfly-react/dist/sass --include-path node_modules/patternfly/dist/sass --include-path node_modules/bootstrap-sass/assets/stylesheets --include-path node_modules/font-awesome-sass/assets/stylesheets src/ -o src/css",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
