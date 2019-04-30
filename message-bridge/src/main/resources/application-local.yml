@@ -1,4 +1,11 @@
+server.port: 8081 # offset so we can connect to rules
 amqphub.amqp10jms:
   remote-url: amqp://localhost:61616?amqp.saslMechanisms=PLAIN
   username: device1
   password: password
+
+kie:
+  container: esp_rules
+  server: http://localhost:8080/services/rest/server
+  username: kieserver
+  password: kieserver1!

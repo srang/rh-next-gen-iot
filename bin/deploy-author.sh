@@ -9,13 +9,14 @@ NAMESPACE="${NAMESPACE:-user1}"
 RHDM_VER="${RHDM_VER:-73}"
 RHDM_REL="${RHDM_REL:-1.0-3}"
 APPLICATION_NAME="rules-manager"
+CONTEXT_DIR="data-alerting"
 KIE_ADMIN_USER='jboss'
 KIE_ADMIN_PWD='jboss'
 KIE_USER='kieserver'
 KIE_PWD='kieserver1!'
 
 if (oc get dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} &>/dev/null); then
-    oc process -f ${PROJ_DIR}/data-compression/templates/authoring.yml \
+    oc process -f ${PROJ_DIR}/${CONTEXT_DIR}/templates/authoring.yml \
         -p APPLICATION_NAME=${APPLICATION_NAME} \
         -p KIE_ADMIN_USER="${KIE_ADMIN_USER}" \
         -p KIE_ADMIN_PWD="${KIE_ADMIN_PWD}" \
@@ -33,7 +34,7 @@ if (oc get dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} &>/dev/null); then
          | oc delete -n ${NAMESPACE} -f-
 fi
 
-oc process -f ${PROJ_DIR}/data-compression/templates/authoring.yml \
+oc process -f ${PROJ_DIR}/${CONTEXT_DIR}/templates/authoring.yml \
     -p APPLICATION_NAME=${APPLICATION_NAME} \
     -p KIE_ADMIN_USER="${KIE_ADMIN_USER}" \
     -p KIE_ADMIN_PWD="${KIE_ADMIN_PWD}" \

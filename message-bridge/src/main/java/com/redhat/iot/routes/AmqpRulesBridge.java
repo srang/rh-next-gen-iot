@@ -3,8 +3,12 @@ package com.redhat.iot.routes;
 import com.redhat.iot.api.SensorData;
 import lombok.extern.java.Log;
 import org.apache.camel.builder.RouteBuilder;
+import org.kie.dmn.api.core.DMNContext;
+import org.kie.dmn.api.core.DMNDecisionResult;
+import org.kie.dmn.api.core.DMNResult;
 import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.api.model.ServiceResponse;
+import org.kie.server.client.DMNServicesClient;
 import org.kie.server.client.RuleServicesClient;
 import org.kie.server.client.KieServicesConfiguration;
 import org.kie.server.client.KieServicesFactory;
@@ -13,6 +17,7 @@ import org.kie.api.command.Command;
 import org.kie.api.command.KieCommands;
 import org.kie.api.runtime.ExecutionResults;
 import org.kie.api.KieServices;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -20,10 +25,14 @@ import java.util.*;
 @Log
 @Component
 public class AmqpRulesBridge extends RouteBuilder {
-    private static final String KIE_SERVER = "http://data-compression-ks:8080/services/rest/server";
-    private static final String KIE_USER = "jboss";
-    private static final String KIE_PASS = "jboss";
-    private static final String KIE_CONTAINER = "datacompression";
+    @Value("${kie.container}")
+    private String kieContainer;
+    @Value("${kie.server}")
+    private String kieServer;
+    @Value("${kie.username}")
+    private String kieUser;
+    @Value("${kie.password}")
+    private String kiePass;
 
     @Override
     public void configure() throws Exception {
@@ -50,20 +59,21 @@ public class AmqpRulesBridge extends RouteBuilder {
                             sensorData.put("units", "Hz");
                             break;
                     }
-                    // do something with the payload and/or exchange here
-                    KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(KIE_SERVER, KIE_USER, KIE_PASS);
+                    KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(kieServer, kieUser, kiePass);
                     conf.setMarshallingFormat(MarshallingFormat.XSTREAM);
 
-                    RuleServicesClient ruleServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(RuleServicesClient.class);
+                    DMNServicesClient dmnServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(DMNServicesClient.class);
+                    DMNContext context = dmnServicesClient.newContext();
+                    context.set("type", sensorData.get("type"));
+                    context.set("value", Float.parseFloat(sensorData.get("value")));
+                    ServiceResponse<DMNResult> serverResp = dmnServicesClient.evaluateAll(kieContainer, "pump_rules", "pump_rules", context);
+                    DMNResult dmnResult = serverResp.getResult();
+                    for (DMNDecisionResult dr : dmnResult.getDecisionResults()) {
+                        log.info(String.format("%s: %s, Decision: '%s', Evaluation: %s, Result: %s",
+                                sensorData.get("type"), sensorData.get("value"), dr.getDecisionName(), dr.getEvaluationStatus().toString(), dr.getResult()));
+                    }
 
-                    KieCommands commandsFactory = KieServices.Factory.get().getCommands();
-                    List<Command<?>> commands = new ArrayList<>();
-                    commands.add((Command<?>) commandsFactory.newInsert(sensorData));
-                    commands.add((Command<?>) commandsFactory.newFireAllRules());
-                    BatchExecutionCommand batch = commandsFactory.newBatchExecution(commands);
-                    log.info(String.format("Rules command set (%s) staged", batch.toString()));
-                    ServiceResponse<ExecutionResults> executeResponse = ruleServicesClient.executeCommandsWithResults(KIE_CONTAINER, batch);
-                    log.info(String.format("Execution response (%s) received", executeResponse.toString()));
+                    // do something with the payload and result here
                 });
     }
 }
