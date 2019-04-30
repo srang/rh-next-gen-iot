@@ -59,7 +59,6 @@ public class AmqpRulesBridge extends RouteBuilder {
                             sensorData.put("units", "Hz");
                             break;
                     }
-                    // do something with the payload and/or exchange here
                     KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(kieServer, kieUser, kiePass);
                     conf.setMarshallingFormat(MarshallingFormat.XSTREAM);
 
@@ -74,16 +73,7 @@ public class AmqpRulesBridge extends RouteBuilder {
                                 sensorData.get("type"), sensorData.get("value"), dr.getDecisionName(), dr.getEvaluationStatus().toString(), dr.getResult()));
                     }
 
-//                    RuleServicesClient ruleServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(RuleServicesClient.class);
-//
-//                    KieCommands commandsFactory = KieServices.Factory.get().getCommands();
-//                    List<Command<?>> commands = new ArrayList<>();
-//                    commands.add((Command<?>) commandsFactory.newInsert(sensorData));
-//                    commands.add((Command<?>) commandsFactory.newFireAllRules());
-//                    BatchExecutionCommand batch = commandsFactory.newBatchExecution(commands);
-//                    log.info(String.format("Rules command set (%s) staged", batch.toString()));
-//                    ServiceResponse<ExecutionResults> executeResponse = ruleServicesClient.executeCommandsWithResults(kieContainer, batch);
-//                    log.info(String.format("Execution response (%s) received", executeResponse.toString()));
+                    // do something with the payload and result here
                 });
     }
 }
