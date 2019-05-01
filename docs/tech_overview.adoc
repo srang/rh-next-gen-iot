@@ -4,11 +4,6 @@
 
 = Technology Overview
 
-== xx
-tech Overview
-
-NOTE: add
-
 == Using next gen technologies to build IoT solution
 Internet of Things (IoT) is expected to generate a massive and diverse range of data types presenting a unique challenges for back end services.  The back end services must be able to quickly respond and scale in response to sudden influx of messages. AMQ Streams and Decision Manager can efficiently manage and filter messages from IoT devices. They can both scale elastically and shield other services downstream from the load.
 
@@ -31,9 +26,8 @@ Apache Camel K (a.k.a. Kamel) is a lightweight integration framework built from 
 TIP: *Camel-K in a nutshell*: https://www.youtube.com/watch?v=LaBvBonUC6g
 
 === Decision Manager
-
-
-
+Red Hat Decision Manager is a fast, lightweight, cloud-native business rules and decision management  platform for creating decision services that can be embedded within applications or deployed as microservices in a container runtime environment.
+Business Central allows visual composition of custom business rules and processes. DMN (Decision Model and Notation) uses diagramming language to define an XML schema for designing and implementing DMN decision services.
 
 
 [.text-center]

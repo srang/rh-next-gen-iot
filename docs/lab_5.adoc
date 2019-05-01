@@ -1,0 +1,73 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Lab 5: Update Rules
+
+== Decision Manager Node (DMN)
+
+As a business analyst or business rules developer, you can use Decision Model and Notation (DMN) to model a decision service graphically in a decision requirements diagram (DRD). This diagram traces business decisions from start to finish, with each decision node drawing logic from DMN model decision elements such as decision tables.
+
+For this lab, our DMN model will use two elements: input data (pump telemetry data) and decision (logic for determining pump condition).
+
+A decision table is a visual representation of one or more rules in a tabular format. Each rule consists of a single row in the table, and includes columns that define the conditions and outcome for that particular row.
+
+Using DMN
+DMN is available from Business Central portal that allows visual composition of custom business rules and processes.
+
+Click on Routes in the left OpenShift Console to access the Business Central portal
+
+image::decision-manager-route1.png[]
+
+Login to Business Central using following credentials:
+username: *jboss*
+password: *jboss*
+
+image::dm-login.png[]
+
+Click on *Design* to access design
+
+image::dm-home.png[]
+
+=== Update DMN Decision Table
+
+A few sample rules have been created using DMN to get you started. Click on *esp_rules* to edit the rules.
+
+image::dm-project.png[]
+
+Click on *unhealthy-pump-decision* to highlight decision node and then click on edit
+
+image::dm-dmn-edit_rules.png[]
+
+You should now be able to edit the rules in decision table
+
+image::dm-dmn-decision_table1.png[]
+
+TIP: You can right click on a row to insert another rule
+
+The healthy operating range of the pumps is as follows:
+
+[cols="4",options="header"]
+|=======
+|Sensor Type        |Normal  |Caution           |Danger
+|`temperature`      |`<200`  |`>=200 and <250`  |`>250`
+|`vibration`        |`<2.7`  |`>=2.2 and <4`    |`>4`
+|=======
+
+Once the rules are updated, click *save*
+
+image::dm-dmn-decision_table_save.png[]
+
+With our decision table updated, we can now package our DMN model in a Deployment Unit (KJAR) and deploy it on the Execution Server.
+
+In the bread-crumb navigation in the upper-left corner, click on *esp_rules* to go back to the project’s Library View.
+
+
+Click on the Deploy button in the upper-right corner of the screen. This will package our DMN mode in a Deployment Unit (KJAR) and deploy it onto the Execution Server (KIE-Server).
+
+image::dm-rules-deploy.png[]
+
+[TODO] --add steps to re-run pump 4 data using Kafka
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_4.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_6.html]
