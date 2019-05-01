@@ -7,9 +7,9 @@ PROJ_DIR="${CMD_DIR}/.."
 
 APPLICATION_NAME="lab-manager"
 
-if [ -d ${PROJ_DIR}/${APPLICATION_NAME}/src/main/resources/static ]; then
-    rm -rf ${PROJ_DIR}/${APPLICATION_NAME}/src/main/resources/static
-fi
+#if [ -d ${PROJ_DIR}/${APPLICATION_NAME}/src/main/resources/static ]; then
+#    rm -rf ${PROJ_DIR}/${APPLICATION_NAME}/src/main/resources/static
+#fi
 
 java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
     generate -l spring \
@@ -17,5 +17,5 @@ java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
              -i ${PROJ_DIR}/spec/swagger.yml \
              -o ${PROJ_DIR}/${APPLICATION_NAME}
 
-npm run build --prefix ${PROJ_DIR}/${APPLICATION_NAME}/app
+#npm run build --prefix ${PROJ_DIR}/${APPLICATION_NAME}/app
 mvn clean install -f ${PROJ_DIR}/${APPLICATION_NAME}

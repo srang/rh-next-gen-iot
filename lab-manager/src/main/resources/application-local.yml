@@ -1,4 +1,4 @@
-mqtt:
+iqtt:
   username: device1
   password: password
   service: localhost

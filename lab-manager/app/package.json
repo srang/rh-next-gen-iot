@@ -22,7 +22,7 @@
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
     "copy-to-server": "cp -r build/ ../src/main/resources/",
-    "build": "npm-run-all copy-fonts copy-img build-css build-js copy-to-server"
+    "build": "npm-run-all copy-fonts copy-img build-css build-js"
   },
   "proxy": "http://localhost:8080",
   "eslintConfig": {
