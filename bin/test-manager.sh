@@ -8,7 +8,7 @@ PROJ_DIR="${CMD_DIR}/.."
 NAMESPACE="${NAMESPACE:-user1}"
 APPLICATION_NAME='lab-manager'
 
-mvn clean install -f ${PROJ_DIR}/${APPLICATION_NAME} -DskipTests
+${CMD_DIR}/build-manager.sh
 
 BROKER_POD=$(oc get pods -l=app=broker-amq -o=jsonpath='{ range .items[0] }{.metadata.name}{end}' -n ${NAMESPACE})
 #MQTT_PORT=$(oc get pod/${BROKER_POD} -o=jsonpath='{.spec.containers[?(@.name=="broker-amq")].ports[?(@.name=="mqtt")].containerPort }' -n ${NAMESPACE})

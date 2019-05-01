@@ -1,4 +1,5 @@
 .idea
+static
 .project
 target
 *.jar

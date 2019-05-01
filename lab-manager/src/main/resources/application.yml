@@ -13,3 +13,7 @@ mqtt:
 
 app:
   name: user1
+
+#spring:
+#  mvc:
+#    static-path-pattern: /resources/static/**
