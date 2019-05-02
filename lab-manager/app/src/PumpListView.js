@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {ListView, Row, Col} from 'patternfly-react';
-// import * as SockJS from 'sockjs-client';
-import { Client, Message } from '@stomp/stompjs';
 
 export class PumpListView extends Component {
     constructor() {
@@ -87,40 +85,11 @@ export class PumpListView extends Component {
         ]);
     }
     register(registrations) {
-        const socket = 'ws://localhost:61613/';
-        const stompClient = new Client({
-            brokerURL: socket,
-            connectHeaders: {
-                login: "device1",
-                passcode: "password"
-            },
-            debug: function (str) {
-                console.log(str);
-            },
-            reconnectDelay: 5000,
-            heartbeatIncoming: 4000,
-            heartbeatOutgoing: 4000,
-            logRawCommunication: true
-        });
-        stompClient.onConnect = function(frame) {
-            console.log("here4");
-            registrations.forEach(function (registration) {
-                console.log("here3");
-                stompClient.subscribe(registration.route, registration.callback);
-            });
-            // Do something, all subscribes must be done is this callback
-            // This is needed because this will be executed after a (re)connect
-        };
-        stompClient.onStompError = function (frame) {
-            // Will be invoked in case of error encountered at Broker
-            // Bad login/passcode typically will cause an error
-            // Complaint brokers will set `message` header with a brief message. Body may contain details.
-            // Compliant brokers will terminate the connection after any error
-            console.log('Broker reported error: ' + frame.headers['message']);
-            console.log('Additional details: ' + frame.body);
-        };
-        stompClient.activate();
-        // stompClient.activate();
+        const socket = 'ws://localhost:9292/ws/sensordata';
+        const ws = new WebSocket(socket);
+        ws.onmessage = function (event) {
+            console.log(event.data)
+        }
     }
 
     printStuff(data) {

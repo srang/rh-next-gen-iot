@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Log
-@Component
+//@Component
 public class AmqStompBridge extends RouteBuilder {
     @Override
     public void configure() throws Exception {
@@ -38,6 +38,9 @@ public class AmqStompBridge extends RouteBuilder {
                     }
                     exchange.getIn().setBody(sensorData);
                 })
-        ;
+            .to("websocket://ws/sensordata?sendToAll=true");
+
+        from("websocket://ws/sensordata")
+                .to("log");
     }
 }
