@@ -13,8 +13,6 @@ mqtt:
 
 app:
   name: user1
-amq.topic: ${app.name}
-stomp.queue: sensordata
 amqphub.amqp10jms:
   remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
   username: ${MESSAGING_USERNAME}

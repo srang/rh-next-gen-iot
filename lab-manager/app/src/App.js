@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import {LabAboutMenuItem} from './LabAboutMenuItem.js'
-import {VerticalNav, Icon, Dropdown, MenuItem} from 'patternfly-react';
+import {VerticalNav} from 'patternfly-react';
 import './css/App.css';
 import pfLogo from './img/logo-alt.svg';
-import {PumpStatusLayout} from "./PumpStatusLayout";
 import {PumpListView} from "./PumpListView";
-import './websocket-listener'
 
 class App extends Component {
     render() {

@@ -13,7 +13,7 @@ import java.util.Map;
 public class AmqStompBridge extends RouteBuilder {
     @Override
     public void configure() throws Exception {
-        from("{{amq.topic}}")
+        from("amqp:topic:user1")
                 .process(exchange -> {
                     String[] payload = exchange.getIn().getBody(String.class).split(",");
                     log.info(String.format("AMQP message (%s) consumed", Arrays.toString(payload)));
@@ -37,9 +37,7 @@ public class AmqStompBridge extends RouteBuilder {
                             break;
                     }
                     exchange.getIn().setBody(sensorData);
-                    // do something with the payload and result here
                 })
-            .to("{{stomp.queue}}")
         ;
     }
 }

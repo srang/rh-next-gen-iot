@@ -13,4 +13,4 @@ java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
              -i ${PROJ_DIR}/spec/swagger.yml \
              -o ${PROJ_DIR}/${APPLICATION_NAME}
 
-mvn clean install -f ${PROJ_DIR}/${APPLICATION_NAME}
+mvn clean install -f ${PROJ_DIR}/${APPLICATION_NAME} -DskipTests
