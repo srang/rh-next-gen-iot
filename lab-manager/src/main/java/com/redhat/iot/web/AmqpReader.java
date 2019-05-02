@@ -5,6 +5,7 @@ import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
 import javax.jms.BytesMessage;
@@ -17,12 +18,12 @@ import java.util.stream.Collectors;
 @Component
 public class AmqpReader {
 
+    @SendTo("/topic/sensordata")
     @JmsListener(destination = "user1")
-    public void receiveMessage(int[] rawMessage) throws Exception {
+    public Object receiveMessage(int[] rawMessage) throws Exception {
         String message = Arrays.stream(rawMessage).mapToObj(i -> String.valueOf((char)i)).collect(Collectors.joining());
         log.info(String.format("AMQ Message (%s) consumed from topic \"user1\"", message));
         String[] payload = message.split(",");
-        log.info(String.format("AMQP message (%s) consumed", Arrays.toString(payload)));
         Map<String, String> sensorData = new HashMap<>();
         sensorData.put("pumpId", payload[0]);
         sensorData.put("type", payload[1]);
@@ -42,6 +43,9 @@ public class AmqpReader {
                 sensorData.put("units", "Hz");
                 break;
         }
+        return sensorData;
     }
+
+
 
 }

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {ListView, Row, Col} from 'patternfly-react';
+import * as SockJS from 'sockjs-client'
+import {Stomp} from '@stomp/stompjs'
 
 export class PumpListView extends Component {
     constructor() {
@@ -79,17 +81,20 @@ export class PumpListView extends Component {
         };
     }
     componentDidMount() {
-        console.log("here1");
         this.register([
-            {route: '/user1', callback: this.printStuff}
+            {route: '/ws/sensordata', callback: this.printStuff}
         ]);
     }
     register(registrations) {
-        const socket = 'ws://localhost:9292/ws/sensordata';
-        const ws = new WebSocket(socket);
-        ws.onmessage = function (event) {
-            console.log(event.data)
-        }
+        const sock = new SockJS('/frontend')
+        let stompClient = Stomp.over(sock)
+        stompClient.connect({}, function (frame) {
+            console.log("Connected "+ frame)
+            registrations.forEach(function (registration) {
+                stompClient.subscribe(registration.route, registration.callback)
+            })
+
+        })
     }
 
     printStuff(data) {

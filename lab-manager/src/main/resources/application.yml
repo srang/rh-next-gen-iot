@@ -13,6 +13,7 @@ mqtt:
 
 app:
   name: user1
+logging.level.org.springframework.web.socket.config.WebSocketMessageBrokerStats: DEBUG
 spring:
   activemq:
     broker-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
