@@ -20,38 +20,31 @@ import org.apache.camel.Exchange;
 //kamel run Sample.java -d mvn:com.google.code.gson:gson:2.8.5 -d camel-gson
 
 public class StreamsReader extends RouteBuilder {
-  private static final String KIE_SERVER = "http://data-compression-kieserver:8080/services/rest/server";
-  private static final String KIE_USER = "jboss";
-  private static final String KIE_PASS = "jboss";
-  private static final String KIE_CONTAINER = "datacompression";
-  @Override
-  public void configure() throws Exception {
-    //from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091")
-    from("{{route.from}}")
-    .setBody(constant(600))
-    .process(
-      new Processor() {
-        public void process(Exchange exchange) throws Exception {
-          String payload = exchange.getIn().getBody(String.class);
-          // do something with the payload and/or exchange here
-          HashMap sensorData = new HashMap();
-          sensorData.put("type", "motor-temperature");
-          sensorData.put("value", payload);
-          sensorData.put("units", "F");
-          KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(KIE_SERVER, KIE_USER, KIE_PASS);
-          conf.setMarshallingFormat(MarshallingFormat.XSTREAM);
+    private static final String KIE_SERVER = "http://rules-manager-kieserver:8080/services/rest/server";
+    private static final String KIE_USER = "jboss";
+    private static final String KIE_PASS = "jboss";
+    private static final String KIE_CONTAINER = "esp_rules";
 
-          RuleServicesClient ruleServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(RuleServicesClient.class);
+    @Override
+    public void configure() throws Exception {
+        //from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091")
+        from("{{route.from}}")
+                .process(exchange -> {
+                    String payload = exchange.getIn().getBody(String.class)
+                    log.info(String.format("Kafka message (%s) consumed", Arrays.toString(payload)));
+                    KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(kieServer, kieUser, kiePass);
+                    conf.setMarshallingFormat(MarshallingFormat.XSTREAM);
 
-          KieCommands commandsFactory = KieServices.Factory.get().getCommands();
-          List<Command<?>> commands = new ArrayList<>();
-          commands.add((Command<?>)commandsFactory.newInsert(sensorData));
-          commands.add((Command<?>)commandsFactory.newFireAllRules());
-          BatchExecutionCommand batch = commandsFactory.newBatchExecution(commands);
-          System.out.println(batch.toString());
-          ServiceResponse<ExecutionResults> executeResponse = ruleServicesClient.executeCommandsWithResults(KIE_CONTAINER, batch);
-          System.out.println(executeResponse);
-     }
-    });
-  }
+                    DMNServicesClient dmnServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(DMNServicesClient.class);
+                    DMNContext context = dmnServicesClient.newContext();
+                    context.set("type", sensorData.get("type"));
+                    context.set("value", Float.parseFloat(sensorData.get("value")));
+                    ServiceResponse<DMNResult> serverResp = dmnServicesClient.evaluateAll(kieContainer, "pump_rules", "pump_rules", context);
+                    DMNResult dmnResult = serverResp.getResult();
+                    for (DMNDecisionResult dr : dmnResult.getDecisionResults()) {
+                        log.info(String.format("%s: %s, Decision: '%s', Evaluation: %s, Result: %s",
+                                sensorData.get("type"), sensorData.get("value"), dr.getDecisionName(), dr.getEvaluationStatus().toString(), dr.getResult()));
+                    }
+                });
+    }
 }

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Log
-@Component
+//@Component
 public class AmqpRulesBridge extends RouteBuilder {
     @Value("${kie.container}")
     private String kieContainer;

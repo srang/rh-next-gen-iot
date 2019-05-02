@@ -82,7 +82,7 @@ export class PumpListView extends Component {
     }
     componentDidMount() {
         this.register([
-            {route: '/ws/sensordata', callback: this.printStuff}
+            {route: '/topic/sensordata', callback: this.printStuff}
         ]);
     }
     register(registrations) {

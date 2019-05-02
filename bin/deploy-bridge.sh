@@ -20,7 +20,7 @@ fi
 MESSAGING_USERNAME="device1"
 MESSAGING_PASSWORD='password'
 MESSAGING_SERVICE="broker-amq-headless"
-KAFKA_BOOTSTRAP_SERVER="user1-kafka-bootstrap:9092"
+KAFKA_BOOTSTRAP_SERVER="iot-cluster-kafka-bootstrap.kafka.svc:9092"
 MESSAGING_PORT="61616"
 KIE_SERVER="http://rules-manager-kieserver:8080/services/rest/server"
 KIE_CONTAINER="esp_rules"
