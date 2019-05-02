@@ -1,3 +1,5 @@
+package com.redhat.iot.routes;
+
 import com.google.gson.Gson;
 import org.apache.camel.builder.RouteBuilder;
 import org.kie.dmn.api.core.DMNContext;
@@ -42,5 +44,4 @@ public class StreamsReader extends RouteBuilder {
                 });
     }
 }
-
 
