@@ -5,6 +5,7 @@ import './css/App.css';
 import pfLogo from './img/logo-alt.svg';
 import {PumpStatusLayout} from "./PumpStatusLayout";
 import {PumpListView} from "./PumpListView";
+import './websocket-listener'
 
 class App extends Component {
     render() {
@@ -16,7 +17,7 @@ class App extends Component {
                     <VerticalNav.Item title="Lab Control" iconClass="fa fa-sliders"/>
                 </VerticalNav>
                 <div className="container-fluid container-pf-nav-pf-vertical nav-pf-persistent-secondary" style={{marginBottom: '20px', marginTop: '40px'}}>
-                        <PumpListView />
+                    <PumpListView />
                 </div>
             </div>
         );

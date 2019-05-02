@@ -1,5 +1,21 @@
-iqtt:
+mqtt:
   username: device1
   password: password
   service: localhost
-  port: 1883
+  port: 61616
+
+pump:
+  devices: 1
+
+#spring:
+#  activemq:
+#    broker-url: tcp://localhost:61616
+#    user: device1
+#    password: password
+
+amqphub:
+  amqp10jms:
+    remote-url: amqp://localhost:61616
+    username: device1
+    password: password
+amq.queue: user1

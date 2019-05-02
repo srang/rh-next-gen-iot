@@ -13,7 +13,12 @@ mqtt:
 
 app:
   name: user1
-
-#spring:
-#  mvc:
-#    static-path-pattern: /resources/static/**
+amq.topic: ${app.name}
+stomp.queue: sensordata
+amqphub.amqp10jms:
+  remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
+  username: ${MESSAGING_USERNAME}
+  password: ${MESSAGING_PASSWORD}
+  pool:
+    useAnonymousProducers: false
+    enabled: true

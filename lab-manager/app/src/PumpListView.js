@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import {ListView, Row, Col} from 'patternfly-react';
+// import {register} from './websocket-listener';
+const stompClient = require('./websocket-listener');
 
 export class PumpListView extends Component {
     constructor() {
         super();
+        // this.printStuff = this.printStuff.bind(this)
         this.state = {
+            pumps: [],
             listItems: [
                 {
                     title: 'Item 1',
@@ -76,6 +80,15 @@ export class PumpListView extends Component {
             ]
         };
     }
+    // componentDidMount() {
+        // stompClient.register([
+        //     {route: '/topic/sensordata', callback: this.printStuff}
+        // ]);
+    // }
+
+    // printStuff(data) {
+    //     console.log(data)
+    // }
 
     render() {
         return (
@@ -98,7 +111,7 @@ export class PumpListView extends Component {
                                 leftContent={<ListView.Icon name="plane"/>}
                                 heading={title}
                                 description={description}
-                                stacked={false}
+                                stacked={true}
                                 hideCloseIcon={false}
                             >
                                 <Row>
