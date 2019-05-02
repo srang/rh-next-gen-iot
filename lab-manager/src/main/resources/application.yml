@@ -13,10 +13,15 @@ mqtt:
 
 app:
   name: user1
-amqphub.amqp10jms:
-  remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
-  username: ${MESSAGING_USERNAME}
-  password: ${MESSAGING_PASSWORD}
-  pool:
-    useAnonymousProducers: false
-    enabled: true
+spring:
+  activemq:
+    broker-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
+    user: ${MESSAGING_USERNAME}
+    password: ${MESSAGING_PASSWORD}
+#amqphub.amqp10jms:
+#  remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
+#  username: ${MESSAGING_USERNAME}
+#  password: ${MESSAGING_PASSWORD}
+#  pool:
+#    useAnonymousProducers: false
+#    enabled: true
