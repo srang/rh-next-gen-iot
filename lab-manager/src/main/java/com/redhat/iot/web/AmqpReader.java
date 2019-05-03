@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Log
-@Component
+//@Component
 public class AmqpReader {
 
     @SendTo("/topic/sensordata")

@@ -159,6 +159,10 @@ objects:
                   value: "${MQTT_SERVICE}"
                 - name: MQTT_PORT
                   value: "${MQTT_PORT}"
+                - name: MESSAGING_SERVICE
+                  value: "${MQTT_SERVICE}"
+                - name: MESSAGING_PORT
+                  value: "${MQTT_PORT}"
                 - name: MESSAGING_USERNAME
                   value: "${MESSAGING_USERNAME}"
                 - name: MESSAGING_PASSWORD

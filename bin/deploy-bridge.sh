@@ -6,7 +6,7 @@ CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJ_DIR="${CMD_DIR}/.."
 
 NAMESPACE="${NAMESPACE:-user1}"
-FUSE_REL="${FUSE_REL:-1.2-12}"
+FUSE_REL="${FUSE_REL:-1.2}"
 
 APPLICATION_RELEASE='0.0.1'
 APPLICATION_NAME='message-bridge'
