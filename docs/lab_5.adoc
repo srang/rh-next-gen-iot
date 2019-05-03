@@ -2,17 +2,41 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 5: Update Rules
+= Lab 5: Business Rules Service
 
-== Decision Manager Node (DMN)
+== Business Rules
+One of the important ways to monitor ESP health is by triggering an action if the sensor data meets a certain condition as defined by business rules. In this section we’ll learn how to create a business rules service. This service will work the following way:
+
+1. Sensor data is read from a defined message queue.??
+2. Sensor data is handed over to the rules execution engine that triggers action per defined rules. In our case, there is a field 'unhealthy-pump-decision' which will be changed to:
+- '2' if sensor value is too high
+- '1' if the sensor value  is above operating range
+- '0' if the sensor value is within operating range.
+
+Altered data is placed into another defined message queue.??
+
+The rules syntax is pretty simple: +
+If +
+   some condition +
+then +
+   some action
+
+For our lab, we will create the decision table via a web front-end, provided by Decision Manager Node (DMN).
+
+
+== DMN
 
 As a business analyst or business rules developer, you can use Decision Model and Notation (DMN) to model a decision service graphically in a decision requirements diagram (DRD). This diagram traces business decisions from start to finish, with each decision node drawing logic from DMN model decision elements such as decision tables.
 
 For this lab, our DMN model will use two elements: input data (pump telemetry data) and decision (logic for determining pump condition).
 
+TIP: Check out link:https://gitlab.consulting.redhat.com/ddoyle/bxms_decision_mgmt_foundations/blob/pam73-enablement-new-content/modules/06_Intermediate_DMN/06_1_deploy_DMN_Lab.adoc[DMN lab] from Duncan Doyle
+or watch the video: link:https://www.youtube.com/watch?v=Su7pR0Yj4W0video[Getting started with DMN]
+
+=== Decision Table
 A decision table is a visual representation of one or more rules in a tabular format. Each rule consists of a single row in the table, and includes columns that define the conditions and outcome for that particular row.
 
-Using DMN
+=== Using DMN
 DMN is available from Business Central portal that allows visual composition of custom business rules and processes.
 
 Click on Routes in the left OpenShift Console to access the Business Central portal
@@ -54,6 +78,9 @@ The healthy operating range of the pumps is as follows:
 |`vibration`        |`<2.7`  |`>=2.2 and <4`    |`>4`
 |=======
 
+IMPORTANT: When defining a range, use `[` for lower limit and `)` for upper limit
+
+
 Once the rules are updated, click *save*
 
 image::dm-dmn-decision_table_save.png[]
@@ -61,7 +88,6 @@ image::dm-dmn-decision_table_save.png[]
 With our decision table updated, we can now package our DMN model in a Deployment Unit (KJAR) and deploy it on the Execution Server.
 
 In the bread-crumb navigation in the upper-left corner, click on *esp_rules* to go back to the project’s Library View.
-
 
 Click on the Deploy button in the upper-right corner of the screen. This will package our DMN mode in a Deployment Unit (KJAR) and deploy it onto the Execution Server (KIE-Server).
 
