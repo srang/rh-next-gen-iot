@@ -42,7 +42,14 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
 # let's be thorough
 oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
-${CMD_DIR}/build-bridge.sh
+
+# TODO cancel in progress builds
+
+java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
+    generate -l spring \
+             -c ${PROJ_DIR}/${APPLICATION_NAME}/codegen-config.json \
+             -i ${PROJ_DIR}/spec/swagger.yml \
+             -o ${PROJ_DIR}/${APPLICATION_NAME}
 
 build=$(oc start-build bc/${APPLICATION_NAME} -n ${NAMESPACE} --from-dir=${PROJ_DIR}/${APPLICATION_CONTEXT_DIR} | awk '{print $1}')
 while [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) =~ ^(Running|Pending|New)$ ]] ; do
