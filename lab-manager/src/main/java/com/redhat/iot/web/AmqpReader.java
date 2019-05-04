@@ -1,21 +1,15 @@
 package com.redhat.iot.web;
 
 import lombok.extern.java.Log;
-import org.apache.activemq.command.ActiveMQBytesMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import javax.jms.BytesMessage;
-import javax.jms.Message;
-import javax.jms.TextMessage;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Log
-//@Component
+@Component
 public class AmqpReader {
 
     @SendTo("/topic/sensordata")

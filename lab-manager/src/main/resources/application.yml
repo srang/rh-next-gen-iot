@@ -13,16 +13,8 @@ mqtt:
 
 app:
   name: user1
-logging.level.org.springframework.web.socket.config.WebSocketMessageBrokerStats: DEBUG
 spring:
   activemq:
-    broker-url: amqp://${MESSAGING_SERVICE}:${AMQP_PORT}?amqp.saslMechanisms=PLAIN
+    broker-url: tcp://${MESSAGING_SERVICE}:${AMQP_PORT}
     user: ${MESSAGING_USERNAME}
     password: ${MESSAGING_PASSWORD}
-#amqphub.amqp10jms:
-#  remote-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
-#  username: ${MESSAGING_USERNAME}
-#  password: ${MESSAGING_PASSWORD}
-#  pool:
-#    useAnonymousProducers: false
-#    enabled: true

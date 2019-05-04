@@ -9,6 +9,7 @@ export RHDM_VER='73'
 export RHDM_REL="1.0-3"
 export KAMEL_VER="0.3.2"
 export FUSE_REL="1.2"
+export AMQ_REL="1.3-5"
 
 # init cluster resources
 # import RHDM images

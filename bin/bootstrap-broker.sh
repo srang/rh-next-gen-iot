@@ -10,6 +10,7 @@ APPLICATION_RELEASE='0.0.1'
 APPLICATION_NAME='lab-manager'
 APPLICATION_CONTEXT_DIR=${APPLICATION_NAME}
 SERVICE=${APPLICATION_NAME}
+AMQ_REL="${AMQ_REL:-1.3-5}"
 
 if (oc get statefulset/broker-amq -n ${NAMESPACE} &>/dev/null); then
     # Reprocess template and delete all resources
@@ -18,6 +19,7 @@ if (oc get statefulset/broker-amq -n ${NAMESPACE} &>/dev/null); then
         -p AMQ_PASSWORD="password" \
         -p AMQ_PROTOCOL="amqp,mqtt" \
         -p AMQ_ADDRESSES=${NAMESPACE} \
+        -p IMAGE_VERSION=${AMQ_REL} \
         | oc delete -n ${NAMESPACE} -f-
     # Clean up leftover PVC
     oc delete pvc -l=app=broker-amq -n ${NAMESPACE}
@@ -29,6 +31,7 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/broker-persistent
     -p AMQ_PASSWORD="password" \
     -p AMQ_PROTOCOL="amqp,mqtt" \
     -p AMQ_ADDRESSES=${NAMESPACE} \
+    -p IMAGE_VERSION=${AMQ_REL} \
     | oc apply -n ${NAMESPACE} -f-
 
 # wait for a pod to come up
