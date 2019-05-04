@@ -18,9 +18,15 @@ parameters:
     required: true
   - name: APPLICATION_NAMESPACE
     required: true
-  - name: MQTT_SERVICE
+  - name: MESSAGING_SERVICE
+    required: true
+  - name: MESSAGING_USERNAME
+    value: "device1"
+  - name: MESSAGING_PASSWORD
     required: true
   - name: MQTT_PORT
+    required: true
+  - name: AMQP_PORT
     required: true
   - name: IMAGE_STREAM_NAMESPACE
     value: openshift
@@ -30,10 +36,6 @@ parameters:
     required: true
   - name: IMAGE_STREAM_TAG
     value: "1.2-12"
-    required: true
-  - name: MESSAGING_USERNAME
-    value: "device1"
-  - name: MESSAGING_PASSWORD
     required: true
 objects:
   - kind: Service
@@ -155,14 +157,12 @@ objects:
                   containerPort: 8080
                   protocol: TCP
               env:
-                - name: MQTT_SERVICE
-                  value: "${MQTT_SERVICE}"
+                - name: MESSAGING_SERVICE
+                  value: "${MESSAGING_SERVICE}"
                 - name: MQTT_PORT
                   value: "${MQTT_PORT}"
-                - name: MESSAGING_SERVICE
-                  value: "${MQTT_SERVICE}"
-                - name: MESSAGING_PORT
-                  value: "${MQTT_PORT}"
+                - name: AMQP_PORT
+                  value: "${AMQP_PORT}"
                 - name: MESSAGING_USERNAME
                   value: "${MESSAGING_USERNAME}"
                 - name: MESSAGING_PASSWORD

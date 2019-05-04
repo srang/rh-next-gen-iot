@@ -6,17 +6,17 @@ pump:
   devices: 1,2,3,4,5,6,7,8
 
 mqtt:
-  username: device1
-  password: password
-  service: replaceme.svc
-  port: 443
+  username: ${MESSAGING_USERNAME}
+  password: ${MESSAGING_PASSWORD}
+  service: ${MESSAGING_SERVICE}
+  port: ${MQTT_PORT}
 
 app:
   name: user1
 logging.level.org.springframework.web.socket.config.WebSocketMessageBrokerStats: DEBUG
 spring:
   activemq:
-    broker-url: amqp://${MESSAGING_SERVICE}:${MESSAGING_PORT}?amqp.saslMechanisms=PLAIN
+    broker-url: amqp://${MESSAGING_SERVICE}:${AMQP_PORT}?amqp.saslMechanisms=PLAIN
     user: ${MESSAGING_USERNAME}
     password: ${MESSAGING_PASSWORD}
 #amqphub.amqp10jms:

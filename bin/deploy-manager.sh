@@ -19,27 +19,22 @@ fi
 
 MESSAGING_USERNAME="device1"
 MESSAGING_PASSWORD='password'
-MQTT_SERVICE="broker-amq-headless"
+MESSAGING_SERVICE="broker-amq-headless"
 MQTT_PORT="1883"
-#MESSAGING_USERNAME=$(oc get messaginguser/${NAMESPACE}.device1 -o=jsonpath='{ .spec.username }' -n ${NAMESPACE})
-#MESSAGING_PASSWORD=$(echo 'password' | base64)
-#MQTT_SERVICE=$(oc get addressspace/${NAMESPACE} \
-#    -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ .serviceHost }{ end }' -n ${NAMESPACE})
-#MQTT_PORT=$(oc get addressspace/${NAMESPACE} \
-#    -o=jsonpath='{ range .status.endpointStatuses[?(@.name=="mqtt")] }{ range .servicePorts[?(@.name=="mqtt")] }{ .port }{ end }{ end }' -n ${NAMESPACE})
+AMQP_PORT="61616"
 
 oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAME}.yml \
     -p APPLICATION_NAME=${APPLICATION_NAME} \
     -p APPLICATION_NAMESPACE="${NAMESPACE}" \
     -p APPLICATION_RELEASE="${APPLICATION_RELEASE}" \
     -p IMAGE_STREAM_TAG="${FUSE_REL}" \
-    -p MQTT_SERVICE="${MQTT_SERVICE}" \
+    -p MESSAGING_SERVICE="${MESSAGING_SERVICE}" \
     -p MQTT_PORT="${MQTT_PORT}" \
+    -p AMQP_PORT="${AMQP_PORT}" \
     -p MESSAGING_USERNAME="${MESSAGING_USERNAME}" \
     -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
     | oc apply -n ${NAMESPACE} -f-
 
-# let's be thorough
 oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
 ${CMD_DIR}/build-manager.sh
