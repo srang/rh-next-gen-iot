@@ -30,6 +30,7 @@ ${CMD_DIR}/deploy-manager.sh
 ${CMD_DIR}/deploy-bridge.sh
 
 #DEVELOPER ACTIVITIES
-# Deploy kamel bridge (kafka - rules)
-# AUthor rules
+# Deploy kamel bridge (kafka - rules) - shortcut = ${CMD_DIR}/deploy-routes.sh - *TODO* Test with latest route
+# AUthor rules - shortcut - *TODO*
+# *TODO* where decision results go (AMQ)
 # Look at stuff in the UI

@@ -1,3 +1,4 @@
+# LAB AUTHOR TESTING ONLY
 #!/usr/bin/env bash
 set -E
 set -o pipefail
@@ -17,4 +18,5 @@ RULES_POD=$(oc get pods -l=service="${RULES_NAME}-kieserver" -o=jsonpath='{ rang
 RULES_PORT=$(oc get pod/${RULES_POD} -o=jsonpath='{.spec.containers[*].ports[?(@.name=="http")].containerPort }' -n ${NAMESPACE})
 oc port-forward ${BROKER_POD} ${MESSAGE_PORT}:${MESSAGE_PORT} -n ${NAMESPACE} &
 oc port-forward ${RULES_POD} ${RULES_PORT}:${RULES_PORT} -n ${NAMESPACE} &
+
 SPRING_PROFILES_ACTIVE=local java -jar ${PROJ_DIR}/${APPLICATION_NAME}/target/${APPLICATION_NAME}*.jar

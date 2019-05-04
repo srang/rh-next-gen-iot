@@ -1,3 +1,4 @@
+# LAB AUTHOR TESTING ONLY
 #!/usr/bin/env bash
 set -E
 set -o pipefail

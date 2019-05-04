@@ -1,3 +1,4 @@
+# DEPRECATED
 #!/usr/bin/env bash
 set -E
 set -o pipefail
@@ -28,7 +29,6 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/kie-server.yml \
     -p IMAGE_STREAM_TAG="${RHDM_REL}" \
     | oc apply -n ${NAMESPACE} -f-
 
-# let's be thorough
 oc rollout pause dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} || echo "already paused"
 
 ${CMD_DIR}/build-rules.sh
@@ -46,5 +46,3 @@ fi
 oc tag ${NAMESPACE}/${APPLICATION_NAME}-kieserver:latest ${NAMESPACE}/${APPLICATION_NAME}-kieserver:${APPLICATION_RELEASE}
 oc scale --replicas=1 dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE}
 oc rollout resume dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE}
-
-# TODO watch for rollout pod and tail logs

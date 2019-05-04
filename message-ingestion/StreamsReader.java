@@ -10,7 +10,6 @@ import org.kie.server.client.KieServicesConfiguration;
 import org.kie.server.client.KieServicesFactory;
 
 import java.util.Map;
-//kamel run Sample.java -d mvn:com.google.code.gson:gson:2.8.5 -d camel-gson
 
 public class StreamsReader extends RouteBuilder {
     private static final String KIE_SERVER = "http://rules-manager-kieserver:8080/services/rest/server";
