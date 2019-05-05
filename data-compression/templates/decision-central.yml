@@ -1,0 +1,856 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  annotations:
+    iconClass: icon-jboss
+    tags: rhdm,decisionserver,jboss,authoring
+    version: "1.1"
+    openshift.io/display-name: Red Hat Decision Manager 7.3 authoring environment (non-HA, persistent, with https)
+    openshift.io/provider-display-name: Red Hat, Inc.
+    description: Application template for a non-HA persistent authoring environment, for Red Hat Decision Manager 7.3
+    template.openshift.io/long-description: This template defines resources needed to develop and execute Rules on Red Hat Decision Manager 7.3, including application deployment configuration, secure and insecure http communication and a persistent volume to store data that needs to survive to a restart.
+    template.openshift.io/documentation-url: https://access.redhat.com/documentation/en-us/red_hat_decision_manager/7.2/html/deploying_a_red_hat_decision_manager_7.2_authoring_environment_on_red_hat_openshift_container_platform/
+    template.openshift.io/support-url: https://access.redhat.com
+    template.openshift.io/bindable: "false"
+  name: rhdm73-authoring
+labels:
+  template: rhdm73-authoring
+  rhdm: "1.1"
+message: |-
+          A new persistent Decision Manager application has been created in your project.
+          The username/password for accessing the Decision Central interface is
+
+              Username: ${KIE_ADMIN_USER}
+              Password: ${KIE_ADMIN_PWD}
+
+          The user name/password for calls to the KIE server is
+
+              Username: ${KIE_SERVER_USER}
+              Password: ${KIE_SERVER_PWD}
+
+          Please be sure to create the secrets named "${DECISION_CENTRAL_HTTPS_SECRET}" and "${KIE_SERVER_HTTPS_SECRET}" containing the
+          ${DECISION_CENTRAL_HTTPS_KEYSTORE} and ${KIE_SERVER_HTTPS_KEYSTORE} files used for serving secure content.
+parameters:
+- name: APPLICATION_NAME
+  value: data-compression
+  required: true
+- name: KIE_ADMIN_USER
+  value: adminUser
+  required: false
+- name: KIE_ADMIN_PWD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: false
+- name: KIE_SERVER_CONTROLLER_USER
+  value: controllerUser
+  required: false
+- name: KIE_SERVER_CONTROLLER_PWD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: false
+- name: KIE_SERVER_CONTROLLER_TOKEN
+  required: false
+- name: KIE_SERVER_USER
+  value: executionUser
+  required: false
+- name: KIE_SERVER_PWD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: false
+- name: KIE_SERVER_BYPASS_AUTH_USER
+  value: 'false'
+  required: false
+- name: KIE_MBEANS
+  value: enabled
+  required: false
+- name: DROOLS_SERVER_FILTER_CLASSES
+  value: 'true'
+  required: false
+- name: DECISION_CENTRAL_HOSTNAME_HTTP
+  value: ''
+  required: false
+- name: DECISION_CENTRAL_HOSTNAME_HTTPS
+  value: ''
+  required: false
+- name: KIE_SERVER_HOSTNAME_HTTP
+  value: ''
+  required: false
+- name: KIE_SERVER_HOSTNAME_HTTPS
+  value: ''
+  required: false
+- name: KIE_SERVER_USE_SECURE_ROUTE_NAME
+  value: 'false'
+  required: false
+#- name: DECISION_CENTRAL_HTTPS_SECRET
+#  value: central-secret
+#  required: true
+- name: DECISION_CENTRAL_HTTPS_KEYSTORE
+  value: keystore.jks
+  required: false
+- name: DECISION_CENTRAL_HTTPS_NAME
+  value: jboss
+  required: false
+- name: DECISION_CENTRAL_HTTPS_PASSWORD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: false
+#- name: KIE_SERVER_HTTPS_SECRET
+#  value: kieserver-secret
+#  required: true
+- name: KIE_SERVER_HTTPS_KEYSTORE
+  value: keystore.jks
+  required: false
+- name: KIE_SERVER_HTTPS_NAME
+  value: jboss
+  required: false
+- name: KIE_SERVER_HTTPS_PASSWORD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: false
+- name: IMAGE_REGISTRY_LOCAL
+  value: "image-registry.openshift-image-registry.svc:5000"
+- name: IMAGE_STREAM_NAMESPACE
+  value: openshift
+  required: true
+- name: KIE_SERVER_IMAGE_STREAM_NAME
+  value: "rhdm73-kieserver-openshift"
+  required: true
+- name: DECISION_CENTRAL_IMAGE_STREAM_NAME
+  value: "rhdm73-decisioncentral-openshift"
+- name: DECISION_CENTRAL_IMAGE_STREAM_TAG
+  value: "1.1-2"
+  required: true
+- name: KIE_SERVER_IMAGE_STREAM_TAG
+  value: "1.1-2"
+  required: true
+- name: SSO_IMAGE_STREAM_NAME
+  value: "sso73-openshift"
+  required: true
+- name: SSO_IMAGE_STREAM_TAG
+  value: "1.0-7"
+  required: true
+- name: MAVEN_REPO_ID
+  example: my-repo-id
+  required: false
+- name: MAVEN_REPO_URL
+  example: http://nexus.nexus-project.svc.cluster.local:8081/nexus/content/groups/public/
+  required: false
+- name: MAVEN_REPO_USERNAME
+  required: false
+- name: MAVEN_REPO_PASSWORD
+  required: false
+- name: DECISION_CENTRAL_MAVEN_USERNAME
+  required: true
+  value: mavenUser
+- name: DECISION_CENTRAL_MAVEN_PASSWORD
+  from: "[a-zA-Z]{6}[0-9]{1}!"
+  generate: expression
+  required: true
+- name: GIT_HOOKS_DIR
+  example: /opt/eap/standalone/data/kie/git/hooks
+  required: false
+- name: DECISION_CENTRAL_VOLUME_CAPACITY
+  value: 1Gi
+  required: true
+- name: DECISION_CENTRAL_MEMORY_LIMIT
+  value: 2Gi
+  required: false
+- name: KIE_SERVER_MEMORY_LIMIT
+  value: 1Gi
+  required: false
+- name: SSO_URL
+  example: https://rh-sso.example.com/auth
+  required: false
+- name: SSO_REALM
+  required: false
+- name: DECISION_CENTRAL_SSO_CLIENT
+  required: false
+- name: DECISION_CENTRAL_SSO_SECRET
+  example: "252793ed-7118-4ca8-8dab-5622fa97d892"
+  required: false
+- name: KIE_SERVER_SSO_CLIENT
+  required: false
+- name: KIE_SERVER_SSO_SECRET
+  example: "252793ed-7118-4ca8-8dab-5622fa97d892"
+  required: false
+- name: SSO_USERNAME
+  required: false
+- name: SSO_PASSWORD
+  required: false
+- name: SSO_DISABLE_SSL_CERTIFICATE_VALIDATION
+  value: "false"
+  required: false
+- name: SSO_PRINCIPAL_ATTRIBUTE
+  value: preferred_username
+  required: false
+- name: AUTH_LDAP_URL
+  example: "ldap://myldap.example.com"
+  required: false
+- name: AUTH_LDAP_BIND_DN
+  example: "uid=admin,ou=users,ou=exmample,ou=com"
+  required: false
+- name: AUTH_LDAP_BIND_CREDENTIAL
+  example: "Password"
+  required: false
+- name: AUTH_LDAP_JAAS_SECURITY_DOMAIN
+  required: false
+- name: AUTH_LDAP_BASE_CTX_DN
+  example: "ou=users,ou=example,ou=com"
+  required: false
+- name: AUTH_LDAP_BASE_FILTER
+  example: "(uid={0})"
+  required: false
+- name: AUTH_LDAP_SEARCH_SCOPE
+  example: "SUBTREE_SCOPE"
+  required: false
+- name: AUTH_LDAP_SEARCH_TIME_LIMIT
+  example: "10000"
+  required: false
+- name: AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE
+  example: "distinguishedName"
+  required: false
+- name: AUTH_LDAP_PARSE_USERNAME
+  example: "true"
+  required: false
+- name: AUTH_LDAP_USERNAME_BEGIN_STRING
+  required: false
+- name: AUTH_LDAP_USERNAME_END_STRING
+  required: false
+- name: AUTH_LDAP_ROLE_ATTRIBUTE_ID
+  example: memberOf
+  required: false
+- name: AUTH_LDAP_ROLES_CTX_DN
+  example: "ou=groups,ou=example,ou=com"
+  required: false
+- name: AUTH_LDAP_ROLE_FILTER
+  example: "(memberOf={1})"
+  required: false
+- name: AUTH_LDAP_ROLE_RECURSION
+  example: "1"
+  required: false
+- name: AUTH_LDAP_DEFAULT_ROLE
+  example: "guest"
+  required: false
+- name: AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID
+  example: "name"
+  required: false
+- name: AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN
+  example: "false"
+  required: false
+- name: AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN
+  example: "false"
+  required: false
+- name: AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK
+  required: false
+- name: AUTH_ROLE_MAPPER_ROLES_PROPERTIES
+  required: false
+- name: AUTH_ROLE_MAPPER_REPLACE_ROLE
+  required: false
+objects:
+- kind: ServiceAccount
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-rhdmsvc"
+    labels:
+      application: "${APPLICATION_NAME}"
+- kind: RoleBinding
+  apiVersion: v1
+  metadata:
+     name: "${APPLICATION_NAME}-rhdmsvc-view"
+     labels:
+       application: "${APPLICATION_NAME}"
+  subjects:
+  - kind: ServiceAccount
+    name: "${APPLICATION_NAME}-rhdmsvc"
+  roleRef:
+    name: view
+- kind: Service
+  apiVersion: v1
+  spec:
+    ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: https
+      port: 8443
+      targetPort: 8443
+    - name: git-ssh
+      port: 8001
+      targetPort: 8001
+    selector:
+      deploymentConfig: "${APPLICATION_NAME}-rhdmcentr"
+  metadata:
+    name: "${APPLICATION_NAME}-rhdmcentr"
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-rhdmcentr"
+    annotations:
+      service.alpha.openshift.io/serving-cert-secret-name: "${APPLICATION_NAME}-rhdmcentr-tls"
+      description: All the Decision Central web server's ports.
+- kind: Service
+  apiVersion: v1
+  spec:
+    ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: https
+      port: 8443
+      targetPort: 8443
+    selector:
+      deploymentConfig: "${APPLICATION_NAME}-ks"
+  metadata:
+    name: "${APPLICATION_NAME}-ks"
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-ks"
+    annotations:
+      service.alpha.openshift.io/serving-cert-secret-name: "${APPLICATION_NAME}-ks-tls"
+      description: All the KIE server web server's ports.
+- kind: Route
+  apiVersion: v1
+  id: "${APPLICATION_NAME}-rhdmcentr-http"
+  metadata:
+    name: "${APPLICATION_NAME}-rhdmcentr"
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-rhdmcentr"
+    annotations:
+      description: Route for Decision Central's http service.
+      haproxy.router.openshift.io/timeout: 60s
+  spec:
+    host: "${DECISION_CENTRAL_HOSTNAME_HTTP}"
+    to:
+      name: "${APPLICATION_NAME}-rhdmcentr"
+    port:
+      targetPort: http
+- kind: Route
+  apiVersion: v1
+  id: "${APPLICATION_NAME}-rhdmcentr-https"
+  metadata:
+    name: secure-${APPLICATION_NAME}-rhdmcentr
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-rhdmcentr"
+    annotations:
+      description: Route for Decision Central's https service.
+      haproxy.router.openshift.io/timeout: 60s
+  spec:
+    host: "${DECISION_CENTRAL_HOSTNAME_HTTPS}"
+    to:
+      name: ${APPLICATION_NAME}-rhdmcentr
+    port:
+      targetPort: https
+    tls:
+      termination: reencrypt
+- kind: Route
+  apiVersion: v1
+  id: "${APPLICATION_NAME}-ks-http"
+  metadata:
+    name: "${APPLICATION_NAME}-ks"
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-ks"
+    annotations:
+      description: Route for KIE server's http service.
+  spec:
+    host: "${KIE_SERVER_HOSTNAME_HTTP}"
+    to:
+      name: "${APPLICATION_NAME}-ks"
+    port:
+      targetPort: http
+- kind: Route
+  apiVersion: v1
+  id: "${APPLICATION_NAME}-ks-https"
+  metadata:
+    name: secure-${APPLICATION_NAME}-ks
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-ks"
+    annotations:
+      description: Route for KIE server's https service.
+  spec:
+    host: "${KIE_SERVER_HOSTNAME_HTTPS}"
+    to:
+      name: ${APPLICATION_NAME}-ks
+    port:
+      targetPort: https
+    tls:
+      termination: reencrypt
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-rhdmcentr"
+    labels:
+      application: "${APPLICATION_NAME}-rhdmcentr"
+      service: "${APPLICATION_NAME}-rhdmcentr"
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      deploymentConfig: "${APPLICATION_NAME}-rhdmcentr"
+    template:
+      metadata:
+        name: "${APPLICATION_NAME}-rhdmcentr"
+        labels:
+          deploymentConfig: "${APPLICATION_NAME}-rhdmcentr"
+          application: "${APPLICATION_NAME}-rhdmcentr"
+          service: "${APPLICATION_NAME}-rhdmcentr"
+      spec:
+        serviceAccountName: "${APPLICATION_NAME}-rhdmsvc"
+        terminationGracePeriodSeconds: 60
+        # https://developers.redhat.com/blog/2017/11/22/dynamically-creating-java-keystores-openshift/
+        initContainers:
+        - name: pem-to-keystore
+          image: "${IMAGE_REGISTRY_LOCAL}/${IMAGE_STREAM_NAMESPACE}/${SSO_IMAGE_STREAM_NAME}:${SSO_IMAGE_STREAM_TAG}"
+          imagePullPolicy: Always
+          env:
+            - name: keyfile
+              value: /var/run/secrets/openshift.io/services_serving_certs/tls.key
+            - name: crtfile
+              value: /var/run/secrets/openshift.io/services_serving_certs/tls.crt
+            - name: keystore_pkcs12
+              value: /var/run/secrets/java.io/keystores/keystore.pkcs12
+            - name: keystore_jks
+              value: /var/run/secrets/java.io/keystores/${DECISION_CENTRAL_HTTPS_KEYSTORE}
+            - name: password
+              value: ${DECISION_CENTRAL_HTTPS_PASSWORD}
+          command:
+            - /bin/bash
+          args:
+            - "-c"
+            - "openssl pkcs12 -export -inkey $keyfile -in $crtfile -out $keystore_pkcs12 -password pass:$password && keytool -importkeystore -noprompt -srckeystore $keystore_pkcs12 -srcstoretype pkcs12 -destkeystore $keystore_jks -storepass $password -srcstorepass $password"
+          volumeMounts:
+            - name: keystore-volume
+              mountPath: /var/run/secrets/java.io/keystores
+            - name: service-certs
+              mountPath: /var/run/secrets/openshift.io/services_serving_certs
+#        - name: pem-to-truststore
+#          image: "${IMAGE_REGISTRY_LOCAL}/${IMAGE_STREAM_NAMESPACE}/${SSO_IMAGE_STREAM_NAME}:${SSO_IMAGE_STREAM_TAG}"
+#          imagePullPolicy: Always
+#          env:
+#            - name: ca_bundle
+#              value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+#            - name: truststore_jks
+#              value: /var/run/secrets/java.io/keystores/truststore.jks
+#            - name: password
+#              value: ${DECISION_CENTRAL_HTTPS_PASSWORD}
+#          command:
+#            - /bin/bash
+#          args:
+#            - "-c"
+#            - "csplit -z -f crt- $ca_bundle '/-----BEGIN CERTIFICATE-----/' '{*}' && for file in crt-*; do keytool -import -noprompt -keystore $truststore_jks -file $file -storepass $password -alias service-$file; done"
+#          volumeMounts:
+#            - name: keystore-volume
+#              mountPath: /var/run/secrets/java.io/keystores
+        containers:
+        - name: "${APPLICATION_NAME}-rhdmcentr"
+          image: "${IMAGE_REGISTRY_LOCAL}/${IMAGE_STREAM_NAMESPACE}/${DECISION_CENTRAL_IMAGE_STREAM_NAME}:${DECISION_CENTRAL_IMAGE_STREAM_TAG}"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "${DECISION_CENTRAL_MEMORY_LIMIT}"
+          volumeMounts:
+          - name: keystore-volume
+            mountPath: "/etc/decisioncentral-secret-volume"
+            readOnly: true
+          - name: "${APPLICATION_NAME}-rhdmcentr-pvol"
+            mountPath: "/opt/eap/standalone/data/kie"
+          livenessProbe:
+            httpGet:
+              path: "/kie-wb.jsp"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            timeoutSeconds: 2
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: "/kie-wb.jsp"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 180
+            timeoutSeconds: 2
+            periodSeconds: 30
+            failureThreshold: 6
+          ports:
+          - name: jolokia
+            containerPort: 8778
+            protocol: TCP
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          - name: https
+            containerPort: 8443
+            protocol: TCP
+          - name: git-ssh
+            containerPort: 8001
+            protocol: TCP
+          env:
+          - name: KIE_ADMIN_USER
+            value: "${KIE_ADMIN_USER}"
+          - name: KIE_ADMIN_PWD
+            value: "${KIE_ADMIN_PWD}"
+          - name: KIE_MBEANS
+            value: "${KIE_MBEANS}"
+          - name: KIE_SERVER_CONTROLLER_USER
+            value: "${KIE_SERVER_CONTROLLER_USER}"
+          - name: KIE_SERVER_CONTROLLER_PWD
+            value: "${KIE_SERVER_CONTROLLER_PWD}"
+          - name: KIE_SERVER_CONTROLLER_TOKEN
+            value: "${KIE_SERVER_CONTROLLER_TOKEN}"
+          - name: KIE_SERVER_USER
+            value: "${KIE_SERVER_USER}"
+          - name: KIE_SERVER_PWD
+            value: "${KIE_SERVER_PWD}"
+          - name: WORKBENCH_ROUTE_NAME
+            value: "${APPLICATION_NAME}-rhdmcentr"
+          - name: MAVEN_REPO_ID
+            value: "${MAVEN_REPO_ID}"
+          - name: MAVEN_REPO_URL
+            value: "${MAVEN_REPO_URL}"
+          - name: MAVEN_REPO_USERNAME
+            value: "${MAVEN_REPO_USERNAME}"
+          - name: MAVEN_REPO_PASSWORD
+            value: "${MAVEN_REPO_PASSWORD}"
+          - name: KIE_MAVEN_USER
+            value: "${DECISION_CENTRAL_MAVEN_USERNAME}"
+          - name: KIE_MAVEN_PWD
+            value: "${DECISION_CENTRAL_MAVEN_PASSWORD}"
+          - name: GIT_HOOKS_DIR
+            value: "${GIT_HOOKS_DIR}"
+          - name: HTTPS_KEYSTORE_DIR
+            value: "/etc/decisioncentral-secret-volume"
+          - name: HTTPS_KEYSTORE
+            value: "${DECISION_CENTRAL_HTTPS_KEYSTORE}"
+          - name: HTTPS_NAME
+            value: "${DECISION_CENTRAL_HTTPS_NAME}"
+          - name: HTTPS_PASSWORD
+            value: "${DECISION_CENTRAL_HTTPS_PASSWORD}"
+          - name: SSO_URL
+            value: "${SSO_URL}"
+          - name: SSO_OPENIDCONNECT_DEPLOYMENTS
+            value: "ROOT.war"
+          - name: SSO_REALM
+            value: "${SSO_REALM}"
+          - name: SSO_SECRET
+            value: "${DECISION_CENTRAL_SSO_SECRET}"
+          - name: SSO_CLIENT
+            value: "${DECISION_CENTRAL_SSO_CLIENT}"
+          - name: SSO_USERNAME
+            value: "${SSO_USERNAME}"
+          - name: SSO_PASSWORD
+            value: "${SSO_PASSWORD}"
+          - name: SSO_DISABLE_SSL_CERTIFICATE_VALIDATION
+            value: "${SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}"
+          - name: SSO_PRINCIPAL_ATTRIBUTE
+            value: "${SSO_PRINCIPAL_ATTRIBUTE}"
+          - name: HOSTNAME_HTTP
+            value: "${DECISION_CENTRAL_HOSTNAME_HTTP}"
+          - name: HOSTNAME_HTTPS
+            value: "${DECISION_CENTRAL_HOSTNAME_HTTPS}"
+          - name: AUTH_LDAP_URL
+            value: "${AUTH_LDAP_URL}"
+          - name: AUTH_LDAP_BIND_DN
+            value: "${AUTH_LDAP_BIND_DN}"
+          - name: AUTH_LDAP_BIND_CREDENTIAL
+            value: "${AUTH_LDAP_BIND_CREDENTIAL}"
+          - name: AUTH_LDAP_JAAS_SECURITY_DOMAIN
+            value: "${AUTH_LDAP_JAAS_SECURITY_DOMAIN}"
+          - name: AUTH_LDAP_BASE_CTX_DN
+            value: "${AUTH_LDAP_BASE_CTX_DN}"
+          - name: AUTH_LDAP_BASE_FILTER
+            value: "${AUTH_LDAP_BASE_FILTER}"
+          - name: AUTH_LDAP_SEARCH_SCOPE
+            value: "${AUTH_LDAP_SEARCH_SCOPE}"
+          - name: AUTH_LDAP_SEARCH_TIME_LIMIT
+            value: "${AUTH_LDAP_SEARCH_TIME_LIMIT}"
+          - name: AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE
+            value: "${AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE}"
+          - name: AUTH_LDAP_PARSE_USERNAME
+            value: "${AUTH_LDAP_PARSE_USERNAME}"
+          - name: AUTH_LDAP_USERNAME_BEGIN_STRING
+            value: "${AUTH_LDAP_USERNAME_BEGIN_STRING}"
+          - name: AUTH_LDAP_USERNAME_END_STRING
+            value: "${AUTH_LDAP_USERNAME_END_STRING}"
+          - name: AUTH_LDAP_ROLE_ATTRIBUTE_ID
+            value: "${AUTH_LDAP_ROLE_ATTRIBUTE_ID}"
+          - name: AUTH_LDAP_ROLES_CTX_DN
+            value: "${AUTH_LDAP_ROLES_CTX_DN}"
+          - name: AUTH_LDAP_ROLE_FILTER
+            value: "${AUTH_LDAP_ROLE_FILTER}"
+          - name: AUTH_LDAP_ROLE_RECURSION
+            value: "${AUTH_LDAP_ROLE_RECURSION}"
+          - name: AUTH_LDAP_DEFAULT_ROLE
+            value: "${AUTH_LDAP_DEFAULT_ROLE}"
+          - name: AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID
+            value: "${AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID}"
+          - name: AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN
+            value: "${AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN}"
+          - name: AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN
+            value: "${AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN}"
+          - name: AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK
+            value: "${AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK}"
+          - name: AUTH_ROLE_MAPPER_ROLES_PROPERTIES
+            value: "${AUTH_ROLE_MAPPER_ROLES_PROPERTIES}"
+          - name: AUTH_ROLE_MAPPER_REPLACE_ROLE
+            value: "${AUTH_ROLE_MAPPER_REPLACE_ROLE}"
+        volumes:
+        - name: keystore-volume
+          emptyDir: {}
+        - name: service-certs
+          secret:
+            secretName: "${APPLICATION_NAME}-rhdmcentr-tls"
+#        - name: decisioncentral-keystore-volume
+#          secret:
+#            secretName: "${DECISION_CENTRAL_HTTPS_SECRET}"
+        - name: "${APPLICATION_NAME}-rhdmcentr-pvol"
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}-rhdmcentr-claim"
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-ks"
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-ks"
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      deploymentConfig: "${APPLICATION_NAME}-ks"
+    template:
+      metadata:
+        name: "${APPLICATION_NAME}-ks"
+        labels:
+          deploymentConfig: "${APPLICATION_NAME}-ks"
+          application: "${APPLICATION_NAME}"
+          service: "${APPLICATION_NAME}-ks"
+      spec:
+        serviceAccountName: "${APPLICATION_NAME}-rhdmsvc"
+        terminationGracePeriodSeconds: 60
+        initContainers:
+          - name: pem-to-keystore
+            image: "${IMAGE_REGISTRY_LOCAL}/${IMAGE_STREAM_NAMESPACE}/${SSO_IMAGE_STREAM_NAME}:${SSO_IMAGE_STREAM_TAG}"
+            imagePullPolicy: Always
+            env:
+              - name: keyfile
+                value: /var/run/secrets/openshift.io/services_serving_certs/tls.key
+              - name: crtfile
+                value: /var/run/secrets/openshift.io/services_serving_certs/tls.crt
+              - name: keystore_pkcs12
+                value: /var/run/secrets/java.io/keystores/keystore.pkcs12
+              - name: keystore_jks
+                value: /var/run/secrets/java.io/keystores/${KIE_SERVER_HTTPS_KEYSTORE}
+              - name: password
+                value: ${KIE_SERVER_HTTPS_PASSWORD}
+            command:
+              - /bin/bash
+            args:
+              - "-c"
+              - "openssl pkcs12 -export -inkey $keyfile -in $crtfile -out $keystore_pkcs12 -password pass:$password && keytool -importkeystore -noprompt -srckeystore $keystore_pkcs12 -srcstoretype pkcs12 -destkeystore $keystore_jks -storepass $password -srcstorepass $password"
+            volumeMounts:
+              - name: keystore-volume
+                mountPath: /var/run/secrets/java.io/keystores
+              - name: service-certs
+                mountPath: /var/run/secrets/openshift.io/services_serving_certs
+        containers:
+        - name: "${APPLICATION_NAME}-ks"
+          image: "${IMAGE_REGISTRY_LOCAL}/${IMAGE_STREAM_NAMESPACE}/${KIE_SERVER_IMAGE_STREAM_NAME}:${KIE_SERVER_IMAGE_STREAM_TAG}"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "${KIE_SERVER_MEMORY_LIMIT}"
+          volumeMounts:
+          - name: keystore-volume
+            mountPath: "/etc/kieserver-secret-volume"
+            readOnly: true
+          livenessProbe:
+            exec:
+              command:
+              - "/bin/bash"
+              - "-c"
+              - "curl --fail --silent -u '${KIE_ADMIN_USER}:${KIE_ADMIN_PWD}' http://localhost:8080/services/rest/server/healthcheck"
+            initialDelaySeconds: 180
+            timeoutSeconds: 2
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+              - "/bin/bash"
+              - "-c"
+              - "curl --fail --silent -u '${KIE_ADMIN_USER}:${KIE_ADMIN_PWD}' http://localhost:8080/services/rest/server/readycheck"
+            initialDelaySeconds: 180
+            timeoutSeconds: 2
+            periodSeconds: 30
+            failureThreshold: 6
+          ports:
+          - name: jolokia
+            containerPort: 8778
+            protocol: TCP
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          - name: https
+            containerPort: 8443
+            protocol: TCP
+          env:
+          - name: DROOLS_SERVER_FILTER_CLASSES
+            value: "${DROOLS_SERVER_FILTER_CLASSES}"
+          - name: KIE_ADMIN_USER
+            value: "${KIE_ADMIN_USER}"
+          - name: KIE_ADMIN_PWD
+            value: "${KIE_ADMIN_PWD}"
+          - name: KIE_MBEANS
+            value: "${KIE_MBEANS}"
+          - name: KIE_SERVER_BYPASS_AUTH_USER
+            value: "${KIE_SERVER_BYPASS_AUTH_USER}"
+          - name: KIE_SERVER_CONTROLLER_USER
+            value: "${KIE_SERVER_CONTROLLER_USER}"
+          - name: KIE_SERVER_CONTROLLER_PWD
+            value: "${KIE_SERVER_CONTROLLER_PWD}"
+          - name: KIE_SERVER_CONTROLLER_TOKEN
+            value: "${KIE_SERVER_CONTROLLER_TOKEN}"
+          - name: KIE_SERVER_CONTROLLER_SERVICE
+            value: "${APPLICATION_NAME}-rhdmcentr"
+          - name: KIE_SERVER_CONTROLLER_PROTOCOL
+            value: "ws"
+          - name: KIE_SERVER_ID
+            value: "${APPLICATION_NAME}-ks"
+          - name: KIE_SERVER_ROUTE_NAME
+            value: "${APPLICATION_NAME}-ks"
+          - name: KIE_SERVER_USE_SECURE_ROUTE_NAME
+            value: "${KIE_SERVER_USE_SECURE_ROUTE_NAME}"
+          - name: KIE_SERVER_USER
+            value: "${KIE_SERVER_USER}"
+          - name: KIE_SERVER_PWD
+            value: "${KIE_SERVER_PWD}"
+          - name: MAVEN_REPOS
+            value: "RHDMCENTR,EXTERNAL"
+          - name: RHDMCENTR_MAVEN_REPO_SERVICE
+            value: "${APPLICATION_NAME}-rhdmcentr"
+          - name: RHDMCENTR_MAVEN_REPO_PATH
+            value: "/maven2/"
+          - name: RHDMCENTR_MAVEN_REPO_USERNAME
+            value: "${DECISION_CENTRAL_MAVEN_USERNAME}"
+          - name: RHDMCENTR_MAVEN_REPO_PASSWORD
+            value: "${DECISION_CENTRAL_MAVEN_PASSWORD}"
+          - name: EXTERNAL_MAVEN_REPO_ID
+            value: "${MAVEN_REPO_ID}"
+          - name: EXTERNAL_MAVEN_REPO_URL
+            value: "${MAVEN_REPO_URL}"
+          - name: EXTERNAL_MAVEN_REPO_USERNAME
+            value: "${MAVEN_REPO_USERNAME}"
+          - name: EXTERNAL_MAVEN_REPO_PASSWORD
+            value: "${MAVEN_REPO_PASSWORD}"
+          - name: HTTPS_KEYSTORE_DIR
+            value: "/etc/kieserver-secret-volume"
+          - name: HTTPS_KEYSTORE
+            value: "${KIE_SERVER_HTTPS_KEYSTORE}"
+          - name: HTTPS_NAME
+            value: "${KIE_SERVER_HTTPS_NAME}"
+          - name: HTTPS_PASSWORD
+            value: "${KIE_SERVER_HTTPS_PASSWORD}"
+          - name: SSO_URL
+            value: "${SSO_URL}"
+          - name: SSO_OPENIDCONNECT_DEPLOYMENTS
+            value: "ROOT.war"
+          - name: SSO_REALM
+            value: "${SSO_REALM}"
+          - name: SSO_SECRET
+            value: "${KIE_SERVER_SSO_SECRET}"
+          - name: SSO_CLIENT
+            value: "${KIE_SERVER_SSO_CLIENT}"
+          - name: SSO_USERNAME
+            value: "${SSO_USERNAME}"
+          - name: SSO_PASSWORD
+            value: "${SSO_PASSWORD}"
+          - name: SSO_DISABLE_SSL_CERTIFICATE_VALIDATION
+            value: "${SSO_DISABLE_SSL_CERTIFICATE_VALIDATION}"
+          - name: SSO_PRINCIPAL_ATTRIBUTE
+            value: "${SSO_PRINCIPAL_ATTRIBUTE}"
+          - name: HOSTNAME_HTTP
+            value: "${KIE_SERVER_HOSTNAME_HTTP}"
+          - name: HOSTNAME_HTTPS
+            value: "${KIE_SERVER_HOSTNAME_HTTPS}"
+          - name: AUTH_LDAP_URL
+            value: "${AUTH_LDAP_URL}"
+          - name: AUTH_LDAP_BIND_DN
+            value: "${AUTH_LDAP_BIND_DN}"
+          - name: AUTH_LDAP_BIND_CREDENTIAL
+            value: "${AUTH_LDAP_BIND_CREDENTIAL}"
+          - name: AUTH_LDAP_JAAS_SECURITY_DOMAIN
+            value: "${AUTH_LDAP_JAAS_SECURITY_DOMAIN}"
+          - name: AUTH_LDAP_BASE_CTX_DN
+            value: "${AUTH_LDAP_BASE_CTX_DN}"
+          - name: AUTH_LDAP_BASE_FILTER
+            value: "${AUTH_LDAP_BASE_FILTER}"
+          - name: AUTH_LDAP_SEARCH_SCOPE
+            value: "${AUTH_LDAP_SEARCH_SCOPE}"
+          - name: AUTH_LDAP_SEARCH_TIME_LIMIT
+            value: "${AUTH_LDAP_SEARCH_TIME_LIMIT}"
+          - name: AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE
+            value: "${AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE}"
+          - name: AUTH_LDAP_PARSE_USERNAME
+            value: "${AUTH_LDAP_PARSE_USERNAME}"
+          - name: AUTH_LDAP_USERNAME_BEGIN_STRING
+            value: "${AUTH_LDAP_USERNAME_BEGIN_STRING}"
+          - name: AUTH_LDAP_USERNAME_END_STRING
+            value: "${AUTH_LDAP_USERNAME_END_STRING}"
+          - name: AUTH_LDAP_ROLE_ATTRIBUTE_ID
+            value: "${AUTH_LDAP_ROLE_ATTRIBUTE_ID}"
+          - name: AUTH_LDAP_ROLES_CTX_DN
+            value: "${AUTH_LDAP_ROLES_CTX_DN}"
+          - name: AUTH_LDAP_ROLE_FILTER
+            value: "${AUTH_LDAP_ROLE_FILTER}"
+          - name: AUTH_LDAP_ROLE_RECURSION
+            value: "${AUTH_LDAP_ROLE_RECURSION}"
+          - name: AUTH_LDAP_DEFAULT_ROLE
+            value: "${AUTH_LDAP_DEFAULT_ROLE}"
+          - name: AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID
+            value: "${AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID}"
+          - name: AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN
+            value: "${AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN}"
+          - name: AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN
+            value: "${AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN}"
+          - name: AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK
+            value: "${AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK}"
+          - name: AUTH_ROLE_MAPPER_ROLES_PROPERTIES
+            value: "${AUTH_ROLE_MAPPER_ROLES_PROPERTIES}"
+          - name: AUTH_ROLE_MAPPER_REPLACE_ROLE
+            value: "${AUTH_ROLE_MAPPER_REPLACE_ROLE}"
+        volumes:
+        - name: keystore-volume
+          emptyDir: {}
+        - name: service-certs
+          secret:
+            secretName: "${APPLICATION_NAME}-ks-tls"
+#        - name: kieserver-keystore-volume
+#          secret:
+#            secretName: "${KIE_SERVER_HTTPS_SECRET}"
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: "${APPLICATION_NAME}-rhdmcentr-claim"
+    labels:
+      application: "${APPLICATION_NAME}"
+      service: "${APPLICATION_NAME}-rhdmcentr"
+  spec:
+    accessModes:
+    - ReadWriteOnce # ReadWriteMany not available for ebs
+    resources:
+      requests:
+        storage: "${DECISION_CENTRAL_VOLUME_CAPACITY}"

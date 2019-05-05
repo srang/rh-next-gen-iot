@@ -1,0 +1,37 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Technology Overview
+
+== Using next gen technologies to build IoT solution
+Internet of Things (IoT) is expected to generate a massive and diverse range of data types presenting a unique challenges for back end services.  The back end services must be able to quickly respond and scale in response to sudden influx of messages. AMQ Streams and Decision Manager can efficiently manage and filter messages from IoT devices. They can both scale elastically and shield other services downstream from the load.
+
+In this lab, we will be working with cutting edge technology to build an IOT edge computing solution that will monitor
+health of IoT systems and improve operational efficiencies. The technologies involved are:
+
+=== AMQ Streams
+
+AMQ Streams is a Java/Scala publish-subscribe-based messaging broker. Based on the Apache Kafka and Strimzi projects, it offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency. AMQ Streams makes it easy to run Apache Kafka on OpenShift by using OpenShift native mechanisms for:
+- Provisioning the cluster
+- Managing the topics and users
+- Providing a better integration with applications running on OpenShift.
+
+=== AMQ Online
+AMQ Online gives administrators the ability to configure a cloud-native, multi-tenant messaging service either in the cloud or on-premise. Developers can use Red Hat AMQ Online to provision messaging when and where they need it with zero installation, configuration, and maintenance. The developers serve themselves from an easy to-use browser console.
+
+TIP: Learn about AMQ Online with video from Christina Lin link:https://www.youtube.com/watch?v=P1RcYH6CuQI[AMQ Streams in a nutshell]
+
+=== Camel-K
+Apache Camel K (a.k.a. Kamel) is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures. To start using Camel K you need the "kamel" binary, that can be used to both configure the cluster and run integrations.
+
+TIP: Learn about Kamel with video from Christina Lin link:https://www.youtube.com/watch?v=LaBvBonUC6g[Camel-K in a nutshell]
+
+=== Decision Manager
+Red Hat Decision Manager is a fast, lightweight, cloud-native business rules and decision management  platform for creating decision services that can be embedded within applications or deployed as microservices in a container runtime environment.
+Business Central allows visual composition of custom business rules and processes. DMN (Decision Model and Notation) uses diagramming language to define an XML schema for designing and implementing DMN decision services.
+
+TIP: Learn about DMN with video from Duncan Doyle link:https://www.youtube.com/watch?v=Su7pR0Yj4W0video[Getting started with DMN]
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_content.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=iot_usecase.html]

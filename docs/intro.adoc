@@ -3,9 +3,20 @@
 In this lab, we will be working with cutting edge technology to build an IOT edge computing solution that will monitor
 health of ESP sensors to identify system stress and optimize hardware longevity. The technologies involved are:
 
-* AMQ Streams - Red Hat distribution of Kafka built around our best-in-class messaging ecosystem
-* Decision Manager - End to end business rules management platform, including authoring workbench and execution engine
-* Fuse - Integration solution building off industry standard enterprise integration patterns
-
 We will be generating Electrical Submersible Pump (ESP) data based on real world situations and building intelligence
 into the data processing layer to identify ways to improve pump longevity.
+
+AMQ Streams
+
+AMQ Streams is a Java/Scala publish-subscribe-based messaging broker. Based on the Apache Kafka and Strimzi projects, it offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency. AMQ Streams makes it easy to run Apache Kafka on OpenShift by using OpenShift native mechanisms for:
+- Provisioning the cluster
+- Managing the topics and users
+- Providing a better integration with applications running on OpenShift.
+
+AMQ Online
+AMQ Online gives administrators the ability to configure a cloud-native, multi-tenant messaging service either in the cloud or on-premise. Developers can use Red Hat AMQ Online to provision messaging when and where they need it with zero installation, configuration, and maintenance. The developers serve themselves from an easy to-use browser console.
+
+Camel-K
+Apache Camel K (a.k.a. Kamel) is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures. To start using Camel K you need the "kamel" binary, that can be used to both configure the cluster and run integrations.
+
+Camel-K in a nutshell: https://www.youtube.com/watch?v=LaBvBonUC6g
