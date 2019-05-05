@@ -42,7 +42,7 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
 # let's be thorough
 oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
-
+# TODO move StreamReader to temp folder
 # TODO cancel in progress builds
 
 java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
@@ -60,6 +60,8 @@ if [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) != 'Com
     echo "error with build"
     exit 1
 fi
+
+# TODO move StreamReader back
 
 oc tag ${NAMESPACE}/${APPLICATION_NAME}:latest ${NAMESPACE}/${APPLICATION_NAME}:${APPLICATION_RELEASE}
 oc scale --replicas=1 deploy/${APPLICATION_NAME} -n ${NAMESPACE}
