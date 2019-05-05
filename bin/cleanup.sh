@@ -124,7 +124,7 @@ if (oc get deploy/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
         -p AMQP_PORT="${AMQP_PORT}" \
         -p MESSAGING_USERNAME="${MESSAGING_USERNAME}" \
         -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
-        | oc apply -n ${NAMESPACE} -f-
+        | oc delete -n ${NAMESPACE} -f-
 fi
 # cleanup kafka
 
@@ -154,3 +154,5 @@ fi
 if (oc get istag/amq-broker-72-openshift:${AMQ_REL} -n openshift &>/dev/null); then
     oc delete istag amq-broker-72-openshift:${AMQ_REL} -n openshift
 fi
+
+oc delete namespace ${NAMESPACE}

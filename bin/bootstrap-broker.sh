@@ -33,15 +33,23 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/broker-persistent
     -p AMQ_ADDRESSES=${NAMESPACE} \
     -p IMAGE_VERSION=${AMQ_REL} \
     | oc apply -n ${NAMESPACE} -f-
+sleep 5s
 
 # wait for a pod to come up
+timer=0
 while [[ $(oc get statefulset/broker-amq -ojsonpath='{.status.readyReplicas}' -n ${NAMESPACE}) != 1 ]] ; do
-    POD_STATUS=$(oc get pods -l=app=broker-amq -o=jsonpath='{ range.items[*] }{ .metadata.name }{ ":" }{ .status.phase }{ "\n" }{ end }' -n ${NAMESPACE})
+    POD_STATUS=$(oc get pods -l=app=broker-amq -o=jsonpath='{ range.items[*] }{ .metadata.name }{ ", status: " }{ .status.phase }{ ", restarts: " }{ range .status.containerStatuses[*] }{ .restartCount }{ end} { "\n" }{ end }' -n ${NAMESPACE})
     if [[ ${OLD_STATUS} != ${POD_STATUS} ]];  then
         echo $POD_STATUS
         OLD_STATUS=${POD_STATUS}
     fi
+    RESTARTS=$(echo $POD_STATUS | awk '{ print $5 }')
     sleep 1s
+    let timer=timer+1
+    if [[ $timer -gt 200 || ${RESTARTS} -gt 0 ]]; then
+        echo "AMQ Broker failed to deploy. Timer: ${timer}, Restarts: ${RESTARTS}"
+        exit -1
+    fi
 done
 # Configure address
 oc rsh -n ${NAMESPACE} statefulset/broker-amq /home/jboss/broker/bin/artemis address update --name ${NAMESPACE} --multicast --anycast

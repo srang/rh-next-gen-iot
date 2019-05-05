@@ -37,13 +37,17 @@ oc process -f ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/templates/${APPLICATION_NAM
 
 oc rollout pause deploy/${APPLICATION_NAME} -n ${NAMESPACE} 2>/dev/null || echo "already paused"
 
+# cancel running builds
+running_builds=$(oc get builds -l=application=${APPLICATION_NAME} -ojsonpath='{ range .items[?(.status.phase=="Running")] }{ .metadata.name }{ "\n" }{ end }' -n ${NAMESPACE})
+if [[ ! -z $running_builds ]]; then
+    oc cancel-build ${running_builds} -n ${NAMESPACE}
+fi
+
 java -Dmodels -DmodelTests=false -jar ${CMD_DIR}/swagger-codegen.jar \
     generate -l spring \
              -c ${PROJ_DIR}/${APPLICATION_NAME}/codegen-config.json \
              -i ${PROJ_DIR}/spec/swagger.yml \
              -o ${PROJ_DIR}/${APPLICATION_NAME}
-
-#TODO check/cancel running builds
 
 build=$(oc start-build bc/${APPLICATION_NAME} -n ${NAMESPACE} --from-dir=${PROJ_DIR}/${APPLICATION_CONTEXT_DIR} | awk '{print $1}')
 while [[ $(oc get ${build} -o=jsonpath='{ .status.phase }' -n ${NAMESPACE}) =~ ^(Running|Pending|New)$ ]] ; do
@@ -58,3 +62,20 @@ fi
 oc tag ${NAMESPACE}/${APPLICATION_NAME}:latest ${NAMESPACE}/${APPLICATION_NAME}:${APPLICATION_RELEASE}
 oc scale --replicas=1 deploy/${APPLICATION_NAME} -n ${NAMESPACE}
 oc rollout resume deploy/${APPLICATION_NAME} -n ${NAMESPACE}
+sleep 5s
+
+timer=0
+while [[ $(oc get deploy/${APPLICATION_NAME} -ojsonpath='{.status.readyReplicas}' -n ${NAMESPACE}) != 1 ]] ; do
+    POD_STATUS=$(oc get pods -l=application=${APPLICATION_NAME} -o=jsonpath='{ range.items[*] }{ .metadata.name }{ ", status: " }{ .status.phase }{ ", restarts: " }{ range .status.containerStatuses[*] }{ .restartCount }{ end} { "\n" }{ end }' -n ${NAMESPACE})
+    if [[ ${OLD_STATUS} != ${POD_STATUS} ]];  then
+        echo $POD_STATUS
+        OLD_STATUS=${POD_STATUS}
+    fi
+    RESTARTS=$(echo $POD_STATUS | awk '{ print $5 }')
+    sleep 1s
+    let timer=timer+1
+    if [[ ${timer} -gt 200 || ${RESTARTS} -gt 0 ]]; then
+        echo "${APPLICATION_NAME} failed to deploy. Timer: ${timer}, Restarts: ${RESTARTS}"
+        exit -1
+    fi
+done
