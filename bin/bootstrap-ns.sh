@@ -32,9 +32,6 @@ fi
 if ! (oc get istag/amq-streams-zookeeper:${KAFKA_REL}-kafka-2.1.1 -n openshift &>/dev/null); then
     oc import-image amq7/amq-streams-zookeeper:${KAFKA_REL}-kafka-2.1.1 --from=registry.redhat.io/amq7/amq-streams-zookeeper --confirm -n openshift
 fi
-if ! (oc get istag/amq-streams-kafka:${KAFKA_REL}-kafka-2.0.0 -n openshift &>/dev/null); then
-    oc import-image amq7/amq-streams-kafka:${KAFKA_REL}-kafka-2.0.0 --from=registry.redhat.io/amq7/amq-streams-kafka --confirm -n openshift
-fi
 if ! (oc get istag/amq-streams-kafka:${KAFKA_REL}-kafka-2.1.1 -n openshift &>/dev/null); then
     oc import-image amq7/amq-streams-kafka:${KAFKA_REL}-kafka-2.1.1 --from=registry.redhat.io/amq7/amq-streams-kafka --confirm -n openshift
 fi

@@ -32,7 +32,7 @@ spec:
         - name: STRIMZI_KAFKA_IMAGES
           value: |
             2.0.0=image-registry.openshift-image-registry.svc:5000/openshift/amq-streams-kafka:1.1.0-kafka-2.0.0
-            2.1.1=image-registry.openshift-image-registry.svc:5000/openshift/amq-streams-zookeeper:1.1.0-kafka-2.1.1
+            2.1.1=image-registry.openshift-image-registry.svc:5000/openshift/amq-streams-kafka:1.1.0-kafka-2.1.1
         - name: STRIMZI_KAFKA_CONNECT_IMAGES
           value: |
             2.0.0=registry.access.redhat.com/amq7/amq-streams-kafka-connect:1.1.0-kafka-2.0.0
