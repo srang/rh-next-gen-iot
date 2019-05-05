@@ -15,6 +15,7 @@ RHDM_VER="${RHDM_VER:-73}"
 RHDM_REL="${RHDM_REL:-1.0-3}"
 AMQ_REL="${AMQ_REL:-1.3-5}"
 FUSE_REL="${FUSE_REL:-1.2}"
+KAFKA_REL="${KAFKA_REL:-1.1.0}"
 
 # cleanup routing app
 APPLICATION_NAME=${ROUTING_APP}
@@ -143,16 +144,55 @@ if (oc get statefulset/broker-amq -n ${NAMESPACE} &>/dev/null); then
     oc delete pvc -l=app=broker-amq -n ${NAMESPACE}
 fi
 
+if (oc get namespace kafka &>/dev/null); then
+    oc project kafka
+    oc delete kafkatopic --all -n kafka
+    oc delete kafka --all -n kafka
+    oc delete -f ${PROJ_DIR}/amq-streams/ -n kafka
+    oc delete pvc --all -n kafka
+    oc delete namespace kafka
+    oc project ${NAMESPACE}
+fi
 
-# Wipe away imagestreams
+# cleanup imagestreams
 if (oc get istag/rhdm${RHDM_VER}-decisioncentral-openshift:${RHDM_REL} -n openshift &>/dev/null); then
-    oc delete istag rhdm${RHDM_VER}-decisioncentral-openshift:${RHDM_REL} -n openshift
+    oc delete istag/rhdm${RHDM_VER}-decisioncentral-openshift:${RHDM_REL} -n openshift
 fi
 if (oc get istag/rhdm${RHDM_VER}-kieserver-openshift:${RHDM_REL} -n openshift &>/dev/null); then
-    oc delete istag rhdm${RHDM_VER}-kieserver-openshift:${RHDM_REL} -n openshift
+    oc delete istag/rhdm${RHDM_VER}-kieserver-openshift:${RHDM_REL} -n openshift
 fi
 if (oc get istag/amq-broker-72-openshift:${AMQ_REL} -n openshift &>/dev/null); then
-    oc delete istag amq-broker-72-openshift:${AMQ_REL} -n openshift
+    oc delete istag/amq-broker-72-openshift:${AMQ_REL} -n openshift
+fi
+if (oc get istag/amq-streams-cluster-operator:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-cluster-operator:${KAFKA_REL} -n openshift
+fi
+if (oc get istag/amq-streams-zookeeper:${KAFKA_REL}-kafka-2.1.1 -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-zookeeper:${KAFKA_REL}-kafka-2.1.1 -n openshift
+fi
+if (oc get istag/amq-streams-kafka:${KAFKA_REL}-kafka-2.0.0 -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-kafka:${KAFKA_REL}-kafka-2.0.0 -n openshift
+fi
+if (oc get istag/amq-streams-kafka:${KAFKA_REL}-kafka-2.1.1 -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-kafka:${KAFKA_REL}-kafka-2.1.1 -n openshift
+fi
+if (oc get istag/amq-streams-kafka-init:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-kafka-init:${KAFKA_REL} -n openshift
+fi
+if (oc get istag/amq-streams-zookeeper-stunnel:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-zookeeper-stunnel:${KAFKA_REL} -n openshift
+fi
+if (oc get istag/amq-streams-kafka-stunnel:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-kafka-stunnel:${KAFKA_REL} -n openshift
+fi
+if (oc get istag/amq-streams-entity-operator-stunnel:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-entity-operator-stunnel:${KAFKA_REL} -n openshift
+fi
+if (oc get istag/amq-streams-topic-operator:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-topic-operator:${KAFKA_REL} -n openshift
+fi
+if (oc get istag/amq-streams-user-operator:${KAFKA_REL} -n openshift &>/dev/null); then
+    oc delete istag/amq-streams-user-operator:${KAFKA_REL} -n openshift
 fi
 
 oc delete namespace ${NAMESPACE}
