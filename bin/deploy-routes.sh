@@ -20,11 +20,6 @@ if (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
     oc delete integration/${APPLICATION_NAME} -n ${NAMESPACE}
 fi
 
-#if (oc get cm/${APPLICATION_NAME}-application-yml -n ${NAMESPACE} &>/dev/null); then
-#    oc delete cm/${APPLICATION_NAME}-application-yml -n ${NAMESPACE}
-#fi
-#oc create configmap ${APPLICATION_NAME}-application-yml --from-file=${PROJ_DIR}/${APPLICATION_NAME}/application.yml
-
 ## Install Routes
 ${CMD_DIR}/kamel run ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/src/main/java/com/redhat/iot/routes/StreamsReader.java --name=${APPLICATION_NAME} -n ${NAMESPACE} \
     -d mvn:org.kie.server:kie-server-client:7.18.0.Final \
