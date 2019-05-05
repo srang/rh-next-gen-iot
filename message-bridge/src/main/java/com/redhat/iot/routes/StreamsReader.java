@@ -13,8 +13,8 @@ import org.apache.camel.component.jackson.JacksonDataFormat;
 
 
 import org.apache.camel.Exchange;
-//kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson --configmap application-yml
-
+//kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson 
+//./kafka-consumer-groups.sh --bootstrap-server iot-cluster-kafka-bootstrap.kafka.svc:9092 --group user1 --topic user1-data --reset-offsets --to-earliest
 
 
 public class StreamsReader extends RouteBuilder {
@@ -29,21 +29,23 @@ public class StreamsReader extends RouteBuilder {
   public void configure() throws Exception {
     JacksonDataFormat jacksonDataFormat = new JacksonDataFormat();
     jacksonDataFormat.setUnmarshalType(Map.class);
-
     KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(KIE_SERVER, KIE_USER, KIE_PASS);
     conf.setMarshallingFormat(MarshallingFormat.XSTREAM);
     
     DMNServicesClient dmnServicesClient = KieServicesFactory.newKieServicesClient(conf).getServicesClient(DMNServicesClient.class);
     DMNContext context = dmnServicesClient.newContext();
     
-    //+"&groupId=user1"
-    from("kafka:user1-data?brokers="+BROKER_URL)
+    
+    //&groupId=user1
+    from("kafka:user1-data?brokers="+BROKER_URL+"")
     .log("from kafka ${body}")
     .unmarshal(jacksonDataFormat)
       .process(exchange -> {
-        
         context.set("type", exchange.getIn().getBody(Map.class).get("type"));
         context.set("value", Float.parseFloat((String) exchange.getIn().getBody(Map.class).get("value")));
+        
+        log.info (String.format("Incoming values TYPE: %s VALUE: %s",exchange.getIn().getBody(Map.class).get("type"), exchange.getIn().getBody(Map.class).get("value")));
+        
         ServiceResponse<DMNResult> serverResp = dmnServicesClient.evaluateAll(KIE_CONTAINER, "pump_rules", "pump_rules", context);
         DMNResult dmnResult = serverResp.getResult();
         for (DMNDecisionResult dr : dmnResult.getDecisionResults()) {
