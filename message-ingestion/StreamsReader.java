@@ -27,7 +27,7 @@ public class StreamsReader extends RouteBuilder {
   @Override
   public void configure() throws Exception {
     //from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9091")
-    from("timer:tick?fixedRate=true&period=5000")
+    from("{{route.from}}")
     .setBody(constant(600))
     .process(
       new Processor() {

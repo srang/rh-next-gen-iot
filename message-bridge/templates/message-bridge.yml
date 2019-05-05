@@ -1,0 +1,144 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  annotations:
+    version: "1.0"
+    openshift.io/display-name: message-bridge
+  name: message-bridge
+labels:
+  template: message-bridge
+message: |-
+  lab manager is deployed
+parameters:
+  - name: APPLICATION_RELEASE
+    required: true
+  - name: APPLICATION_NAME
+    value: message-bridge
+    required: true
+  - name: APPLICATION_NAMESPACE
+    required: true
+  - name: MESSAGING_SERVICE
+    required: true
+  - name: MESSAGING_PORT
+    required: true
+  - name: IMAGE_STREAM_NAMESPACE
+    value: openshift
+    required: true
+  - name: IMAGE_STREAM_NAME
+    value: "fuse7-java-openshift"
+    required: true
+  - name: IMAGE_STREAM_TAG
+    value: "1.2-12"
+    required: true
+  - name: MESSAGING_USERNAME
+    value: "device1"
+  - name: MESSAGING_PASSWORD
+    required: true
+  - name: KAFKA_BOOTSTRAP_SERVER
+    required: true
+  - name: KIE_SERVER
+    required: true
+  - name: KIE_CONTAINER
+    required: true
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        application: "${APPLICATION_NAME}"
+        service: "${APPLICATION_NAME}"
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        application: "${APPLICATION_NAME}"
+        service: "${APPLICATION_NAME}"
+    spec:
+      successfulBuildsHistoryLimit: 2
+      failedBuildsHistoryLimit: 2
+      source:
+        type: Binary
+      strategy:
+        type: Source
+        sourceStrategy:
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "openshift"
+          forcePull: true
+          from:
+            kind: ImageStreamTag
+            namespace: "${IMAGE_STREAM_NAMESPACE}"
+            name: "${IMAGE_STREAM_NAME}:${IMAGE_STREAM_TAG}"
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${APPLICATION_NAME}:latest"
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        application: "${APPLICATION_NAME}"
+        service: "${APPLICATION_NAME}"
+    spec:
+      replicas: 0
+      strategy:
+        type: RollingUpdate
+      selector:
+        matchLabels:
+          application: "${APPLICATION_NAME}"
+          service: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          name: "${APPLICATION_NAME}"
+          labels:
+            application: "${APPLICATION_NAME}"
+            service: "${APPLICATION_NAME}"
+        spec:
+          containers:
+            - name: "${APPLICATION_NAME}"
+              image: "image-registry.openshift-image-registry.svc:5000/${APPLICATION_NAMESPACE}/${APPLICATION_NAME}:${APPLICATION_RELEASE}"
+              imagePullPolicy: Always
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                timeoutSeconds: 2
+                periodSeconds: 15
+                failureThreshold: 3
+              readinessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                timeoutSeconds: 2
+                periodSeconds: 30
+                failureThreshold: 6
+              ports:
+                - name: jolokia
+                  containerPort: 8778
+                  protocol: TCP
+                - name: http
+                  containerPort: 8080
+                  protocol: TCP
+              env:
+                - name: MESSAGING_SERVICE
+                  value: "${MESSAGING_SERVICE}"
+                - name: MESSAGING_PORT
+                  value: "${MESSAGING_PORT}"
+                - name: MESSAGING_USERNAME
+                  value: "${MESSAGING_USERNAME}"
+                - name: MESSAGING_PASSWORD
+                  value: "${MESSAGING_PASSWORD}"
+                - name: KAFKA_BOOTSTRAP_SERVER
+                  value: "${KAFKA_BOOTSTRAP_SERVER}"
+                - name: KIE_SERVER
+                  value: "${KIE_SERVER}"
+                - name: KIE_CONTAINER
+                  value: "${KIE_CONTAINER}"

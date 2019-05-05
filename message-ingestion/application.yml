@@ -1,0 +1,6 @@
+endpoints.enabled: false
+endpoints.health.enabled: true
+
+route.from: kafka:user1?brokers=user1-kafka-bootstrap:9092
+
+kafka.brokers: ${KAFKA_BOOTSTRAP_SERVER}
