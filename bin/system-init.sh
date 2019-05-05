@@ -18,8 +18,8 @@ ${CMD_DIR}/bootstrap-ns.sh
 ${CMD_DIR}/bootstrap-kamel.sh
 # deploy amq broker
 ${CMD_DIR}/bootstrap-broker.sh
-
-## *TODO* deploy kafka
+# deploy amq streams
+${CMD_DIR}/bootstrap-streams.sh
 
 # deploy decision manager
 ${CMD_DIR}/deploy-author.sh

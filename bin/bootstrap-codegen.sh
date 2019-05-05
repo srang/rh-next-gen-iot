@@ -1,4 +1,4 @@
-# DEPRECATED
+# DEVELOPER ACTIVITY
 #!/usr/bin/env bash
 set -E
 set -o pipefail
