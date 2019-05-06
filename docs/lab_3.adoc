@@ -4,7 +4,7 @@
 
 = Lab 3: Using Kamel for xx
 
-==
+== Kamel binary and App
 
 Kamel binary has been provided on your system to allow interaction with the Camel-K on your cluster.
 

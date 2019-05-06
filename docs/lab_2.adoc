@@ -2,7 +2,7 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 9: Visualizing the Data
+= Lab 2: Visualizing the Data
 
 == View data in UI
 To visualize the data that has been sent by the software simulator and processed through Fuse and Decision Manager, a Patternfly based UI app will be deployed to monitor the pump status.
