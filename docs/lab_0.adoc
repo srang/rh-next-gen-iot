@@ -5,10 +5,11 @@
 = Lab 0: Lab Environment & Resources
 
 == Lab Environment
+
 This lab utilizes Red Hat Product Demo System (RHPDS) to provision the lab environment.
 RHPDS  uses Red Hat CloudForms to deploy infrastructure needed for our lab. +
 
-The infrastructure consists of 5 VMs as well as the overall network configuration. Red Hat OpenShift Container Platform 3.9 has already been deployed for this lab.
+The infrastructure consists of 5 VMs as well as the overall network configuration. Red Hat OpenShift Container Platform 4.0 has already been deployed for this lab.
 
 OpenShift environment for this lab consists of the following systems:
 
@@ -24,33 +25,15 @@ OpenShift environment for this lab consists of the following systems:
 
 === Access Your Lab Environment
 
-*=== Provision Your Demo Environment
+=== Provision Your Demo Environment
 
-Log in to the link:https://rhpds.redhat.com/[Red Hat Product Demo System] with your provided credentials.
+Get your GUID to access the OpenShift cluster: link:https://www.opentlc.com/gg/gg.cgi?profile=generic_summit[Click here]
 
-image::RHPDS-Login.png[RHPDS Login]
+From the pull-down menu, select the lab *T9FA81: Next-gen Technologies at scale: Building solutions to manage tomorrow's workloads*
 
-Go to Services → Catalogs
+Put in the provided activation key and your email address
 
-image::RHPDS-ChooseCatalog.png[Choose Catalog]
-
-Under Service Catalog → Red Hat Summit 2019, select Next Gen Technologies at Scale
-
-On the right pane, click Order.
-
-image::RHPDS-OrderLab.png[Order Lab]
-
-Review the information about lifecycle of the lab environment and how to extend it. Check box to confirm, click Submit
-
-image::RHPDS-StartLab.png[Start Lab]
-
-NOTE: It takes ~30 minutes for lab to be provisioned and become accessible. You can get real-time status of the lab environment at https://www.opentlc.com/rhpds-status
-
-You will be getting an email with information about how to access the lab environment.
-
-The email will also provide the unique GUID needed to access the lab environment.
-
-== Access Lab environment
+=== Access Lab environment
 
 Interaction with the environment will be facilitated using several mechanisms listed below:
 
@@ -65,7 +48,7 @@ Password: *r3dh4t1!*
 
 [source,bash]
 ----
-oc login infranode-<GUID>.generic.opentlc.com:8443 +
+oc login api.cluster-<GUID>.sandbox??.opentlc.com:8443 +
 ----
 
 You will see a warning related to insecure certificates. Given that this is a lab environment, it is OK to safely ignore these warnings. Type **Y** and hit Enter.
@@ -91,7 +74,7 @@ OpenShift features a rich user interface for managing resources on the platform.
 
 Open a web browser and navigate to the following location
 
-link:https://infranode-<GUID>.generic.opentlc.com:8443[https://infranode-<GUID>.generic.opentlc.com:8443]
+link:https://console-openshift-console.apps.cluster-<GUID>.sandbox??.opentlc.com:8443[OpenShift Web console]
 
 Similar to the CLI, a warning will appear stating that insecure certificates are being utilized. Ignore the certificate warning and continue on to the login page.
 
@@ -104,7 +87,7 @@ The OpenShift catalog should be shown upon successful authentication
 
 image::ocp-catalog.png[OpenShift Catalog]
 
-== Lab Resources
+=== Lab Resources
 
 The primary source of content for this lab is the IoT Next Gen Technologies at Scale project repository.
 
@@ -118,12 +101,7 @@ Navigate to the `/home/lab-user` folder and clone the lab repository. Once clone
 
 $ cd /home/lab-user
 $ git clone https://add_url
-Cloning into 'iot-serverless'...
-remote: Counting objects: 597, done.
-remote: Compressing objects: 100% (86/86), done.
-remote: Total 597 (delta 32), reused 126 (delta 27), pack-reused 457
-Receiving objects: 100% (597/597), 8.95 MiB | 3.74 MiB/s, done.
-Resolving deltas: 100% (162/162), done.
+
 
 $ cd iot-serverless
 ----
