@@ -89,5 +89,6 @@ done
 
 oc apply -f ${PROJ_DIR}/message-bridge/templates/kafka-topic.yml -n ${NAMESPACE}
 
-oc project ${OLD_NS}
+oc policy add-role-to-user admin user1 -n ${NAMESPACE}
 
+oc project ${OLD_NS}

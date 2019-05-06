@@ -53,3 +53,5 @@ fi
 if ! (oc get istag/amq-streams-user-operator:${KAFKA_REL} -n openshift &>/dev/null); then
     oc import-image amq7/amq-streams-user-operator:${KAFKA_REL} --from=registry.redhat.io/amq7/amq-streams-user-operator --confirm -n openshift
 fi
+
+oc policy add-role-to-user admin user1 -n ${NAMESPACE}
