@@ -6,10 +6,15 @@ pump:
   devices: 1,2,3,4,5,6,7,8
 
 mqtt:
-  username: device1
-  password: password
-  service: replaceme.svc
-  port: 443
+  username: ${MESSAGING_USERNAME}
+  password: ${MESSAGING_PASSWORD}
+  service: ${MESSAGING_SERVICE}
+  port: ${MQTT_PORT}
 
 app:
   name: user1
+spring:
+  activemq:
+    broker-url: tcp://${MESSAGING_SERVICE}:${AMQP_PORT}
+    user: ${MESSAGING_USERNAME}
+    password: ${MESSAGING_PASSWORD}

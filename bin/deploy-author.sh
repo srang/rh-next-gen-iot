@@ -16,6 +16,7 @@ KIE_USER='kieserver'
 KIE_PWD='kieserver1!'
 
 if (oc get dc/${APPLICATION_NAME}-kieserver -n ${NAMESPACE} &>/dev/null); then
+    # Reprocess template to delete everything
     oc process -f ${PROJ_DIR}/${CONTEXT_DIR}/templates/authoring.yml \
         -p APPLICATION_NAME=${APPLICATION_NAME} \
         -p KIE_ADMIN_USER="${KIE_ADMIN_USER}" \
@@ -50,4 +51,3 @@ oc process -f ${PROJ_DIR}/${CONTEXT_DIR}/templates/authoring.yml \
     -p IMAGE_STREAM_TAG="${RHDM_REL}" \
     -p IMAGE_STREAM_NAMESPACE='openshift' \
      | oc apply -n ${NAMESPACE} -f-
-

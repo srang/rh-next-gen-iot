@@ -1,3 +1,4 @@
+# DEVELOPER ACTIVITY
 #!/usr/bin/env bash
 set -E
 set -o pipefail
@@ -7,6 +8,7 @@ PROJ_DIR="${CMD_DIR}/.."
 
 NAMESPACE="${NAMESPACE:-user1}"
 APPLICATION_NAME="message-ingestion"
+APPLICATION_CONTEXT_DIR="message-bridge"
 
 ## Cleanup previous release before beginning next
 if (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
@@ -18,17 +20,11 @@ if (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
     oc delete integration/${APPLICATION_NAME} -n ${NAMESPACE}
 fi
 
-if (oc get cm/${APPLICATION_NAME}-application-yml -n ${NAMESPACE} &>/dev/null); then
-    oc delete cm/${APPLICATION_NAME}-application-yml -n ${NAMESPACE}
-fi
-oc create configmap ${APPLICATION_NAME}-application-yml --from-file=${PROJ_DIR}/${APPLICATION_NAME}/application.yml
-
 ## Install Routes
-${CMD_DIR}/kamel run ${PROJ_DIR}/${APPLICATION_NAME}/StreamsReader.java --name=${APPLICATION_NAME} -n ${NAMESPACE} \
+${CMD_DIR}/kamel run ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/src/main/java/com/redhat/iot/routes/StreamsReader.java --name=${APPLICATION_NAME} -n ${NAMESPACE} \
     -d mvn:org.kie.server:kie-server-client:7.18.0.Final \
     -d camel-kafka \
-    -d camel-gson \
-    --configmap ${APPLICATION_NAME}-application-yml
+    -d camel-jackson
 
 # Label CRs
 while ! (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} -o=jsonpath='{.status.context}' &>/dev/null); do
