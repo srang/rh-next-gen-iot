@@ -127,7 +127,6 @@ if (oc get deploy/${APPLICATION_NAME} -n ${NAMESPACE} &>/dev/null); then
         -p MESSAGING_PASSWORD="${MESSAGING_PASSWORD}" \
         | oc delete -n ${NAMESPACE} -f-
 fi
-# cleanup kafka
 
 # cleanup amq broker
 if (oc get statefulset/broker-amq -n ${NAMESPACE} &>/dev/null); then
@@ -144,6 +143,7 @@ if (oc get statefulset/broker-amq -n ${NAMESPACE} &>/dev/null); then
     oc delete pvc -l=app=broker-amq -n ${NAMESPACE}
 fi
 
+# cleanup kafka
 if (oc get namespace kafka &>/dev/null); then
     oc project kafka
     oc delete kafkatopic --all -n kafka

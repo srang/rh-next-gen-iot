@@ -18,6 +18,8 @@ ${CMD_DIR}/bootstrap-ns.sh
 ${CMD_DIR}/bootstrap-broker.sh
 # deploy amq streams
 ${CMD_DIR}/bootstrap-streams.sh
+# download swagger codegen
+${CMD_DIR}/bootstrap-codegen.sh
 
 # deploy decision manager
 ${CMD_DIR}/deploy-author.sh
