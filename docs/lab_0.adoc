@@ -117,4 +117,4 @@ cluster has been provided in `./bin/deploy-routes.sh`
 * *Data Visualization* (`xx`): UI application to display values transmitted by IoT assets
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=esp_usecase.adoc] image:icons/icon-home.png[align="center",width=128, link=tech_overview.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_1.adoc]
+image:icons/icon-previous.png[align=left, width=128, link=esp_usecase.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_1.adoc]

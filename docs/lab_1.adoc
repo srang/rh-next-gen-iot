@@ -4,54 +4,31 @@
 
 = Lab 1: Initial Seeding
 
-Resources (both cluster and local) can be seeded using the script `./bin/system-int.sh`
+Resources (both cluster and local) can be seeded using the script `./bin/system-int.sh`????
 
-To get started with the lab, let's deploy the prepared resources to our cluster:
+To get started with the lab, following projects have been deployed to the cluster:
 
-----
-$ ./bin/start.sh
-----
+- user1
+- kafka
 
-This will import the necessary imagestreams, bootstrap our cluster and local environment, build our source code, stage
-our OpenShift application manifests, and start building our images.
-
-
-NOTE: A large number of resources will be created. It will take a few minutes to each of the resources to fully deploy to the OpenWhisk project.
-
-* Use watch command to monitor the progress:
+Lets explore what has been deployed into these projects:
 
 [source,bash]
 ----
-$ watch oc get pods
-----
-
-Once all pods are in the “Running” or “Completed state”, hit CTRL+C to break the “watch” command. +
-
-NOTE: Pods may initially report in Error status. This condition should resolve itself in a few moments.
-
-* Check the status of deployment:
-
-[source,bash]
-----
+$ oc project user1
 $ oc get pods
-
-NAME                                          READY     STATUS      RESTARTS   AGE
 ----
 
+[TODO] --description of pods
 
+[source,bash]
+----
+$ oc project kafka
+$ oc get pods
+----
 
-== Verify OpenWhisk Deployment using OpenShift web console
-
-* Navigate to the following url in the browser:
-
-link:https://infranode-<GUID>.generic.opentlc.com:8443[https://infranode-<GUID>.generic.opentlc.com:8443]
-
-TIP: OpenShift web UI access url is provided in the screen splash when you ssh into the system
-
-* Click on the project name (xx) in the upper right corner. A successful deployment will look like the following:
-
-image::openwhisk-deployment-ui.png[]
+[TODO] --description of pods
 
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_0.adoc] image:icons/icon-home.png[align="center",width=128, link=tech_overview.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_2.adoc]
+image:icons/icon-previous.png[align=left, width=128, link=lab_0.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_2.adoc]

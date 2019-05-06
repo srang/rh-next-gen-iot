@@ -37,4 +37,4 @@ $ exit
 ----
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_2.adoc] image:icons/icon-home.png[align="center",width=128, link=tech_overview.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_4.adoc]
+image:icons/icon-previous.png[align=left, width=128, link=lab_2.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_4.adoc]
