@@ -1,0 +1,15 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Lab 9: Visualizing the Data
+
+== View data in UI
+To visualize the data that has been sent by the software simulator and processed through Fuse and Decision Manager, a Patternfly based UI app will be deployed to monitor the pump status.
+
+The app will show the telemetry data and description of the selected ESP. It also shows the health status of each pump. If a pump is not working within its operating range, then an alert will be shown so corrective action can be taken. The source for the frontend application is located in the `??/src/main/resources/static` folder.
+
+[TODO] -- Link to GUI
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_3.adoc] image:icons/icon-home.png[align="center",width=128, link=tech_overview.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_3.adoc]

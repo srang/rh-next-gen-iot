@@ -2,98 +2,14 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 5: Business Rules Service
+= Lab 5: Test Updated Rules
 
 == Business Rules
-One of the important ways to monitor ESP health is by triggering an action if the sensor data meets a certain condition as defined by business rules. In this section we’ll learn how to create a business rules service. This service will work the following way:
+Lets replay the ESP data from beginning to verify the updated rules will trigger the alert so corrective action can be taken.
 
-1. Sensor data is read from a defined message queue.??
-2. Sensor data is handed over to the rules execution engine that triggers action per defined rules. In our case, there is a field 'unhealthy-pump-decision' which will be changed to:
-- '2' if sensor value is too high
-- '1' if the sensor value  is above operating range
-- '0' if the sensor value is within operating range.
+Use the instructions from the previous lab to reset the ESP data using Kafka offset-reset functionality.
 
-Altered data is placed into another defined message queue.??
-
-The rules syntax is pretty simple: +
-If +
-   some condition +
-then +
-   some action
-
-For our lab, we will create the decision table via a web front-end, provided by Decision Manager Node (DMN).
-
-
-== DMN
-
-As a business analyst or business rules developer, you can use Decision Model and Notation (DMN) to model a decision service graphically in a decision requirements diagram (DRD). This diagram traces business decisions from start to finish, with each decision node drawing logic from DMN model decision elements such as decision tables.
-
-For this lab, our DMN model will use two elements: input data (pump telemetry data) and decision (logic for determining pump condition).
-
-=== Decision Table
-A decision table is a visual representation of one or more rules in a tabular format. Each rule consists of a single row in the table, and includes columns that define the conditions and outcome for that particular row.
-
-=== Using DMN
-DMN is available from Business Central portal that allows visual composition of custom business rules and processes.
-
-Click on Routes in the left OpenShift Console to access the Business Central portal
-
-image::decision-manager-route1.png[]
-
-Login to Business Central using following credentials:
-username: *jboss*
-password: *jboss*
-
-image::dm-login.png[]
-
-Click on *Design* to access design
-
-image::dm-home.png[]
-
-=== Update DMN Decision Table
-
-A few sample rules have been created using DMN to get you started. Click on *esp_rules* to edit the rules.
-
-image::dm-project.png[]
-
-Click on *unhealthy-pump-decision* to highlight decision node and then click on edit
-
-image::dm-dmn-edit_rules.png[]
-
-You should now be able to edit the rules in decision table
-
-image::dm-dmn-decision_table1.png[]
-
-TIP: You can right click on a row to insert another rule
-
-The healthy operating range of the pumps is as follows:
-
-[cols="4",options="header"]
-|=======
-|Sensor Type        |Normal  |Caution           |Danger
-|`temperature`      |`<200`  |`>=200 and <250`  |`>250`
-|`vibration`        |`<2.7`  |`>=2.2 and <4`    |`>4`
-|=======
-
-CAUTION: When defining a range, use `[` for lower limit and `)` for upper limit
-
-
-
-Once the rules are updated, click *save*
-
-image::dm-dmn-decision_table_save.png[]
-
-IMPORTANT: Make sure the namespace for pump_rules DMN (under properties) is listed as pump_rules
-
-With our decision table updated, we can now package our DMN model in a Deployment Unit (KJAR) and deploy it on the Execution Server.
-
-In the bread-crumb navigation in the upper-left corner, click on *esp_rules* to go back to the project’s Library View.
-
-Click on the Deploy button in the upper-right corner of the screen. This will package our DMN mode in a Deployment Unit (KJAR) and deploy it onto the Execution Server (KIE-Server).
-
-image::dm-rules-deploy.png[]
-
-[TODO] --add steps to re-run pump 4 data using Kafka
+Check the GUI to see if the pump 4 will trigger the alert when temperature and vibration thresholds are reached.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_4.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_6.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=tech_overview.adoc] image:icons/icon-next.png[align="right"width=128, link=xx]

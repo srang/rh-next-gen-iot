@@ -50,27 +50,6 @@ When the image has been built successfully, another template can be instantiated
 
 Execute the following command to instantiate the UI deployment template.
 
-[source,bash]
-----
-$ oc -p MONGODB_SERVICE=mongodb process -f applier/templates/ui-deployment.yml | oc apply -f-
-
-service "ui" created
-route "ui" created
-deploymentconfig "ui" created
-----
-
-Verify the ui is active by verifying the status using the following command:
-
-[source,bash]
-----
-$ oc get pods -l application=ui
-
-NAME                    READY     STATUS    RESTARTS   AGE
-ui-1-v76rm   1/1       Running   0          1m
-----
-
-A READY column indicating 1/1 denotes the service is ready and available
-
 To access the newly deployed application in a web browser, execute the following command to get the url of the from the route:
 
 [source,bash]
