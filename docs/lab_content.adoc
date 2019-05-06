@@ -1,0 +1,28 @@
+
+= Serverless for IoT lab
+Andrew Block <ablock@redhat.com>, Sam Rang <srang@redhat.com>, Christina Lin <clin@redhat.com>, Hugo Guerrerro <Ishu Verma <iverma@redhat.com>
+:homepage: https://github.com/sabre1041/iot-serverless
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+== Summary
+This lab provides step by step instructions on how to use Serverless architecture for IoT. The lab uses Red Hat OpenShift Container Platform and serverless architecture to execute on-demand functions in response to IoT events. Main components of the lab include setting up Apache OpenWhisk, building functions and deploying these functions to OpenWhisk.
+
+
+
+.Lab Contents
+****
+* link:tech_overview.adoc[*Technology Overview*]
+* link:esp_usecase.adoc[*Business Use Case : IoT*]
+* link:lab_0.adoc[*Lab 0: Lab Environment & Resources*]
+* link:lab_1.adoc[*Lab 1: Initial Seeding*]
+* link:lab_2.[*Lab 2: Visualizing Data*]
+* link:lab_3.adoc[*Lab 3: Using Kamel*]
+* link:lab_4.adoc[*Lab 4: Business Rules Service*]
+* link:lab_5.adoc[*Lab 5: Testing Updated Rules*]
+* link:advance_lab.adoc[*Extra Labs*]
+****
+
+[.text-center]
+image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=tech_overview.adoc]

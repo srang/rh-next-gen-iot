@@ -42,4 +42,4 @@ In the use case for this lab, we’ll use simple rules on vibration and temperat
 image::IoT_Lab_Summit_2019-2.png[]
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=tech_overview.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_0.html]
+image:icons/icon-previous.png[align=left, width=128, link=tech_overview.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_0.adoc]
