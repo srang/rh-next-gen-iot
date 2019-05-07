@@ -1,0 +1,38 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Lab 6b: Advanced Lab: Create new Kafka Topic
+
+== Kafa Topic
+For the previous labs, we've been using the Kafka topic `user1-data`
+
+You can find the list of current Kafka topics by:
+
+[source,bash]
+----
+$ oc project kafka
+$ oc get kafkatopics
+----
+
+=== Kafa new Kafka topic
+
+Update the provided kafka-topic.yaml (located at advanced/amq-streams/) with a topic name and kafka cluster name
+
+You can find your Kafka cluster name by:
+
+[source,bash]
+----
+$ oc get kafka
+----
+
+Deploy the updated template file.
+
+=== Verify new topic
+
+Deploy the kafka console to verify that the new topic has been created. The configuration for kafka console is provided in the file amq-streams-console.yaml (located at advanced/amq-streams/)
+
+NOTE: You'll need to create route for the new topic
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_5.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] 

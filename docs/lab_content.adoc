@@ -21,7 +21,8 @@ This lab provides step by step instructions on how to use Serverless architectur
 * link:lab_3.adoc[*Lab 3: Using Kamel*]
 * link:lab_4.adoc[*Lab 4: Business Rules Service*]
 * link:lab_5.adoc[*Lab 5: Testing Updated Rules*]
-* link:advance_lab.adoc[*Extra Labs*]
+* link:lab_6a.adoc[*Lab 6a: Advanced Lab: Create new Camel Route*]
+* link:lab_6a.adoc[*Lab 6b: Advanced Lab: Create new Kafka Topic*]
 ****
 
 [.text-center]
