@@ -12,4 +12,4 @@ Use the instructions from the previous lab to reset the ESP data using Kafka off
 Check the GUI to see if the pump 4 will trigger the alert when temperature and vibration thresholds are reached.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=xx]
+image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6a.adoc]
