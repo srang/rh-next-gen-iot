@@ -30,9 +30,3 @@ ${CMD_DIR}/deploy-manager.sh
 # depends on amq + kafka
 ${CMD_DIR}/deploy-bridge.sh
 
-#DEVELOPER ACTIVITIES
-# Setup kamel - shortcut = ${CMD_DIR}/bootstrap-kamel.sh
-# Deploy kamel bridge (kafka - rules) - shortcut = ${CMD_DIR}/deploy-routes.sh - *TODO* Test with latest route
-# AUthor rules - shortcut - *TODO*
-# *TODO* where decision results go (AMQ)
-# Look at stuff in the UI

@@ -2,15 +2,12 @@ package com.redhat.iot.routes;
 
 import lombok.extern.java.Log;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.Processor;
 import org.apache.camel.model.dataformat.JsonLibrary;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.camel.Exchange;
-import org.springframework.stereotype.Component;
 
 @Log
 @Component

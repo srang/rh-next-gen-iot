@@ -24,7 +24,8 @@ fi
 ${CMD_DIR}/kamel run ${PROJ_DIR}/${APPLICATION_CONTEXT_DIR}/src/main/java/com/redhat/iot/routes/StreamsReader.java --name=${APPLICATION_NAME} -n ${NAMESPACE} \
     -d mvn:org.kie.server:kie-server-client:7.18.0.Final \
     -d camel-kafka \
-    -d camel-jackson
+    -d camel-jackson \
+    -d camel-http
 
 # Label CRs
 while ! (oc get integration/${APPLICATION_NAME} -n ${NAMESPACE} -o=jsonpath='{.status.context}' &>/dev/null); do

@@ -37,15 +37,29 @@ public class SensorRunner {
         this.iotTypes = iotTypes;
         this.mqttProducer = mqttProducer;
         this.sensors = new ArrayList<>();
-        for(String iotType : this.iotTypes) {
-            for(Long device : this.devices) {
+        this.reloadDevices(this.devices, this.iotTypes);
+        log.info(String.format("Connecting to Broker with clientId: %s", this.appName));
+        mqttProducer.connect(this.appName);
+    }
+
+    public void reloadDevices(Long[] deviceList, String[] iotTypes) {
+        this.sensors = new ArrayList<>();
+        for (String iotType : iotTypes) {
+            for (Long device : deviceList) {
                 log.info(String.format("Starting Sensor: %s, Pump: %s, Client: %s", iotType, device, this.appName));
                 this.sensors.add(SensorFactory.create(iotType, device));
             }
         }
-        log.info(String.format("Connecting to Broker with clientId: %s", this.appName));
-        mqttProducer.connect(this.appName);
     }
+
+    public void reloadDevices(Long[] deviceList) {
+        this.reloadDevices(deviceList, this.iotTypes);
+    }
+
+    public void reloadDevices(String[] iotTypes) {
+        this.reloadDevices(this.devices, iotTypes);
+    }
+
 
     @Scheduled(fixedRate = 5000)
     public void run() {
