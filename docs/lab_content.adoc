@@ -1,5 +1,5 @@
 
-= Serverless for IoT lab
+= USING NEXT GEN TECHNOLOGIES TO BUILD IOT SOLUTION
 Andrew Block <ablock@redhat.com>, Sam Rang <srang@redhat.com>, Christina Lin <clin@redhat.com>, Hugo Guerrerro <Ishu Verma <iverma@redhat.com>
 :homepage: https://github.com/sabre1041/iot-serverless
 :imagesdir: images
@@ -7,9 +7,11 @@ Andrew Block <ablock@redhat.com>, Sam Rang <srang@redhat.com>, Christina Lin <cl
 :source-highlighter: prettify
 
 == Summary
-This lab provides step by step instructions on how to use Serverless architecture for IoT. The lab uses Red Hat OpenShift Container Platform and serverless architecture to execute on-demand functions in response to IoT events. Main components of the lab include setting up Apache OpenWhisk, building functions and deploying these functions to OpenWhisk.
+sing cutting edge technologies, we will be building an IOT edge computing solution that will monitor health of ESP
+to identify system stress and optimize hardware longevity.
 
-
+We will be using Electrical Submersible Pump (ESP) sensor data to build intelligence
+into the data processing layer and identify ways to improve pump longevity.
 
 .Lab Contents
 ****
