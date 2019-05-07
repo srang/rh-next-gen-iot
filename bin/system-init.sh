@@ -19,14 +19,14 @@ ${CMD_DIR}/bootstrap-broker.sh
 # deploy amq streams
 ${CMD_DIR}/bootstrap-streams.sh
 # download swagger codegen
-${CMD_DIR}/bootstrap-codegen.sh
+#${CMD_DIR}/bootstrap-codegen.sh
 
 # deploy decision manager
 ${CMD_DIR}/deploy-author.sh
 # deploys lab manager
 # depends on healthy broker
-${CMD_DIR}/deploy-manager.sh
+#${CMD_DIR}/deploy-manager.sh
 # deploys amq-kafka bridge
 # depends on amq + kafka
-${CMD_DIR}/deploy-bridge.sh
+#${CMD_DIR}/deploy-bridge.sh
 
