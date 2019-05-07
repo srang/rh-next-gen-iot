@@ -1,20 +1,27 @@
 package com.redhat.iot.web;
 
+import com.google.gson.Gson;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Log
 @Component
 public class AmqpReader {
 
-    @SendTo("/topic/sensordata")
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+
     @JmsListener(destination = "user1")
-    public Object receiveMessage(int[] rawMessage) throws Exception {
+    public void receiveMessage(int[] rawMessage) throws Exception {
         String message = Arrays.stream(rawMessage).mapToObj(i -> String.valueOf((char)i)).collect(Collectors.joining());
         log.info(String.format("AMQ Message (%s) consumed from topic \"user1\"", message));
         String[] payload = message.split(",");
@@ -37,9 +44,7 @@ public class AmqpReader {
                 sensorData.put("units", "Hz");
                 break;
         }
-        return sensorData;
+        messagingTemplate.convertAndSend("/topic/sensordata", new Gson().toJson(sensorData));
     }
-
-
 
 }

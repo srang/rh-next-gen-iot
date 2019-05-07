@@ -1,137 +1,233 @@
 import React, {Component} from 'react';
-import {ListView, Row, Col} from 'patternfly-react';
+import {ListView, Table, Row, Col} from 'patternfly-react';
 import * as SockJS from 'sockjs-client'
 import {Stomp} from '@stomp/stompjs'
 
 export class PumpListView extends Component {
     constructor() {
         super();
-        this.printStuff = this.printStuff.bind(this)
+        // this.uniquePumps = this.uniquePumps.bind(this);
+        this.tabulateSensorData = this.tabulateSensorData.bind(this);
+        this.pumpStatus = this.pumpStatus.bind(this);
         this.state = {
-            pumps: [],
-            listItems: [
-                {
-                    title: 'Item 1',
-                    description: 'This is Item 1 description',
-                    properties: {hosts: 3, clusters: 1, nodes: 7, images: 4},
-                    expandedContentText: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                    compoundExpandText: {
-                        hosts: "Text describing Item 1's hosts",
-                        clusters: "Text describing Item 1's clusters",
-                        nodes: "Text describing Item 1's nodes",
-                        images: "Text describing Item 1's images"
-                    }
-                },
-                {
-                    title: 'Item 2',
-                    description: 'This is Item 2 description',
-                    properties: {hosts: 2, clusters: 1, nodes: 11, images: 8},
-                    expandedContentText: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                    compoundExpandText: {
-                        hosts: "Text describing Item 2's hosts",
-                        clusters: "Text describing Item 2's clusters",
-                        nodes: "Text describing Item 2's nodes",
-                        images: "Text describing Item 2's images"
-                    }
-                },
-                {
-                    title: 'Item 3',
-                    description: 'This is Item 3 description',
-                    properties: {hosts: 4, clusters: 2, nodes: 9, images: 8},
-                    expandedContentText: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                    compoundExpandText: {
-                        hosts: "Text describing Item 3's hosts",
-                        clusters: "Text describing Item 3's clusters",
-                        nodes: "Text describing Item 3's nodes",
-                        images: "Text describing Item 3's images"
-                    }
-                },
-                {
-                    description: 'This is Item without heading',
-                    expandedContentText: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                    compoundExpandText: {
-                        hosts: "Text describing Item 4's hosts",
-                        clusters: "Text describing Item 4's clusters",
-                        nodes: "Text describing Item 4's nodes",
-                        images: "Text describing Item 4's images"
-                    }
-                },
-                {
-                    properties: {hosts: 4, clusters: 2, nodes: 9, images: 8},
-                    expandedContentText: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                    compoundExpandText: {
-                        hosts: "Text describing Item 5's hosts",
-                        clusters: "Text describing Item 5's clusters",
-                        nodes: "Text describing Item 5's nodes",
-                        images: "Text describing Item 5's images"
-                    }
-                },
-                {
-                    title: 'Item without description or close icon',
-                    expandedContentText: 'There is no close `x` on the right of this box.',
-                    hideCloseIcon: true,
-                    compoundExpandText: {
-                        hosts: "Text describing Item 6's hosts",
-                        clusters: "Text describing Item 6's clusters",
-                        nodes: "Text describing Item 6's nodes",
-                        images: "Text describing Item 6's images"
-                    }
-                }
-            ]
+            stompClient: {},
+            showResults: true,
+            pumps: []
         };
     }
+
     componentDidMount() {
         this.register([
-            {route: '/topic/sensordata', callback: this.printStuff}
+            {route: '/topic/sensordata', callback: this.tabulateSensorData},
+            {route: '/topic/pumpstatus', callback: this.pumpStatus}
         ]);
     }
+
     register(registrations) {
-        const sock = new SockJS('/frontend')
-        let stompClient = Stomp.over(sock)
+        const sock = new SockJS('/frontend');
+        let stompClient = Stomp.over(sock);
+        this.setState({stompClient: stompClient});
         stompClient.connect({}, function (frame) {
-            console.log("Connected "+ frame)
+            console.log("Connected " + frame);
             registrations.forEach(function (registration) {
                 stompClient.subscribe(registration.route, registration.callback)
             })
-
-        })
+        });
     }
 
-    printStuff(data) {
-        console.log(data)
+    pumpStatus(data) {
+        let message = JSON.parse(data.body);
+        let pumps = this.state.pumps;
+        for (var property in message) {
+            let decision = message[property];
+            let statusData = {timestamp: decision.timestamp, pumpId: decision.pumpId, type: decision.type, value: decision.value};
+            switch(decision.result) {
+                case "0":
+                    statusData.status = "Healthy";
+                    break;
+                case "1":
+                    statusData.status = "Warning";
+                    break;
+                case "2":
+                    statusData.status = "Error";
+                    break;
+            }
+            pumps[decision.pumpId].statusData.push(statusData)
+        }
+    }
+
+    tabulateSensorData(data) {
+        let message = JSON.parse(data.body);
+        let pumps = this.state.pumps;
+        if (!pumps[message.pumpId]) {
+            pumps[message.pumpId] =
+                {
+                    title: 'ESP ' + message.pumpId,
+                    description: 'Electronic Submersible Pump ' + message.pumpId,
+                    sensorData: [],
+                    statusData: []
+                };
+            console.log("Added pump: " + pumps[message.pumpId].title)
+        }
+        pumps[message.pumpId].sensorData.push(message);
+        this.setState({pumps: pumps});
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+        this.state.stompClient.disconnect();
     }
 
     render() {
+        const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
+        const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+        let statusColumns = [
+            {
+                header: {
+                    label: 'Unix Timestamp',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'timestamp'
+            },
+            {
+                header: {
+                    label: 'Pump ID',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'pumpId'
+            },
+            {
+                header: {
+                    label: 'Data Type',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'type'
+            },
+            {
+                header: {
+                    label: 'Data Evaluation',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'status'
+            },
+            {
+                header: {
+                    label: 'Data Value',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'value'
+            }
+        ];
+        let sensorColumns = [
+            {
+                header: {
+                    label: 'Unix Timestamp',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'timestamp'
+            },
+            {
+                header: {
+                    label: 'Pump ID',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'pumpId'
+            },
+            {
+                header: {
+                    label: 'Data Type',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'type'
+            },
+            {
+                header: {
+                    label: 'Data Value',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'value'
+            },
+            {
+                header: {
+                    label: 'Data Units',
+                    formatters: [headerFormat]
+                },
+                cell: {
+                    formatters: [cellFormat]
+                },
+                property: 'units'
+            }
+        ];
         return (
-                <ListView>
-                    {this.state.listItems.map(
-                        (
-                            {
-                                actions,
-                                properties,
-                                title,
-                                description,
-                                expandedContentText,
-                                hideCloseIcon
-                            },
-                            index
-                        ) => (
-                            <ListView.Item
-                                key={index}
-                                checkboxInput={<input type="checkbox"/>}
-                                leftContent={<ListView.Icon name="plane"/>}
-                                heading={title}
-                                description={description}
-                                stacked={true}
-                                hideCloseIcon={false}
-                            >
-                                <Row>
-                                    <Col sm={11}>{expandedContentText}</Col>
-                                </Row>
-                            </ListView.Item>
-                        )
-                    )}
-                </ListView>
+            <ListView>
+                {this.state.pumps.map(
+                    (
+                        {
+                            actions,
+                            properties,
+                            title,
+                            description,
+                            sensorData,
+                            statusData,
+                            hideCloseIcon
+                        },
+                        index
+                    ) => (
+                        <ListView.Item
+                            key={index}
+                            leftContent={<ListView.Icon name="wifi"/>}
+                            heading={title}
+                            description={description}
+                            stacked={true}
+                            hideCloseIcon={true}
+                        >
+                            <Row>
+                                <Col sm={11}>
+                                    <div>
+                                        <h3>Status Data</h3>
+                                        <Table.PfProvider columns={statusColumns}>
+                                            <Table.Header/>
+                                            <Table.Body rows={statusData} rowKey="timestamp"/>
+                                        </Table.PfProvider>
+                                        <h3>Sensor Data</h3>
+                                        <Table.PfProvider columns={sensorColumns}>
+                                            <Table.Header/>
+                                            <Table.Body rows={sensorData} rowKey="timestamp"/>
+                                        </Table.PfProvider>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </ListView.Item>
+                    )
+                )}
+            </ListView>
         );
     }
 }
