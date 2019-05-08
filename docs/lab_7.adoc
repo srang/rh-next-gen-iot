@@ -1,0 +1,48 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Lab 7: Advanced Lab: Update SpringBoot Camel to Camel K
+
+=== SpringBoot to Camel K
+Running SpringBoot locally is quick and fast, but putting it on the cloud and in container is not. To have more seamless developement experience, it would be nice to have your integration application running using Camel K. Try and attempt to change the MQTT to Kafka bridge from SpringBoot to Camel K. 
+
+There are a couple of things to do:
+
+1. Delete the current running message-injestion 
+[source]
+----
+kamel delete message-injestion 
+----
+2. Remove all the SpringBoot related code 
+[source]
+----
+
+//import org.springframework.stereotype.Component;
+//@Log
+//@Component
+----
+
+3. Update the endpoint configuration
+[source]
+----
+private static final String BROKER_URL = "iot-cluster-kafka-bootstrap.kafka.svc:9092";
+...
+public void configure() throws Exception {
+getContext().addComponent("amqp", AMQPComponent.amqpComponent("amqp://broker-amq-headless.user1.svc:5672?amqp.saslMechanisms=PLAIN","device1","password"));
+    ...    
+from("amqp:topic:user1")
+    ...   
+.to("kafka:user1-data?brokers="+BROKER_URL);
+----
+
+4. run using Camel K binary
+[source]
+----
+kamel run AmqpKafkaBridge.java -d camel-jackson -d camel-kafka -d camel-gson -d camel-amqp 
+----
+
+
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_5.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6b.adoc]

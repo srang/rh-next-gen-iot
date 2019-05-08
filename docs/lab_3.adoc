@@ -6,7 +6,7 @@
 
 == Review and Deploy the Integration
 
-Earlier, we deployed a traditional Camel based application that was running within a Spring Boot based micoservice. In this exercise, you will remove the ned to build an entire application server and define a simple integration contining _only_ the business in a lightweight runtime.
+Earlier, we deployed a traditional Camel based application that was running within a Spring Boot based micoservice. In this exercise, you will remove the need to build an entire application server and define a simple integration contining _only_ the business in a lightweight runtime.
 
 === Review the Integration
 
@@ -21,6 +21,14 @@ The integration performs the following steps:
 
 As you can see, all that we needed to provide is a single Camel route and Camel K will do the rest!
 
+=== Adding Group ID when consuming from Kafka Topics
+
+In order for you to replay the messages from AMQ Streams topics, add the user group towards the end of the endpoint config
+
+[source]
+----
+kafka:user1-data?brokers="+BROKER_URL+"&groupId=user1"
+----
 
 === Deploy the Camel K Integration
 
@@ -35,7 +43,7 @@ Change into the directory containing the Camel K code and deploy the integration
 [source]
 ----
 $ cd message-bridge/src/main/java/com/redhat/iot/routes
-$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson --dev
+$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson -d camel-http --dev
 ----
 
 By passing the `--dev` parameter, we can monitor the state of the running deployment and the application logs. We will keep this window open while we work through the rest of
@@ -44,18 +52,20 @@ In another terminal window, let's review the `Integration` object that was creat
 
 [source]
 ----
-$ oc get integration -n user1
+$ kamel get
 ----
 
 The integration is operational when the _Phase_ lists as `Running`. Now, review the full output of the object
 
 [source]
 ----
-$ oc get integration -n user1 -o yaml
+$ kamel describe integration streams-reader
 ----
 
 Notice the list of dependencies and the route definition within the `spec` section. 
 
+
+=======
 === Replay the data using Kafka
 
 Kafka allows reprocessing of input data from scratch. We'll be reset the ESP data to the beginning of the run.
