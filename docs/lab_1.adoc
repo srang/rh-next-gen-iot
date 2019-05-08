@@ -2,9 +2,9 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 1: Deploying Supporting Infrastructure
+= Lab 1: Deploy Supporting Infrastructure
 
-The OpenShift environment that has been provisioned for you already contains a portion of the overall solution. In this first lab, you will work to build out the remainder of the infrastructure to support the overall solution.
+The OpenShift environment that has been provisioned for you already contains a portion of the overall solution. In this first lab, you will start to to build out the remainder of the infrastructure to support the overall solution.
 
 == Reviewing the Existing Environment
 
