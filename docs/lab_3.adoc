@@ -6,7 +6,7 @@
 
 == Review and Deploy the Integration
 
-Earlier, we deployed a traditional Camel based application that was running within a Spring Boot based micoservice. In this exercise, you will remove the ned to build an entire application server and define a simple integration contining _only_ the business in a lightweight runtime.
+Earlier, we deployed a traditional Camel based application that was running within a Spring Boot based micoservice. In this exercise, you will remove the need to build an entire application server and define a simple integration contining _only_ the business in a lightweight runtime.
 
 === Review the Integration
 
@@ -43,7 +43,7 @@ Change into the directory containing the Camel K code and deploy the integration
 [source]
 ----
 $ cd message-bridge/src/main/java/com/redhat/iot/routes
-$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson --dev
+$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson -d camel-http --dev
 ----
 
 By passing the `--dev` parameter, we can monitor the state of the running deployment and the application logs. We will keep this window open while we work through the rest of
