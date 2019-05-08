@@ -2,13 +2,42 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 6a: Advanced Lab: Create new Camel route
+= Lab 6a: Advanced Lab: Processing more data - Create new Topics
 
-== Camel Route
-For the previous labs, the ESP sensor data (temperature, vibration, frequency and throughput) has been combined into one topic This Camel route for this is located in the StreamsReader app located in folder: message-bridge/src/main/java/com/redhat/iot/routes
+== Kafka Topic
+For the previous labs, we've been using the Kafka topic `user1-data` to receive and process the sensor data. However, sometime we want to handle it in a different way depending on the source or type of messages. So it is recommended to create different topics for this different sources of information.
 
-For this lab, create a new Camel route to send ESP sensor data to different topics. You'll need to modify Kafka topic, Camel Route, Message Bridge.
+=== Check your topics
 
+You can find the list of current Kafka topics by reviewing the Kafka topic resources:
+
+[source,bash]
+----
+$ oc project kafka
+$ oc get kafkatopics
+----
+
+=== Create new Kafka topic
+
+We provide a sample `kafka-topic.yaml` file under this same repository (located at advanced/amq-streams/) with the topic name to create as well as the kafka cluster name to link that topic with your actual cluster. 
+
+You can find your Kafka cluster name by executing the following commands:
+
+[source,bash]
+----
+$ oc get kafka
+----
+
+NOTE: Apply the updated resource file using the OpenShft CLI.
+
+=== Verify new topic
+
+We have been using the CLI to review the available Kafka topics, but somethimes is better to have a more visual tool. The team is providing you with a sample console to view the current cluster information.
+
+Deploy the Kafka console to verify that the new topic has been created. +
+The configuration for Kafka console is provided in the file `amq-streams-console.yaml` (located at advanced/amq-streams/)
+
+NOTE: You'll need to create route for the new topic
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=lab_5.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6b.adoc]
