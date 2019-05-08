@@ -33,7 +33,7 @@ Start the StreamsReader app
 [source]
 ----
 $ cd message-bridge/src/main/java/com/redhat/iot/routes
-$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson -d camel-http --dev
+$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson -d camel-http --dev -n user1
 ----
 
 Check the GUI to see if the pump 3 and 4 will trigger the alert when temperature and vibration thresholds are reached.
