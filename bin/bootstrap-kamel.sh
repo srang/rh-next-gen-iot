@@ -13,6 +13,6 @@ if ! (oc get crd/integrations.camel.apache.org &>/dev/null); then
 fi
 
 # deploy operator in namespace
-if ! (oc get deploy/camel-k-operator -n ${NAMESPACE} &>/dev/null); then
-    ${CMD_DIR}/kamel install --skip-cluster-setup -n ${NAMESPACE}
-fi
+#if ! (oc get deploy/camel-k-operator -n ${NAMESPACE} &>/dev/null); then
+#    ${CMD_DIR}/kamel install --skip-cluster-setup -n ${NAMESPACE}
+#fi

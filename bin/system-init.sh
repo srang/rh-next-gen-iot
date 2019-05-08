@@ -16,6 +16,8 @@ export AMQ_REL="1.3-5"
 ${CMD_DIR}/bootstrap-ns.sh
 # deploy amq broker
 ${CMD_DIR}/bootstrap-broker.sh
+# Kamel
+${CMD_DIR}/bootstrap-kamel.sh
 # deploy amq streams
 ${CMD_DIR}/bootstrap-streams.sh
 # download swagger codegen
