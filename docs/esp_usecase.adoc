@@ -30,16 +30,18 @@ Source: Continental Steel Corporation (www.cstl.ca)
 
 The key to successful monitoring is to know which parameters to measure and how to effectively interpret this data. The complex interactions between the wellbore and an ESP can be analyzed using trend plots to tell story of pump or Gradient Traverse plot analysis to highlight the hierarchy of measured parameters and show how these parameters can be used to validate well and ESP performance.
 
-Vibration and temperature are two of the many parameters available to assist with the diagnosis of ESP systems in order to optimise runlife. Like any other variable, these should always be used in conjunction with other downhole and surface measurements in order to obtain a complete picture of the pump and well performance.
+=== Monitoring Temperature and Vibration
+Vibration and temperature are two of the many parameters available to assist with the diagnosis of ESP systems in order to optimize runlife. Like any other variable, these should always be used in conjunction with other downhole and surface measurements in order to obtain a complete picture of the pump and well performance.
 
 image::valiant-538.png[]
 Source: Valiant artificial lift solutions
 
 Downhole rotating systems, such as ESPs, are complex systems where vibration can be introduced in many ways. In the case of an ESP, vibration can be induced due to imbalance in the pump or motor, wear in the pump diffusers or impellers, manufacturing problems, electrical power instability or as result of the fluids being produced through the pump.
 
-In the use case for this lab, we’ll use simple rules on vibration and temperature data to establish leading indicators of failure and prevent the pump from operating in an undesirable condition.
+=== Rules based decision making
+In the use case for this lab, we’ll use simple rules on vibration and temperature data to establish leading indicators of failure and prevent the pump from operating in an undesirable condition. Once a specific threshold is reached, alert can be raised to change pump parameters or shut it down safely. 
 
-image::IoT_Lab_Summit_2019-2.png[]
+image::lab-flow.jpg[]
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=tech_overview.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_0.adoc]

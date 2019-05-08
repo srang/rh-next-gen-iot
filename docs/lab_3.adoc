@@ -2,13 +2,35 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 3: Using Kamel for xx
+= Lab 3: Lightweight Integrations using Camel K
 
-== Kamel binary and App
+== Review and Deploy the Integration
 
-Kamel binary has been provided on your system to allow interaction with the Camel-K on your cluster.
+Earlier, we deployed a traditional Camel based application that was running within a Spring Boot based micoservice. In this exercise, you will remove the ned to build an entire application server and define a simple integration contining _only_ the business in a lightweight runtime.
 
-Use the StreamsReader java app to xx
+=== Review the Integration
+
+The Camel K integration for this solution is available in the `message-bridge/src/main/java/com/redhat/iot/routes/StreamsReader.java`. 
+
+The integration performs the following steps:
+
+1. Reads messages from a Kafka queue
+2. Sends values to Decision Manager
+3. Assess the results
+4. Sends the results to the Lab Manager component (to be deployed in a subsequent section) for longterm storage
+
+As you can see, all that we needed to provide is a single Camel route and Camel K will do the rest!
+
+
+=== Deploy the Camel K Integration
+
+Instead of needing to have OpenShift take source code from a Git based repository and create a new container image, we can use Camel K and the associated `kamel` executable to have the platform create an image for us. All that we need to do is point to the source for the integration, define any dependencies that are needed by the integration, and the platform will handle the rest.
+
+Camel K makes use of OpenShift and Kubernetes Custom Resource Definitions to define new API types within the platform. When you use the `kamel` executable, a new `Integration` type will be created within the current project. The Camel K operator that we deployed in the previous section is responsible for monitoring `Integration` resources and taking action as necessary. 
+
+The `kamel run` command is used to create a new `Integration` object that defines all of the components that we will need. When a new `Integration` is created, the Operator retrieves the definition, creates a new container image based upon the Camel route and any other dependencies (using the `-d` parameter) that are defined and then starts the container.
+
+Change into the directory containing the Camel K code and deploy the integration.
 
 [source]
 ----
@@ -16,7 +38,25 @@ $ cd message-bridge/src/main/java/com/redhat/iot/routes
 $ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson --dev
 ----
 
-Use the ctrl C command to stop StreamsReader app
+By passing the `--dev` parameter, we can monitor the state of the running deployment and the application logs. We will keep this window open while we work through the rest of
+
+In another terminal window, let's review the `Integration` object that was created by the `kamel run` command
+
+[source]
+----
+$ oc get integration -n user1
+----
+
+The integration is operational when the _Phase_ lists as `Running`. Now, review the full output of the object
+
+[source]
+----
+$ oc get integration -n user1 -o yaml
+----
+
+Notice the list of dependencies and the route definition within the `spec` section. 
+
+You can also note the integration is running as noted by the 
 
 === Replay the data using Kafka
 

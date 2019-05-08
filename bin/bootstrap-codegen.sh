@@ -8,7 +8,6 @@ PROJ_DIR="${CMD_DIR}/.."
 
 SWAGGER_CODEGEN_VER=3.0.5
 
-mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.0:copy \
-    -DoutputDirectory=${PROJ_DIR}/bin \
-    -Dartifact=io.swagger.codegen.v3:swagger-codegen-cli:${SWAGGER_CODEGEN_VER}
-mv ${CMD_DIR}/swagger-codegen-cli-${SWAGGER_CODEGEN_VER}.jar ${CMD_DIR}/swagger-codegen.jar
+if [ ! -f ${CMD_DIR}/swagger-codegen.jar ]; then
+    wget -O ${CMD_DIR}/swagger-codegen.jar http://central.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/${SWAGGER_CODEGEN_VER}/swagger-codegen-cli-${SWAGGER_CODEGEN_VER}.jar
+fi

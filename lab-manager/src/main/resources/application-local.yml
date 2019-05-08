@@ -6,13 +6,8 @@ mqtt:
 
 pump:
   devices: 1
-
-#amqphub:
-#  amqp10jms:
-#    remote-url: amqp://localhost:61616?amqp.saslMechanisms=PLAIN
-#    username: device1
-#    password: password
-
+iot:
+  types: temperature
 
 spring:
   activemq:

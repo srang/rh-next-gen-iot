@@ -2,14 +2,42 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 5: Testing Updated Rules
+= Lab 5: Testing Rules
 
 == Business Rules
-Lets replay the ESP data from beginning to verify the updated rules will trigger the alert so corrective action can be taken.
+Lets replay the ESP data from beginning to verify the rules will trigger the alert so corrective action can be taken.
 
-Use the instructions from the previous lab to reset the ESP data using Kafka offset-reset functionality.
+=== Stop data to Kie server
+In the terminal window where StreamsReader is running, use the ctrl C command to stop StreamsReader app
 
-Check the GUI to see if the pump 4 will trigger the alert when temperature and vibration thresholds are reached.
+=== Replay the data using Kafka
+
+Kafka allows reprocessing of input data from scratch. We'll be reset the ESP data to the beginning of the run.
+This can be done from the scripts provided by Kafka. We'll need to access the running Kafa instance under Kafka project.
+
+WARNING: Make sure the StreamsReader application is stopped before resetting the data
+
+[source,bash]
+----
+$ oc project kafka
+$ oc get pods
+$ oc rsh iot-cluster-kafka-0
+$ cd bin
+$ ./kafka-consumer-groups.sh --bootstrap-server iot-cluster-kafka-bootstrap.kafka.svc:9092 --group user1 --topic user1-data --reset-offsets --to-earliest
+oc project user1
+$ exit
+----
+
+=== Start data to Kie server
+Start the StreamsReader app
+
+[source]
+----
+$ cd message-bridge/src/main/java/com/redhat/iot/routes
+$ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson --dev
+----
+
+Check the GUI to see if the pump 3 and 4 will trigger the alert when temperature and vibration thresholds are reached.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=xx]
+image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6a.adoc]

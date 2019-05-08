@@ -2,94 +2,48 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 4: Business Rules Service
+= Lab 4: Deploy the Lab Manager
 
-== Business Rules
-One of the important ways to monitor ESP health is by triggering an action if the sensor data meets a certain condition as defined by business rules. In this section we’ll learn how to create a business rules service. This service will work the following way:
+The final portion of the overall solution is a component called Lab Manager.
 
-1. Sensor data is read from a defined message queue.??
-2. Sensor data is handed over to the rules execution engine that triggers action per defined rules. In our case, there is a field 'unhealthy-pump-decision' which will be changed to:
-- '2' if sensor value is too high
-- '1' if the sensor value  is above operating range
-- '0' if the sensor value is within operating range.
+== Lab Manager Overiew
 
-Altered data is placed into another defined message queue.??
+ Lab Manager is a responsible for providing multiple key aspects to support the overall solution:
 
-The rules syntax is pretty simple: +
-If +
-   some condition +
-then +
-   some action
+ * Software based sensor generator
+ * Manages persistence for final results from the rules processing
+ * User interface for visualizing processed data
 
-For our lab, we will create the decision table via a web front-end, provided by Decision Manager Node (DMN).
+== Deploy the Lab Manager
 
+A script has been provided (`bin/deploy-manager.sh`) to simplifty the deployment of the Lab Manager application. Similar to our provisioning process, the script makes use of an OpenShift template located at `lab-manager/templates/lab-manager.yml`. Review the template to assess the OpenShift objects that will be created as part of the instantiation of the template.
 
-== DMN
+The application includes the set of sample sensor metrics that will simulate the actual environment. These resources are located in the `lab-manager/src/main/resources/data` directory.
 
-As a business analyst or business rules developer, you can use Decision Model and Notation (DMN) to model a decision service graphically in a decision requirements diagram (DRD). This diagram traces business decisions from start to finish, with each decision node drawing logic from DMN model decision elements such as decision tables.
+Now, execute the script to retrieve the source code from Git, build a container image, and finally deploy the application to OpenShift.
 
-For this lab, our DMN model will use two elements: input data (pump telemetry data) and decision (logic for determining pump condition).
+[source,bash]
+----
+$ bin/deploy-manager.sh
+----
 
-=== Decision Table
-A decision table is a visual representation of one or more rules in a tabular format. Each rule consists of a single row in the table, and includes columns that define the conditions and outcome for that particular row.
+Once the application has been deployed, the software sensor will begin to emit data to AMQ and through the rest of the integration.
 
-=== Using DMN
-DMN is available from Business Central portal that allows visual composition of custom business rules and processes.
+== Accessing the User Interface
 
-Click on Routes in the left OpenShift Console to access the Business Central portal
+To visualize the data that has been sent by the software simulator and processed through the Camel, AMQ and Decision Manager components, a Patternfly based UI app can be used to monitor the pump status.
 
-image::decision-manager-route1.png[]
+The application will show the telemetry data and description of the selected ESP. It also shows the health status of each pump. If a pump is not working within its operating range, then an alert will be shown so corrective action can be taken.
 
-Login to Business Central using following credentials:
-username: *jboss*
-password: *jboss*
+An OpenShift Route has been created as part of the previously instantiated template. Determine the URL of the route by executing the following command:
 
-image::dm-login.png[]
+[source,bash]
+----
+$ export LAB_MANAGER_URL=http://$(oc get routes lab-manager -n user1 --template='{{ .spec.host }}')
+$ echo $LAB_MANAGER_URL
+----
 
-Click on *Design* to access design
-
-image::dm-home.png[]
-
-=== Update DMN Decision Table
-
-A few sample rules have been created using DMN to get you started. Click on *esp_rules* to edit the rules.
-
-image::dm-project.png[]
-
-Click on *unhealthy-pump-decision* to highlight decision node and then click on edit
-
-image::dm-dmn-edit_rules.png[]
-
-You should now be able to edit the rules in decision table
-
-image::dm-dmn-decision_table1.png[]
-
-TIP: You can right click on a row to insert another rule
-
-The healthy operating range of the pumps is as follows:
-
-[cols="4",options="header"]
-|=======
-|Sensor Type        |Normal  |Caution           |Danger
-|`temperature`      |`<200`  |`>=200 and <250`  |`>250`
-|`vibration`        |`<2.7`  |`>=2.2 and <4`    |`>4`
-|=======
-
-CAUTION: When defining a range, use `[` for lower limit and `)` for upper limit
-
-Once the rules are updated, click *save*
-
-image::dm-dmn-decision_table_save.png[]
-
-IMPORTANT: Make sure the namespace for pump_rules DMN (under properties) is listed as pump_rules
-
-With our decision table updated, we can now package our DMN model in a Deployment Unit (KJAR) and deploy it on the Execution Server.
-
-In the bread-crumb navigation in the upper-left corner, click on *esp_rules* to go back to the project’s Library View.
-
-Click on the Deploy button in the upper-right corner of the screen. This will package our DMN mode in a Deployment Unit (KJAR) and deploy it onto the Execution Server (KIE-Server).
-
-image::dm-rules-deploy.png[]
+Launch a web browser and navigate to the URL previously retrieved
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=lab_3.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_5.adoc]

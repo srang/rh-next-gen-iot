@@ -45,4 +45,4 @@ Business Central allows visual composition of custom business rules and processe
 TIP: Learn about DMN with video from Duncan Doyle link:https://www.youtube.com/watch?v=Su7pR0Yj4W0video[Getting started with DMN]
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=tech_overview.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=esp_usecase.adoc]
+image:icons/icon-previous.png[align=left, width=128, link=lab_content.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=esp_usecase.adoc]

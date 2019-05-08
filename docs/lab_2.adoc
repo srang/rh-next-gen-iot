@@ -2,14 +2,141 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 2: Visualizing the Data
+= Lab 2: Deploying Project Resources
 
-== View data in UI
-To visualize the data that has been sent by the software simulator and processed through Fuse and Decision Manager, a Patternfly based UI app will be deployed to monitor the pump status.
+In the prior lab, we deployed a portion of the supporting infrastructure of the overall solution, including the operator to be able to manage Camel K integrations as well as the application bridge to route messages between Red Hat AMQ and Camel K. In this section, you will deploy the rest of the solution.
 
-The app will show the telemetry data and description of the selected ESP. It also shows the health status of each pump. If a pump is not working within its operating range, then an alert will be shown so corrective action can be taken. The source for the frontend application is located in the `??/src/main/resources/static` folder.
+== Business Rules
 
-[TODO] -- Link to GUI
+One of the important ways to monitor ESP health is by triggering an action if the sensor data meets a certain condition as defined by business rules. In this section we’ll learn how to create a business rules service. This service will work the following way:
+
+1. Sensor data requsts are sent to the decision manager service
+2. Sensor data is handed over to the rules execution engine that triggers action per defined rules. In our case, there is a field called 'unhealthy-pump-decision' which will be changed to:
+- '2' if sensor value is too high
+- '1' if the sensor value  is above operating range
+- '0' if the sensor value is within operating range.
+
+Altered data is placed into another defined message queue.??
+
+The rules syntax is pretty simple: +
+If +
+   some condition +
+then +
+   some action
+
+For our lab, we will create the decision table via a web front-end, provided by Decision Manager Node (DMN).
+
+== DMN
+
+As a business analyst or business rules developer, you can use link:Decision Model and Notation (DMN)[https://access.redhat.com/documentation/en-us/red_hat_decision_manager/7.3/html-single/designing_a_decision_service_using_dmn_models/index] to model a decision service graphically in a decision requirements diagram (DRD). This diagram traces business decisions from start to finish, with each decision node drawing logic from DMN model decision elements such as decision tables.
+
+For this lab, our DMN model will use two elements: Input data (pump telemetry data) and decision (logic for determining pump condition).
+
+=== Decision Table
+
+A decision table is a visual representation of one or more rules in a tabular format. Each rule consists of a single row in the table, and includes columns that define the conditions and outcome for that particular row.
+
+=== Using DMN
+
+DMN is available from Business Central portal that allows visual composition of custom business rules and processes.
+
+Click on Routes in the left OpenShift Console to access the Business Central portal
+
+image::decision-manager-route1.png[]
+
+Login to Business Central using following credentials:
+username: *jboss*
+password: *jboss*
+
+image::dm-login.png[]
+
+Click on *Design* to access design
+
+image::dm-home.png[]
+
+=== Create DMN Decision Table
+
+Click on Add project +
+
+Give the project a name *esp_rules* +
+
+In the next screen, click on *Add Assets* +
+
+Select DMN as the type of asset +
+
+Put name of DMN as pump_rules
+
+image::dm-dmn-create.png[]
+
+Using the design Palette on the left side, select oval Input node
+
+image::dm-dmn-input-node.png[]
+
+Name this node as "type"
+
+Using the Property panel on the top right corner, set the output data type to "string"
+
+image::dm-dmn-node-property.png[]
+
+Using the design Palette on the left side, select another Input node
+
+Name this node as "value"
+
+Using the Property panel on the top right corner, set the output data type to "number"
+
+Save the model.
+
+Using the design Palette on the left side, select rectangle Decision node
+
+Name this node as "unhealthy-pump-decision"
+
+Using the Property panel on the top right corner, set the output data type to "number"
+
+We need to attach both Input nodes, type and value, to Decision node. We can do this by clicking on an Input node, clicking on its arrow icon, and attaching the arrow to the Decision node.
+
+image::dm-dmn-connect.png[]
+
+Click on *unhealthy-pump-decision* to highlight Decision node and then click on edit
+
+image::dm-dmn-edit_rules.png[]
+
+Select the expression Decision Table to create a boxed expression implemented as a decision table.
+
+Create the rules in the decision table
+
+The healthy operating range of the pumps is as follows:
+
+[cols="4",options="header"]
+|=======
+|Sensor Type        |Normal  |Caution           |Danger
+|`temperature`      |`<200`  |`>=200 and <250`  |`>250`
+|`vibration`        |`<2.7`  |`>=2.2 and <4`    |`>4`
+|=======
+
+CAUTION: When defining a range, use `[` for lower limit and `)` for upper limit
+
+TIP: You can right click on a row to insert another rule
+
+The table should look like the following
+
+image::dm-dmn-decision_table1.png[]
+
+Once the rules are updated, click *save*
+
+image::dm-dmn-decision_table_save.png[]
+
+IMPORTANT: Make sure the namespace for pump_rules DMN (under properties) is listed as pump_rules
+
+With our decision table updated, we can now package our DMN model in a Deployment Unit (KJAR) and deploy it on the Execution Server.
+
+In the bread-crumb navigation in the upper-left corner, click on *esp_rules* to go back to the project’s Library View.
+
+Click on the Deploy button in the upper-right corner of the screen. This will package our DMN mode in a Deployment Unit (KJAR) and deploy it onto the Execution Server (KIE-Server).
+
+image::dm-rules-deploy.png[]
+
+With the business rules deployed that will assess sensor values, you will deploy a lightwight integration using Camel K to read messages from AMQ Streams and send sensor metrics to the business rules for assessment.
+
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=lab_1.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_3.adoc]

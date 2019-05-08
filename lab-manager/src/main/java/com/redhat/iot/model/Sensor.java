@@ -1,6 +1,5 @@
 package com.redhat.iot.model;
 
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -10,9 +9,9 @@ import lombok.Data;
 import lombok.extern.java.Log;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
