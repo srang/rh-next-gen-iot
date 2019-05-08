@@ -4,9 +4,10 @@
 
 = Lab 3: Using Camel K for routing data
 
-== Kamel binary and App
+== Camel K Executable
 
-Kamel binary has been provided on your system to allow interaction with the Camel-K on your cluster.
+Camel K makes use of a executable binary to manage the interaction with the ecosystem and has been preinstalled on your workstation.
+
 
 Use the StreamsReader java app for connecting with Kie server and routing.
 
