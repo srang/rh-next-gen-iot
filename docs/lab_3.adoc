@@ -21,7 +21,7 @@ The integration performs the following steps:
 
 As you can see, all that we needed to provide is a single Camel route and Camel K will do the rest!
 
-===Adding Group ID when consuming from Kafka Topics
+=== Adding Group ID when consuming from Kafka Topics
 
 In order for you to replay the messages from AMQ Streams topics, add the user group towards the end of the endpoint config
 
@@ -52,14 +52,14 @@ In another terminal window, let's review the `Integration` object that was creat
 
 [source]
 ----
-$ oc get integration -n user1
+$ kamel get
 ----
 
 The integration is operational when the _Phase_ lists as `Running`. Now, review the full output of the object
 
 [source]
 ----
-$ oc get integration -n user1 -o yaml
+$ kamel describe integration streams-reader
 ----
 
 Notice the list of dependencies and the route definition within the `spec` section. 
