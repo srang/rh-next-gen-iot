@@ -1,0 +1,12 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Electrical Submersible Pump Condition Monitoring and Forecasting
+
+== Next Gen Technologies at Scale
+
+Using cutting edge technologies, we will be building an IOT edge computing solution that will monitor health of ESP
+to identify system stress and optimize hardware longevity.
+
+For instructions refer to link:https://gitlab.com/redhatsummitlabs/next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads/blob/master/docs/lab_content.adoc[Lab Guide]

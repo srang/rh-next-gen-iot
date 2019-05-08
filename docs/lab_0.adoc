@@ -31,14 +31,9 @@ Interaction with the environment will be facilitated using several mechanisms li
 
 OpenShift features a Command Line Interface for interacting with the Platform. The executable has been already installed and is available on your workstation.
 
-Open a terminal session and login to OpenShift:
+Open a terminal session and login to OpenShift using instructions from GUID Grabber
 
-[source,bash]
-----
-oc login api.cluster-<GUID>.<DOMAIN>.:6443 +
-----
-
-You will see a warning related to insecure certificates. Given that this is a lab environment, it is OK to safely ignore these warnings. Type **Y** and hit Enter.
+TIP: You will see a warning related to insecure certificates. Given that this is a lab environment, it is OK to safely ignore these warnings. Type **Y** and hit Enter.
 
 Use the following credentials:
 
@@ -64,9 +59,7 @@ The OpenShift CLI has been successfully configured and ready for use in the lab!
 
 OpenShift features a rich user interface for managing resources on the platform.
 
-Open a web browser and navigate to the following location
-
-link:https://console-openshift-console.apps.cluster-<GUID>.<DOMAIN>[OpenShift Web console]
+Open a web browser and navigate to URI provided by GUID Grabber
 
 Similar to the CLI, a warning will appear stating that insecure certificates are being utilized. Ignore the certificate warning and continue on to the login page.
 
@@ -74,10 +67,6 @@ Once again, use the following credentials at the login page
 
 User: *user1* +
 Password: *r3dh4t1!*
-
-The OpenShift catalog should be shown upon successful authentication
-
-//image::images/ocp-catalog.png[OpenShift Catalog]
 
 === Lab Resources
 
@@ -87,15 +76,13 @@ The primary source of content for this lab is the IoT Next Gen Technologies at S
 
 Navigate to the home directory folder and clone the lab repository. Once cloned navigate into the `next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads` directory:
 
-[source,bash]
-----
-
+````bash
 $ cd $HOME
 $ git clone https://gitlab.com/redhatsummitlabs/next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads.git
 
 
 $ cd next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads
-----
+````
 
 The repository contains the following resources:
 
@@ -104,7 +91,7 @@ The repository contains the following resources:
 * *Business Rules*
 * *Lab Manager*
 ** User Intefrace
-** Software Simulator  
+** Software Simulator
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=esp_usecase.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_1.adoc]

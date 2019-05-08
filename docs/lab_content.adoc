@@ -7,7 +7,7 @@ Andrew Block <ablock@redhat.com>, Sam Rang <srang@redhat.com>, Christina Lin <cl
 :source-highlighter: prettify
 
 == Summary
-sing cutting edge technologies, we will be building an IOT edge computing solution that will monitor health of ESP
+Using cutting edge technologies, we will be building an IOT edge computing solution that will monitor health of ESP
 to identify system stress and optimize hardware longevity.
 
 We will be using Electrical Submersible Pump (ESP) sensor data to build intelligence

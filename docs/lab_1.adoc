@@ -2,13 +2,13 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 1: Deploy Supporting Infrastructure 
+= Lab 1: Deploy Supporting Infrastructure
 
-The OpenShift environment that has been provisioned for you already contains a portion of the overall solution. In this first lab, you will start to to build out the remainder of the infrastructure to support the overall solution. 
+The OpenShift environment that has been provisioned for you already contains a portion of the overall solution. In this first lab, you will start to to build out the remainder of the infrastructure to support the overall solution.
 
 == Reviewing the Existing Environment
 
-As you saw in Lab 0, you have access to two projects: `kafka` and `user1`. The `kafka` project contains the entire ecosystem of AMQ Streams including a Kakfa broker. 
+As you saw in Lab 0, you have access to two projects: `kafka` and `user1`. The `kafka` project contains the entire ecosystem of AMQ Streams including a Kakfa broker.
 
 The remainder of the resources that have either been deployed as part of the preconfigured environment as well as the deployments that you will execute as part of this workshop will be exectued in the `user1` project.
 
@@ -36,7 +36,7 @@ $ oc get pods -n user1
 
 Even though Camel K is being used for a portion of the overall solution, there are circumstances for which a traditional Camel based application may be preferred. Examples include responding to events that do not require a persistent connection. The bridge application that we will be deploying allows for messages originating in a standalone AMQ broker running on OpenShift to be passed to a Kafka topic. The contents of the bridge application are found in the `message-bridge` directory of the project directory. The Camel route using Java DSL format can be found in the `message-bridge/src/main/java/com/redhat/iot/AmqpKafkaBridge.java` file. Review the contents of this file to investigate the integration.
 
-The `bin/deploy-bridge.sh` script is available which not only abstracts the building of the image for the application along with the deployment itself, but also confirms the deployment occurred successfully. The script invokes an Openshift template containing all of the resources that are to be applied to the OpenShift environment. 
+The `bin/deploy-bridge.sh` script is available which not only abstracts the building of the image for the application along with the deployment itself, but also confirms the deployment occurred successfully. The script invokes an Openshift template containing all of the resources that are to be applied to the OpenShift environment.
 
 Take a moment to inspect the contents of the `message-bridge/templates/message-bridge.yml` template.
 
@@ -47,7 +47,7 @@ Execute the script to apply the template which in turn will build a new image fr
 $ bin/deploy-bridge.sh
 ----
 
-Confirm the messafge-bridge pod is running in the `user1` project
+Confirm the message-bridge pod is running in the `user1` project
 
 [source,bash]
 ----
