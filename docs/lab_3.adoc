@@ -58,17 +58,11 @@ In another terminal window, let's review the `Integration` object that was creat
 
 [source]
 ----
+$ oc project user1
 $ kamel get
 ----
 
 The integration is operational when the _Phase_ lists as `Running`. Now, review the full output of the object
-
-[source]
-----
-$ oc describe integration streams-reader
-----
-
-Notice the list of dependencies and the route definition within the `spec` section. 
 
 
 =======
