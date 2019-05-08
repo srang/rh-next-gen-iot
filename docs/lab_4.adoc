@@ -45,5 +45,28 @@ $ echo $LAB_MANAGER_URL
 
 Launch a web browser and navigate to the URL previously retrieved
 
+=== ESP data in UI
+UI provides two views for the ESP data:
+
+==== Status Data
+Status data shows information on the pump status as determined by the rules created in Lab 2 It also shows the Pump ID, data type and payload value
+
+==== Sensor Data
+Sensor data shows Pump ID, data type, payload value and the applicable unit of measurement.
+
+=== Verify Pump status
+Based on the operating range of the pumps define in Lab 2 (see below), check the Pump Status to verify that pump health status is reflected correctly (Healthy, Warning, Error)
+
+[cols="4",options="header"]
+|=======
+|Sensor Type        |Normal  |Caution           |Danger
+|`temperature`      |`<200`  |`>=200 and <250`  |`>250`
+|`vibration`        |`<2.7`  |`>=2.2 and <4`    |`>4`
+|=======
+
+If the status is now showing correctly, use the steps in Lab 2 to update the rules and deploy the model to Kie server.
+
+
+
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=lab_3.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_5.adoc]

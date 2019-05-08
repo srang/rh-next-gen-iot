@@ -23,9 +23,12 @@ into the data processing layer and identify ways to improve pump longevity.
 * link:lab_3.adoc[*Lab 3: Using Kamel*]
 * link:lab_4.adoc[*Lab 4: Business Rules Service*]
 * link:lab_5.adoc[*Lab 5: Testing Rules*]
-* link:lab_6a.adoc[*Lab 6a: Advanced Lab: Create new Camel Route*]
-* link:lab_6a.adoc[*Lab 6b: Advanced Lab: Create new Kafka Topic*]
+* link:lab_6a.adoc[*Lab 6a: Advanced Lab: Create new Kafka Topic*]
+* link:lab_6a.adoc[*Lab 6b: Advanced Lab: Create new Camel Route*]
+* link:lab_7.adoc[*Lab 6b: Update SpringBoot Camel to Camel K*]
+
 ****
+
 
 [.text-center]
 image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=tech_overview.adoc]
