@@ -23,6 +23,12 @@ As you can see, all that we needed to provide is a single Camel route and Camel 
 
 === Adding Group ID when consuming from Kafka Topics
 
+[source]
+----
+vi message-bridge/src/main/java/com/redhat/iot/routes/StreamsReader.java
+----
+
+
 In order for you to replay the messages from AMQ Streams topics, add the user group towards the end of the endpoint config
 
 [source]
