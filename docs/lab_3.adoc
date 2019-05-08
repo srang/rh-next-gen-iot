@@ -21,6 +21,14 @@ The integration performs the following steps:
 
 As you can see, all that we needed to provide is a single Camel route and Camel K will do the rest!
 
+===Adding Group ID when consuming from Kafka Topics
+
+In order for you to replay the messages from AMQ Streams topics, add the user group towards the end of the endpoint config
+
+[source]
+----
+kafka:user1-data?brokers="+BROKER_URL+"&groupId=user1"
+----
 
 === Deploy the Camel K Integration
 
@@ -58,23 +66,3 @@ Notice the list of dependencies and the route definition within the `spec` secti
 
 You can also note the integration is running as noted by the 
 
-=== Replay the data using Kafka
-
-Kafka allows reprocessing of input data from scratch. We'll be reset the ESP data to the beginning of the run.
-This can be done from the scripts provided by Kafka. We'll need to access the running Kafa instance under Kafka project.
-
-WARNING: Make sure the StreamsReader application is stopped before resetting the data
-
-[source,bash]
-----
-$ oc project kafka
-$ oc get pods
-$ oc rsh iot-cluster-kafka-0
-$ cd bin
-$ ./kafka-consumer-groups.sh --bootstrap-server iot-cluster-kafka-bootstrap.kafka.svc:9092 --group user1 --topic user1-data --reset-offsets --to-earliest
-oc project user1
-$ exit
-----
-
-[.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_2.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_4.adoc]
