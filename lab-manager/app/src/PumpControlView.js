@@ -80,8 +80,8 @@ export class PumpControlView extends Component {
         });
     }
 
-    reconnectPumps() {
-        this.state.stompClient.send("/ws/reconnect", {}, JSON.stringify({pupms: this.state.pumps}))
+    reconnectPumps(event) {
+        this.state.stompClient.send("/ws/devicelist", {}, JSON.stringify({pumps: this.state.pumps}))
     }
 
     render() {
@@ -99,7 +99,7 @@ export class PumpControlView extends Component {
                         },
                         index
                     ) => (
-                        <PumpStatusItem key={index} checked={active} title={title} description={description} onClick={this.togglePump} stompClient={this.state.stompClient}/>
+                        <PumpStatusItem key={index} checked={active} title={title} description={description} stompClient={this.state.stompClient}/>
                     )
                 )}
             </ListView>

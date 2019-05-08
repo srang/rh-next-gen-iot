@@ -1,5 +1,5 @@
 iot:
-  types: temperature,vibration,frequency,throughput
+  types: temperature,vibration,frequency
 
 pump:
   devices: 1,2,3,4,5,6,7

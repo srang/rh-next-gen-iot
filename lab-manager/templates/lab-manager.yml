@@ -65,8 +65,6 @@ objects:
         name: "${APPLICATION_NAME}"
       port:
         targetPort: http
-      tls:
-        termination: edge
   - kind: ImageStream
     apiVersion: v1
     metadata:

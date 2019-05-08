@@ -16,12 +16,11 @@ class App extends Component {
     }
 
     onClick(event) {
-        console.log(event);
-        if (event.href === "#pumplist") {
+        // if (event.href === "#pumplist") {
             this.setState({content: <PumpListView/>});
-        } else {
-            this.setState({content: <PumpControlView/>})
-        }
+        // } else {
+        //     this.setState({content: <PumpControlView/>})
+        // }
     }
 
     render() {
@@ -31,8 +30,8 @@ class App extends Component {
                     <VerticalNav.Masthead title="Next Gen Technologies at Scale" iconImg={pfLogo}/>
                     <VerticalNav.Item href="#pumplist" title="Pump Status" iconClass="fa fa-tachometer"
                                       onClick={this.onClick}/>
-                    <VerticalNav.Item href="#pumpcontrol" title="Lab Control" iconClass="fa fa-sliders"
-                                      onClick={this.onClick}/>
+                    {/*<VerticalNav.Item href="#pumpcontrol" title="Lab Control" iconClass="fa fa-sliders"*/}
+                    {/*                  onClick={this.onClick}/>*/}
                 </VerticalNav>
                 <div className="container-fluid container-pf-nav-pf-vertical nav-pf-persistent-secondary"
                      style={{marginBottom: '20px', marginTop: '40px'}}>

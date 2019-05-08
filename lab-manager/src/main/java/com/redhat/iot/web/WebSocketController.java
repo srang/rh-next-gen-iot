@@ -44,6 +44,7 @@ public class WebSocketController {
     @MessageMapping("/devicelist")
     @SendTo("/topic/devices")
     public String setDevices(String devices) {
+        System.out.println(devices);
         Long[] deviceList = Arrays.stream(devices.split(",")).map(Long::parseLong).collect(Collectors.toList()).toArray(new Long[]{});
         this.sensorRunner.reloadDevices(deviceList);
         Map<String, String> response = new HashMap<>();
