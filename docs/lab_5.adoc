@@ -24,7 +24,6 @@ $ oc get pods
 $ oc rsh iot-cluster-kafka-0
 $ cd bin
 $ ./kafka-consumer-groups.sh --bootstrap-server iot-cluster-kafka-bootstrap.kafka.svc:9092 --group user1 --topic user1-data --reset-offsets --to-earliest
-oc project user1
 $ exit
 ----
 
