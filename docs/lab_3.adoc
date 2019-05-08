@@ -59,7 +59,7 @@ The integration is operational when the _Phase_ lists as `Running`. Now, review 
 
 [source]
 ----
-$ kamel describe integration streams-reader
+$ oc describe integration streams-reader
 ----
 
 Notice the list of dependencies and the route definition within the `spec` section. 
