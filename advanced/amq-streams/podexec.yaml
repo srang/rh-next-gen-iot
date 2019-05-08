@@ -1,0 +1,29 @@
+kind: List
+apiVersion: v1
+metadata:
+  name: podexec-rolebinding
+items:
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: Role
+  metadata:
+    name: podexec
+  rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: podexec
+    namespace: kafka
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: podexec
+  subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: user1

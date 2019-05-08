@@ -5,25 +5,36 @@
 = Technology Overview
 
 == Using next gen technologies to build IoT solution
-Internet of Things (IoT) is expected to generate a massive and diverse range of data types presenting a unique challenges for back end services.  The back end services must be able to quickly respond and scale in response to sudden influx of messages. AMQ Streams and Decision Manager can efficiently manage and filter messages from IoT devices. They can both scale elastically and shield other services downstream from the load.
+Internet of Things (IoT) is expected to generate a massive and diverse range of data types presenting a unique challenges for back end services.  The back end services must be able to quickly respond and scale in response to sudden influx of messages. AMQ and Decision Manager can efficiently manage and filter messages from IoT devices. They can both scale elastically and shield other services downstream from the load.
 
-In this lab, we will be working with cutting edge technology to build an IOT edge computing solution that will monitor
+In this lab, we will be working with cutting edge technology to build an IoT edge computing solution that will monitor
 health of IoT systems and improve operational efficiencies. The technologies involved are:
 
 === AMQ Streams
 
-AMQ Streams is a Java/Scala publish-subscribe-based messaging broker. Based on the Apache Kafka and Strimzi projects, it offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency. AMQ Streams makes it easy to run Apache Kafka on OpenShift by using OpenShift native mechanisms for:
-- Provisioning the cluster
-- Managing the topics and users
-- Providing a better integration with applications running on OpenShift.
+AMQ Streams is a Java/Scala publish-subscribe-based messaging broker. Based on the Apache Kafka and Strimzi projects, it offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency. 
 
-=== AMQ Online
-AMQ Online gives administrators the ability to configure a cloud-native, multi-tenant messaging service either in the cloud or on-premise. Developers can use Red Hat AMQ Online to provision messaging when and where they need it with zero installation, configuration, and maintenance. The developers serve themselves from an easy to-use browser console.
+AMQ Streams makes it easy to run Apache Kafka on OpenShift by using OpenShift native mechanisms for:
 
-TIP: Learn about AMQ Online with video from Christina Lin link:https://www.youtube.com/watch?v=P1RcYH6CuQI[AMQ Streams in a nutshell]
+* Provisioning the cluster
+* Managing the topics and users
+* Providing a better integration with applications running on OpenShift.
 
-=== Camel-K
-Apache Camel K (a.k.a. Kamel) is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures. To start using Camel K you need the "kamel" binary, that can be used to both configure the cluster and run integrations.
+TIP: AMQ Streams is based on link:http://strimzi.io/[Strimzi] and link:http://kafka.apache.org/[Apache Kafka] projects.
+
+=== AMQ Broker
+AMQ Broker is a pure-Java multiprotocol message broker. It’s built on an efficient, asynchronous core, with a fast native journal for message persistence and the option of shared-nothing state replication for high availability.
+
+* **Persistence** - A fast, native-IO journal or a JDBC-based store
+* **High availability** - Shared store or shared-nothing state replication
+* **Advanced queueing** - Last value queues, message groups, topic hierarchies, and large message support
+* **Multiprotocol** - AMQP 1.0, MQTT, STOMP, OpenWire, and HornetQ Core
+* **Integration** - Full integration with Red Hat JBoss EAP
+
+TIP: AMQ Broker is based on the link:https://activemq.apache.org/artemis/[Apache ActiveMQ Artemis] project.
+
+=== Camel K
+Apache Camel K is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures. To start using Camel K you need the "kamel" binary, that can be used to both configure the cluster and run integrations.
 
 TIP: Learn about Kamel with video from Christina Lin link:https://www.youtube.com/watch?v=LaBvBonUC6g[Camel-K in a nutshell]
 
