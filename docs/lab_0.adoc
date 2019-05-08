@@ -76,13 +76,14 @@ The primary source of content for this lab is the IoT Next Gen Technologies at S
 
 Navigate to the home directory folder and clone the lab repository. Once cloned navigate into the `next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads` directory:
 
-````bash
+[source,bash]
+----
 $ cd $HOME
 $ git clone https://gitlab.com/redhatsummitlabs/next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads.git
 
 
 $ cd next-gen-technologies-at-scale-building-solutions-to-manage-tomorrows-workloads
-````
+----
 
 The repository contains the following resources:
 
