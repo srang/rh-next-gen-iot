@@ -5,9 +5,10 @@
 = Lab 6a: Advanced Lab: Create new Camel route
 
 == Camel Route
-For the previous labs, the ESP sensor data (temperature and vibration) has been combined into one stream. This Camel route for this is located in the StreamsReader app located in folder: message-bridge/src/main/java/com/redhat/iot/routes
+For the previous labs, the ESP sensor data (temperature, vibration, frequency and throughput) has been combined into one topic This Camel route for this is located in the StreamsReader app located in folder: message-bridge/src/main/java/com/redhat/iot/routes
 
-For this lab, create a new Camel route to separate temperature and vibration data into different streams.
+For this lab, create a new Camel route to send ESP sensor data to different topics. You'll need to modify Kafka topic, Camel Route, Message Bridge.
+
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=lab_5.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6b.adoc]

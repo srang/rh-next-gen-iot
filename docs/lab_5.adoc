@@ -2,11 +2,10 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 5: Testing Updated Rules
+= Lab 5: Testing Rules
 
 == Business Rules
-Lets replay the ESP data from beginning to verify the updated rules will trigger the alert so corrective action can be taken.
-
+Lets replay the ESP data from beginning to verify the rules will trigger the alert so corrective action can be taken.
 
 === Stop data to Kie server
 In the terminal window where StreamsReader is running, use the ctrl C command to stop StreamsReader app
@@ -38,7 +37,7 @@ $ cd message-bridge/src/main/java/com/redhat/iot/routes
 $ kamel run StreamsReader.java -d mvn:org.kie.server:kie-server-client:7.18.0.Final -d camel-kafka -d camel-jackson --dev
 ----
 
-Check the GUI to see if the pump 4 will trigger the alert when temperature and vibration thresholds are reached.
+Check the GUI to see if the pump 3 and 4 will trigger the alert when temperature and vibration thresholds are reached.
 
 [.text-center]
 image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=lab_content.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6a.adoc]
