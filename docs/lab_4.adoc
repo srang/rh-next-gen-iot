@@ -28,7 +28,7 @@ For our lab, we will create the decision table via a web front-end, provided by 
 
 As a business analyst or business rules developer, you can use Decision Model and Notation (DMN) to model a decision service graphically in a decision requirements diagram (DRD). This diagram traces business decisions from start to finish, with each decision node drawing logic from DMN model decision elements such as decision tables.
 
-For this lab, our DMN model will use two elements: input data (pump telemetry data) and decision (logic for determining pump condition).
+For this lab, our DMN model will use two elements: Input data (pump telemetry data) and decision (logic for determining pump condition).
 
 === Decision Table
 A decision table is a visual representation of one or more rules in a tabular format. Each rule consists of a single row in the table, and includes columns that define the conditions and outcome for that particular row.
@@ -50,21 +50,55 @@ Click on *Design* to access design
 
 image::dm-home.png[]
 
-=== Update DMN Decision Table
+=== Create DMN Decision Table
 
-A few sample rules have been created using DMN to get you started. Click on *esp_rules* to edit the rules.
+Click on Add project +
 
-image::dm-project.png[]
+Give the project a name *esp_rules* +
 
-Click on *unhealthy-pump-decision* to highlight decision node and then click on edit
+In the next screen, click on *Add Assets* +
+
+Select DMN as the type of asset +
+
+Put name of DMN as pump_rules
+
+image::dm-dmn-create.png[]
+
+Using the design Palette on the left side, select oval Input node
+
+image::dm-dmn-input-node.png[]
+
+Name this node as "type"
+
+Using the Property panel on the top right corner, set the output data type to "string"
+
+image::dm-dmn-node-property.png[]
+
+Using the design Palette on the left side, select another Input node
+
+Name this node as "value"
+
+Using the Property panel on the top right corner, set the output data type to "number"
+
+Save the model.
+
+Using the design Palette on the left side, select rectangle Decision node
+
+Name this node as "unhealthy-pump-decision"
+
+Using the Property panel on the top right corner, set the output data type to "number"
+
+We need to attach both Input nodes, type and value, to Decision node. We can do this by clicking on an Input node, clicking on its arrow icon, and attaching the arrow to the Decision node.
+
+image::dm-dmn-connect.png[]
+
+Click on *unhealthy-pump-decision* to highlight Decision node and then click on edit
 
 image::dm-dmn-edit_rules.png[]
 
-You should now be able to edit the rules in decision table
+Select the expression Decision Table to create a boxed expression implemented as a decision table.
 
-image::dm-dmn-decision_table1.png[]
-
-TIP: You can right click on a row to insert another rule
+Create the rules in the decision table
 
 The healthy operating range of the pumps is as follows:
 
@@ -76,6 +110,12 @@ The healthy operating range of the pumps is as follows:
 |=======
 
 CAUTION: When defining a range, use `[` for lower limit and `)` for upper limit
+
+TIP: You can right click on a row to insert another rule
+
+The table should look like the following
+
+image::dm-dmn-decision_table1.png[]
 
 Once the rules are updated, click *save*
 

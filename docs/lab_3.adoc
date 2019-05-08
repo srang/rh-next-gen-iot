@@ -2,13 +2,13 @@
 :icons: font
 :source-highlighter: prettify
 
-= Lab 3: Using Kamel for routing data
+= Lab 3: Using Camel K for routing data
 
 == Kamel binary and App
 
 Kamel binary has been provided on your system to allow interaction with the Camel-K on your cluster.
 
-Use the StreamsReader java app to xx
+Use the StreamsReader java app for connecting with Kie server and routing.
 
 [source]
 ----
