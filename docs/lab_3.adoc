@@ -56,8 +56,6 @@ $ oc get integration -n user1 -o yaml
 
 Notice the list of dependencies and the route definition within the `spec` section. 
 
-You can also note the integration is running as noted by the 
-
 === Replay the data using Kafka
 
 Kafka allows reprocessing of input data from scratch. We'll be reset the ESP data to the beginning of the run.
