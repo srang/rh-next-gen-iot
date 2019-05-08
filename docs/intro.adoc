@@ -13,28 +13,30 @@ To showcase this solution, the following will be utilized:
 link:https://www.openshift.com/products/container-platform/[Red Hat OpenShift] is an open, hybrid cloud Kubernetes platform to build, run, and scale container-based applications. OpenShift includes everything you need to manage your development lifecycle, including standardized workflows, support for multiple environments, continuous integration, and release management.
 
 
+== Red Hat AMQ
+
+link:https://www.redhat.com/en/technologies/jboss-middleware/amq[AMQ Online] provides fast, lightweight, and secure messaging for Internet-scale applications. AMQ components use industry-standard message protocols and support a wide range of programming languages and operating environments. AMQ gives you the strong foundation you need to build modern distributed applications.
+
 == Red Hat AMQ Streams
 
-AMQ Streams is a Java/Scala publish-subscribe-based messaging broker. Based on the Apache Kafka and Strimzi projects, it offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency. AMQ Streams makes it easy to run Apache Kafka on OpenShift by using OpenShift native mechanisms for:
+link:https://access.redhat.com/products/red-hat-amq#streams[AMQ Streams] is a Java/Scala publish-subscribe-based messaging broker. Based on the Apache Kafka and Strimzi projects, it offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency. AMQ Streams makes it easy to run Apache Kafka on OpenShift by using OpenShift native mechanisms for:
 - Provisioning the cluster
 - Managing the topics and users
 - Providing a better integration with applications running on OpenShift.
 
-== Red Hat AMQ Online
-
-link:https://access.redhat.com/products/red-hat-amq#online[AMQ Online] gives administrators the ability to configure a cloud-native, multi-tenant messaging service either in the cloud or on-premise. Developers can use Red Hat AMQ Online to provision messaging when and where they need it with zero installation, configuration, and maintenance. The developers serve themselves from an easy to-use browser console.
 
 == Red Hat Decision Manager
 
-Red Hat Decision Manager 
+link:https://www.redhat.com/en/technologies/jboss-middleware/decision-manager[Red Hat® Decision Manager] is a platform for developing containerized microservices and applications that automate business decisions. Decision Manager includes business rules management, complex event processing, and resource optimization technologies. Organizations can incorporate sophisticated decision logic into line-of-business applications and quickly update underlying business rules as market conditions change.
 
 == Apache Camel
 
-Apache Camel is a
+link:https://camel.apache.org[Apache Camel] is a versatile open-source integration framework based on known Enterprise Integration Patterns. Camel empowers you to define routing and mediation rules in a variety of domain-specific languages, including a Java-based Fluent API, Spring or Blueprint XML Configuration files, and a Scala DSL.
 
-== Camel-K
 
-Apache Camel K is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures. To start using Camel K you need the "kamel" binary, that can be used to both configure the cluster and run integrations.
+== Camel K
 
-Camel-K in a nutshell: https://www.youtube.com/watch?v=LaBvBonUC6g
+link:https://camel.apache.org/staging/camel-k/latest/index.html[Apache Camel K] is a lightweight integration framework built from Apache Camel that runs natively on Kubernetes and is specifically designed for serverless and microservice architectures. To start using Camel K you need the "kamel" binary, that can be used to both configure the cluster and run integrations.
+
+Camel K in a nutshell: https://www.youtube.com/watch?v=LaBvBonUC6g
 
