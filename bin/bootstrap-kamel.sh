@@ -8,10 +8,11 @@ PROJ_DIR="${CMD_DIR}/.."
 KAMEL_VER="${KAMEL_VER:-0.3.2}"
 NAMESPACE="${NAMESPACE:-user1}"
 
+set -x
 # install kamel client
 if ! (which kamel &>/dev/null); then
     [ -f ${CMD_DIR}/kamel.tar.gz ] && rm ${CMD_DIR}/kamel.tar.gz
-    wget -O ${CMD_DIR}/kamel.tar.gz https://github.com/apache/camel-k/releases/download/${KAMEL_VER}/camel-k-client-${KAMEL_VER}-linux-64bit.tar.gz
+    curl -L -o ${CMD_DIR}/kamel.tar.gz https://github.com/apache/camel-k/releases/download/${KAMEL_VER}/camel-k-client-${KAMEL_VER}-linux-64bit.tar.gz
     tar -zxvf ${CMD_DIR}/kamel.tar.gz ./kamel
     mv ./kamel ${CMD_DIR}/
     rm ${CMD_DIR}/kamel.tar.gz
