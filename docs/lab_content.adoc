@@ -1,4 +1,3 @@
-
 = USING NEXT GEN TECHNOLOGIES TO BUILD IOT SOLUTION
 Andrew Block <ablock@redhat.com>, Sam Rang <srang@redhat.com>, Christina Lin <clin@redhat.com>, Hugo Guerrerro <Ishu Verma <iverma@redhat.com>
 :homepage: https://github.com/sabre1041/iot-serverless
@@ -24,7 +23,7 @@ into the data processing layer and identify ways to improve pump longevity.
 * link:lab_4.adoc[*Lab 4: Business Rules Service*]
 * link:lab_5.adoc[*Lab 5: Testing Rules*]
 * link:lab_6a.adoc[*Lab 6a: Advanced Lab: Create new Kafka Topic*]
-* link:lab_6a.adoc[*Lab 6b: Advanced Lab: Create new Camel Route*]
+* link:lab_6b.adoc[*Lab 6b: Advanced Lab: Create new Camel Route*]
 * link:lab_7.adoc[*Lab 6b: Update SpringBoot Camel to Camel K*]
 
 ****
